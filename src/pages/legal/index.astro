@@ -1,0 +1,245 @@
+---
+import { legalConfig, legalDocuments } from '../../data/legal';
+import LegalLayout from '../../layouts/LegalLayout.astro';
+---
+
+<LegalLayout
+  title="Legal centre"
+  summary="Plain-language terms, privacy information and data-processing documents for the service."
+  audience="Workspace owners, staff, community members and reviewers"
+  isIndex
+>
+  <section class="legal-intro" aria-labelledby="legal-intro-title">
+    <p class="legal-section-label">Document set</p>
+    <h2 id="legal-intro-title">
+      One place for the rules around the workspace.
+    </h2>
+    <p>
+      These documents separate customer terms, member privacy, acceptable use
+      and processor obligations so each audience can find the information that
+      applies to them.
+    </p>
+  </section>
+
+  <div class="legal-cards">
+    {legalDocuments.map((document, index) => (
+      <a href={`/legal/${document.slug}/`}>
+        <span class="mono">{String(index + 1).padStart(2, '0')}</span>
+        <div>
+          <h2>{document.title}</h2>
+          <p>{document.summary}</p>
+          <small>{document.audience}</small>
+        </div>
+        <svg viewBox="0 0 18 18" aria-hidden="true">
+          <path d="M4.5 13.5 13.5 4.5M7 4.5h6.5V11" />
+        </svg>
+      </a>
+    ))}
+  </div>
+
+  <section class="launch-checklist" aria-labelledby="launch-checklist-title">
+    <div>
+      <p class="legal-section-label">Publication gate</p>
+      <h2 id="launch-checklist-title">What still needs an owner decision.</h2>
+      <p>
+        The copy is structured and connected, but legal accuracy depends on the
+        real operator and production architecture.
+      </p>
+    </div>
+
+    <ul>
+      <li>Legal entity, registered address and company details</li>
+      <li>Governing law, customer locations and minimum owner age</li>
+      <li>Support, privacy and legal contact addresses</li>
+      <li>Hosting, database, storage, authentication and email providers</li>
+      <li>Processing regions and international-transfer safeguards</li>
+      <li>Exact cookie names, log fields and retention schedules</li>
+      <li>Refund, tax, renewal and consumer-cancellation disclosures</li>
+      <li>Liability terms and final review by qualified counsel</li>
+    </ul>
+  </section>
+
+  <aside class="legal-contact">
+    <span class="mono">Current state · {legalConfig.version}</span>
+    <p>
+      These routes are deliberately excluded from search indexing while launch
+      fields remain incomplete. Set <code>legalConfig.isDraft</code> to false
+      only after the bracketed values are replaced and the documents match the
+      deployed service.
+    </p>
+  </aside>
+</LegalLayout>
+
+<style>
+  .legal-intro {
+    padding-bottom: 42px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .legal-section-label {
+    color: #96b6ef;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .legal-intro h2,
+  .launch-checklist h2 {
+    max-width: 620px;
+    margin-top: 12px;
+    font-size: clamp(1.8rem, 4vw, 2.65rem);
+    font-weight: 570;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  .legal-intro > p:last-child,
+  .launch-checklist > div > p:last-child {
+    max-width: 620px;
+    margin-top: 18px;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.72;
+  }
+
+  .legal-cards {
+    margin-top: 18px;
+    border-top: 1px solid var(--border-strong);
+  }
+
+  .legal-cards > a {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) 22px;
+    gap: 18px;
+    align-items: start;
+    padding: 24px 8px;
+    border-bottom: 1px solid var(--border);
+    transition:
+      background-color 180ms ease,
+      border-color 180ms ease;
+  }
+
+  .legal-cards > a:hover {
+    border-bottom-color: var(--border-strong);
+    background: rgba(255, 255, 255, 0.016);
+  }
+
+  .legal-cards > a > .mono {
+    padding-top: 4px;
+    color: var(--text-faint);
+    font-size: 0.75rem;
+  }
+
+  .legal-cards h2 {
+    font-size: 1.16rem;
+    font-weight: 610;
+    letter-spacing: -0.02em;
+  }
+
+  .legal-cards p {
+    max-width: 62ch;
+    margin-top: 7px;
+    color: var(--text-secondary);
+    font-size: 0.94rem;
+    line-height: 1.6;
+  }
+
+  .legal-cards small {
+    display: block;
+    margin-top: 9px;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+  }
+
+  .legal-cards svg {
+    width: 18px;
+    fill: none;
+    stroke: var(--text-faint);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.4;
+    transition:
+      stroke 180ms ease,
+      transform 180ms ease;
+  }
+
+  .legal-cards > a:hover svg {
+    transform: translate(2px, -2px);
+    stroke: var(--text);
+  }
+
+  .launch-checklist {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(320px, 1.2fr);
+    gap: 48px;
+    margin-top: 68px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .launch-checklist ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 22px;
+    list-style: none;
+  }
+
+  .launch-checklist li {
+    position: relative;
+    padding: 12px 0 12px 18px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .launch-checklist li::before {
+    position: absolute;
+    top: 1.25rem;
+    left: 1px;
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--amber);
+    border-radius: 50%;
+    content: '';
+  }
+
+  .legal-contact {
+    margin-top: 68px;
+    padding: 20px;
+    border: 1px solid rgba(86, 137, 232, 0.18);
+    border-radius: 10px;
+    background: rgba(86, 137, 232, 0.045);
+  }
+
+  .legal-contact span {
+    color: #9bb9ed;
+    font-size: 0.75rem;
+  }
+
+  .legal-contact p {
+    margin-top: 8px;
+    color: var(--text-secondary);
+    font-size: 0.94rem;
+    line-height: 1.65;
+  }
+
+  .legal-contact code {
+    color: #c7d8f7;
+    font-family: var(--mono);
+    font-size: 0.86em;
+  }
+
+  @media (max-width: 680px) {
+    .launch-checklist {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .launch-checklist ul {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

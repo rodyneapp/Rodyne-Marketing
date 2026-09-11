@@ -1,0 +1,354 @@
+﻿---
+import Icon from './Icon.astro';
+import ProductPreview from './ProductPreview.astro';
+import { site } from '../data/site';
+
+const floatingTiles = [
+  {
+    name: 'Roblox',
+    icon: 'cube',
+    x: '-500px',
+    y: '142px',
+    size: '74px',
+    rotation: '-8deg',
+    depth: '.72',
+    duration: '10.4s',
+  },
+  {
+    name: 'Discord',
+    icon: 'discord',
+    x: '492px',
+    y: '152px',
+    size: '78px',
+    rotation: '9deg',
+    depth: '.84',
+    duration: '9.2s',
+  },
+  {
+    name: 'Ranking',
+    icon: 'ranking',
+    x: '-450px',
+    y: '368px',
+    size: '64px',
+    rotation: '6deg',
+    depth: '.55',
+    duration: '11.2s',
+  },
+  {
+    name: 'Events',
+    icon: 'events',
+    x: '454px',
+    y: '376px',
+    size: '62px',
+    rotation: '-7deg',
+    depth: '.6',
+    duration: '8.8s',
+  },
+  {
+    name: 'Cases',
+    icon: 'case',
+    x: '-260px',
+    y: '32px',
+    size: '52px',
+    rotation: '7deg',
+    depth: '.42',
+    duration: '9.7s',
+  },
+  {
+    name: 'Moderation',
+    icon: 'moderation',
+    x: '262px',
+    y: '40px',
+    size: '54px',
+    rotation: '-5deg',
+    depth: '.46',
+    duration: '10.8s',
+  },
+];
+---
+
+<section class="hero" id="product" data-hero>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div
+    class="floating-field"
+    data-parallax-field
+    data-continuous-motion
+    aria-hidden="true"
+  >
+    {floatingTiles.map((tile, index) => (
+      <div
+        class:list={['hero-tile', `tile--${index + 1}`]}
+        style={`--x:${tile.x};--y:${tile.y};--size:${tile.size};--rotation:${tile.rotation};--depth:${tile.depth};--duration:${tile.duration};--delay:${120 + index * 70}ms`}
+      >
+        <div class="hero-tile-card" title={tile.name}>
+          <Icon name={tile.icon} size={25} strokeWidth={1.45} />
+        </div>
+      </div>
+    ))}
+  </div>
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <p class="eyebrow" data-hero-reveal style="--reveal-delay: 70ms">
+        Built for Roblox communities
+      </p>
+      <h1
+        class="display hero-title"
+        data-hero-reveal
+        style="--reveal-delay: 140ms"
+      >
+        Your Roblox community.
+        <br />
+        <span>Working together.</span>
+      </h1>
+      <p class="hero-support" data-hero-reveal style="--reveal-delay: 210ms">
+        Manage ranks, run training sessions, and resolve reports across Roblox
+        and Discord—with one shared history for your staff.
+      </p>
+      <div class="hero-actions" data-hero-reveal style="--reveal-delay: 280ms">
+        <a class="button button--primary" href={site.links.demo}>
+          See how it works <Icon name="arrow" size={16} />
+        </a>
+        <a class="button button--secondary" href={site.links.pricing}>
+          View pricing
+        </a>
+      </div>
+      <p class="hero-price" data-hero-reveal style="--reveal-delay: 320ms">
+        From <strong>$4/month</strong> per workspace. Members join free.
+      </p>
+    </div>
+    <div class="preview-spacing">
+      <ProductPreview />
+    </div>
+    <ul class="hero-reassurance" aria-label="Workspace controls">
+      <li>
+        <Icon name="lock" size={15} />
+        No Roblox cookies
+      </li>
+      <li>
+        <Icon name="shield" size={15} />
+        You control permissions
+      </li>
+      <li>
+        <Icon name="note" size={15} />
+        Every action has a history
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: clip;
+    padding-bottom: 32px;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0 0 30%;
+    pointer-events: none;
+    background-image:
+      linear-gradient(90deg, #ffffff04 1px, transparent 1px),
+      linear-gradient(#ffffff04 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 50% 25%, black, transparent 70%);
+  }
+  .hero-inner {
+    position: relative;
+    text-align: center;
+    z-index: 2;
+  }
+  .hero-copy {
+    max-width: 1040px;
+    margin-inline: auto;
+    padding-top: clamp(100px, 8vw, 118px);
+  }
+  .hero-title {
+    margin-top: 22px;
+    font-size: clamp(2.65rem, 6.05vw, 5rem);
+    line-height: 1.08;
+    letter-spacing: -0.055em;
+  }
+  .hero-title span {
+    color: #b4b4bf;
+  }
+  .hero-support {
+    max-width: 600px;
+    margin: 24px auto 0;
+    color: var(--text-secondary);
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    line-height: 1.7;
+    text-wrap: pretty;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .hero-price {
+    margin-top: 16px;
+    color: var(--text-dim);
+    font-size: 0.875rem;
+  }
+  .hero-price strong {
+    color: var(--text-secondary);
+    font-weight: 550;
+  }
+  .preview-spacing {
+    margin-top: clamp(40px, 5vw, 64px);
+    text-align: left;
+  }
+  .hero-reassurance {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px 36px;
+    margin-top: 28px;
+    list-style: none;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+  .hero-reassurance li {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .hero-reassurance :global(svg) {
+    color: var(--text-faint);
+  }
+  @media (max-width: 600px) {
+    .hero-copy {
+      padding-top: 142px;
+    }
+    .hero-title {
+      font-size: clamp(2.4rem, 8.7vw, 3.4rem);
+    }
+    .hero-reassurance {
+      gap: 12px 20px;
+      font-size: 0.8125rem;
+    }
+  }
+  .floating-field {
+    --pointer-x: 0px;
+    --pointer-y: 0px;
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    pointer-events: none;
+  }
+  .hero-tile {
+    position: absolute;
+    top: var(--y);
+    left: calc(50% + var(--x));
+    width: var(--size);
+    height: var(--size);
+    margin-left: calc(var(--size) / -2);
+    translate: calc(var(--pointer-x) * var(--depth))
+      calc(var(--pointer-y) * var(--depth));
+  }
+  .hero-tile-card {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--border-strong);
+    border-radius: 22%;
+    background:
+      radial-gradient(circle at 30% 24%, #5689e821, transparent 42%),
+      linear-gradient(155deg, #ffffff0e, #ffffff03), #111318;
+    color: #aac4f4;
+    box-shadow:
+      0 24px 46px -22px #000e,
+      inset 0 1px #ffffff0b;
+    animation:
+      tile-enter 1s var(--ease-out) var(--delay) both,
+      tile-drift var(--duration) ease-in-out calc(var(--delay) + 1s) infinite;
+    animation-play-state: running, var(--motion-state, paused);
+  }
+  @keyframes tile-enter {
+    from {
+      opacity: 0;
+      transform: translateY(18px) rotate(calc(var(--rotation) + 16deg))
+        scale(0.75);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) rotate(var(--rotation));
+    }
+  }
+  @keyframes tile-drift {
+    0%,
+    100% {
+      transform: translate(0, 0) rotate(var(--rotation));
+    }
+    50% {
+      transform: translate(3px, -5px) rotate(calc(var(--rotation) + 2deg));
+    }
+  }
+  @media (max-width: 1120px) {
+    .tile--1 {
+      --x: -43vw !important;
+    }
+    .tile--2 {
+      --x: 43vw !important;
+    }
+    .tile--3 {
+      --x: -42vw !important;
+    }
+    .tile--4 {
+      --x: 42vw !important;
+    }
+  }
+  @media (max-width: 820px) {
+    .hero-copy {
+      padding-top: 142px;
+    }
+    .hero-tile {
+      --size: 48px !important;
+    }
+    .tile--1 {
+      --x: -118px !important;
+      --y: 24px !important;
+    }
+    .tile--2 {
+      --x: 118px !important;
+      --y: 28px !important;
+    }
+    .tile--3 {
+      --x: -82px !important;
+      --y: 84px !important;
+      --size: 38px !important;
+    }
+    .tile--4 {
+      --x: 82px !important;
+      --y: 88px !important;
+      --size: 38px !important;
+    }
+    .tile--5 {
+      --x: -38px !important;
+      --y: 44px !important;
+      --size: 38px !important;
+    }
+    .tile--6 {
+      --x: 38px !important;
+      --y: 38px !important;
+      --size: 38px !important;
+    }
+    .hero-tile-card :global(svg) {
+      width: 21px;
+      height: 21px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-tile {
+      translate: none;
+    }
+    .hero-tile-card {
+      opacity: 1;
+      transform: rotate(var(--rotation));
+      animation: none;
+    }
+  }
+</style>

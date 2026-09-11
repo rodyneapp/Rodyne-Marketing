@@ -1,0 +1,187 @@
+---
+import BrandMark from './BrandMark.astro';
+import { site } from '../data/site';
+
+const linkGroups = [
+  {
+    label: 'Product',
+    links: [
+      { label: 'Product', href: site.links.product },
+      { label: 'Integrations', href: site.links.integrations },
+      { label: 'Pricing', href: site.links.pricing },
+      { label: 'Security', href: site.links.security },
+    ],
+  },
+  {
+    label: 'Resources',
+    links: [
+      { label: 'How it works', href: site.links.demo },
+      { label: 'Getting started', href: '/#setup' },
+
+      ...(site.appReady ? [{ label: 'Sign in', href: site.links.signIn }] : []),
+    ],
+  },
+  {
+    label: 'Legal',
+    links: [
+      { label: 'Legal centre', href: site.links.legal },
+      { label: 'Terms', href: site.links.terms },
+      { label: 'Privacy', href: site.links.privacy },
+      { label: 'Cookies', href: site.links.cookies },
+    ],
+  },
+  {
+    label: 'Data',
+    links: [
+      { label: 'Young people', href: site.links.childrenPrivacy },
+      { label: 'Acceptable use', href: site.links.acceptableUse },
+      { label: 'DPA', href: site.links.dpa },
+      { label: 'Subprocessors', href: site.links.subprocessors },
+    ],
+  },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-top">
+    <div class="footer-brand">
+      <a href={site.links.home} aria-label={`${site.name} home`}>
+        <BrandMark />
+        <span>{site.name}</span>
+      </a>
+      <p>Connected operations for growing Roblox communities.</p>
+    </div>
+    <nav aria-label="Footer navigation">
+      {linkGroups.map((group) => (
+        <div class="footer-link-group">
+          <p>{group.label}</p>
+          {group.links.map((link) => (
+            <a href={link.href}>{link.label}</a>
+          ))}
+        </div>
+      ))}
+    </nav>
+  </div>
+  <div class="container footer-bottom">
+    <p>
+      © {year} {site.name}
+    </p>
+    <p>
+      Roblox and Discord are separate platforms; this product is not presented
+      as their partner.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    background: #08080a;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: minmax(230px, 0.7fr) minmax(0, 1.3fr);
+    gap: 48px;
+    padding-block: 52px 42px;
+  }
+
+  .footer-brand > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.93rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+  }
+
+  .footer-brand p {
+    max-width: 34ch;
+    margin-top: 13px;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    line-height: 1.55;
+  }
+
+  .footer-top nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+    align-content: start;
+  }
+
+  .footer-link-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer-link-group > p {
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .footer-top nav a {
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    transition: color 180ms ease;
+  }
+
+  .footer-top nav a:hover {
+    color: var(--text);
+  }
+
+  .footer-bottom {
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-block: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--text-faint);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+  }
+
+  .footer-bottom p:last-child {
+    max-width: 560px;
+    text-align: right;
+  }
+
+  @media (max-width: 800px) {
+    .footer-top {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .footer-top nav {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .footer-bottom {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .footer-bottom p:last-child {
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 430px) {
+    .footer-top nav {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: 30px;
+    }
+  }
+</style>

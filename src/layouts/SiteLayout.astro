@@ -1,0 +1,106 @@
+---
+import '@fontsource-variable/dm-sans';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  noindex?: boolean;
+  pageType?: 'software' | 'webpage';
+}
+
+const {
+  title = site.title,
+  description = site.description,
+  noindex = false,
+  pageType = 'software',
+} = Astro.props;
+const origin = Astro.site ?? new URL(site.placeholderOrigin);
+const canonical = new URL(Astro.url.pathname, origin);
+const socialImage = new URL('/og.png', origin);
+const structuredData =
+  pageType === 'software'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: site.name,
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web',
+        description,
+        url: canonical.toString(),
+        offers: {
+          '@type': 'AggregateOffer',
+          priceCurrency: 'USD',
+          lowPrice: '4',
+          highPrice: '19',
+          offerCount: '3',
+        },
+      }
+    : {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: title,
+        description,
+        url: canonical.toString(),
+        isPartOf: {
+          '@type': 'WebSite',
+          name: site.name,
+          url: origin.toString(),
+        },
+      };
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#09090B" />
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content={`${site.name} community operations preview`}
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta
+      name="twitter:image:alt"
+      content={`${site.name} community operations preview`}
+    />
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    ></script>
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">
+      Skip to content
+    </a>
+    <slot />
+
+    <script>
+      import '../scripts/home-motion';
+    </script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import IntegrationRail from '../components/IntegrationRail.astro';
+import WorkflowStories from '../components/WorkflowStories.astro';
+import SetupSection from '../components/SetupSection.astro';
+import FeatureModules from '../components/FeatureModules.astro';
+import ModerationHistory from '../components/ModerationHistory.astro';
+import IntegrationSection from '../components/IntegrationSection.astro';
+import ReliabilityControl from '../components/ReliabilityControl.astro';
+import Pricing from '../components/Pricing.astro';
+import Faq from '../components/Faq.astro';
+import FinalCta from '../components/FinalCta.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<SiteLayout>
+  <div id="top"></div>
+  <Header />
+  <main id="main-content">
+    <Hero />
+    <IntegrationRail />
+    <WorkflowStories />
+    <ModerationHistory />
+    <FeatureModules />
+    <ReliabilityControl />
+    <SetupSection />
+    <IntegrationSection />
+    <Pricing />
+    <Faq />
+    <FinalCta />
+  </main>
+  <Footer />
+</SiteLayout>

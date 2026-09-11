@@ -1,0 +1,121 @@
+---
+import Icon from './Icon.astro';
+const steps = [
+  {
+    icon: 'link',
+    title: 'Connect your community',
+    copy: 'Authorise your Roblox community and Discord server with the access your workspace needs.',
+  },
+  {
+    icon: 'shield',
+    title: 'Set your team’s boundaries',
+    copy: 'Choose staff permissions, map ranks to roles, and decide which changes need approval.',
+  },
+  {
+    icon: 'users',
+    title: 'Bring your staff together',
+    copy: 'Invite your team and start with a training session, promotion request or report.',
+  },
+];
+---
+
+<section class="section setup-section" id="setup" aria-labelledby="setup-title">
+  <div class="container">
+    <div class="setup-heading" data-observe-reveal>
+      <div>
+        <p class="eyebrow">Getting started</p>
+        <h2 class="display section-title" id="setup-title">
+          Your community.
+          <br />
+          Your way of working.
+        </h2>
+      </div>
+      <p class="section-copy">
+        Start with Roblox and Discord. Connect an experience when you’re ready
+        to bring supported in-game activity into the same workspace.
+      </p>
+    </div>
+    <ol class="setup-steps" data-observe-reveal>
+      {steps.map((step, index) => (
+        <li>
+          <div class="step-top">
+            <Icon name={step.icon} size={22} />
+            <span class="mono">0{index + 1}</span>
+          </div>
+          <h3>{step.title}</h3>
+          <p>{step.copy}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .setup-heading {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    align-items: end;
+    margin-bottom: 48px;
+  }
+  .setup-heading .section-title {
+    font-size: clamp(2.25rem, 4vw, 3.5rem);
+  }
+  .setup-heading .section-copy {
+    max-width: 46ch;
+    font-size: 1rem;
+  }
+  .setup-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    list-style: none;
+    border-block: 1px solid var(--border);
+  }
+  .setup-steps li {
+    padding: 30px;
+  }
+  .setup-steps li + li {
+    border-left: 1px solid var(--border);
+  }
+  .step-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #9eb9eb;
+    margin-bottom: 28px;
+  }
+  .step-top span {
+    color: var(--text-faint);
+    font-size: 0.8125rem;
+  }
+  h3 {
+    font-size: 1.125rem;
+    font-weight: 550;
+    letter-spacing: -0.02em;
+  }
+  li p {
+    margin-top: 12px;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  @media (max-width: 800px) {
+    .setup-heading {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .setup-steps {
+      grid-template-columns: 1fr;
+    }
+    .setup-steps li {
+      padding: 26px 0;
+    }
+    .setup-steps li + li {
+      border-left: 0;
+      border-top: 1px solid var(--border);
+    }
+    .step-top {
+      margin-bottom: 18px;
+    }
+  }
+</style>

@@ -1,0 +1,74 @@
+---
+import Icon from './Icon.astro';
+const platforms = [
+  { label: 'Roblox', icon: 'cube' },
+  { label: 'Discord', icon: 'discord' },
+  { label: 'Cmdr', icon: 'terminal' },
+  { label: 'Adonis', icon: 'brackets' },
+  { label: 'HD Admin', icon: 'shield' },
+];
+---
+
+<section
+  class="integrations-rail"
+  aria-label="Supported platforms and frameworks"
+>
+  <div class="container">
+    <p>Connected to the tools your staff already use</p>
+    <ul>
+      {platforms.map((platform) => (
+        <li>
+          <Icon name={platform.icon} size={22} />
+          <span>{platform.label}</span>
+        </li>
+      ))}
+    </ul>
+    <a href="#integrations">
+      Explore integrations <Icon name="arrow" size={14} />
+    </a>
+  </div>
+</section>
+<style>
+  .integrations-rail {
+    padding: 36px 0 60px;
+    text-align: center;
+  }
+  p {
+    font-size: 0.875rem;
+    color: var(--text-dim);
+  }
+  ul {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px 52px;
+    list-style: none;
+    margin-top: 26px;
+  }
+  li {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: #b4b4bf;
+    font-size: 1.05rem;
+    font-weight: 550;
+    letter-spacing: -0.02em;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    margin-top: 18px;
+    font-size: 0.875rem;
+    color: var(--text-dim);
+  }
+  a:hover {
+    color: var(--text);
+  }
+  @media (max-width: 600px) {
+    ul {
+      gap: 20px 28px;
+    }
+  }
+</style>

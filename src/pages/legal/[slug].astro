@@ -1,0 +1,28 @@
+---
+import LegalDocumentContent from '../../components/LegalDocument.astro';
+import type { LegalDocument } from '../../data/legal';
+import { legalDocuments } from '../../data/legal';
+import LegalLayout from '../../layouts/LegalLayout.astro';
+
+interface Props {
+  document: LegalDocument;
+}
+
+export function getStaticPaths() {
+  return legalDocuments.map((document) => ({
+    params: { slug: document.slug },
+    props: { document },
+  }));
+}
+
+const { document } = Astro.props;
+---
+
+<LegalLayout
+  title={document.title}
+  summary={document.summary}
+  audience={document.audience}
+  slug={document.slug}
+>
+  <LegalDocumentContent document={document} />
+</LegalLayout>

@@ -1,0 +1,460 @@
+---
+import Icon from './Icon.astro';
+import { plans, site } from '../data/site';
+
+const notes = [
+  'Members join free and do not count as staff seats',
+  'No automatic paid overages',
+  'One subscription per Discord server',
+  'Every core module and supported adapter included',
+];
+const comparison = [
+  { label: 'Discord servers', values: ['1', '1', '1'] },
+  { label: 'Roblox communities', values: ['1', '1', '3'] },
+  { label: 'Connected experiences', values: ['1', '3', '10'] },
+  { label: 'Active staff seats', values: ['5', '20', '60'] },
+  {
+    label: 'Activity records / month',
+    values: ['25,000', '150,000', '600,000'],
+  },
+  {
+    label: 'Searchable activity history',
+    values: ['30 days', '90 days', '365 days'],
+  },
+  { label: 'Evidence storage', values: ['250 MB', '1 GB', '5 GB'] },
+];
+---
+
+<section
+  class="section pricing-section"
+  id="pricing"
+  aria-labelledby="pricing-title"
+>
+  <div class="container">
+    <div class="section-heading section-heading--center" data-observe-reveal>
+      <p class="eyebrow">Room for your community to grow</p>
+      <h2 class="display section-title" id="pricing-title">
+        Every core module, on every plan.
+      </h2>
+      <p class="section-copy">
+        Start with the space your team needs. Every plan includes ranks, events,
+        cases, member history, announcements, analytics and Discord tools.
+      </p>
+    </div>
+
+    <div class="pricing-grid" data-observe-reveal>
+      {plans.map((plan) => (
+        <article
+          class:list={['pricing-card', { recommended: plan.recommended }]}
+        >
+          <div class="plan-heading">
+            <div class="plan-name-row">
+              <h3>{plan.name}</h3>
+              {plan.recommended && (
+                <span class="recommended-label">Recommended</span>
+              )}
+            </div>
+            <p>{plan.description}</p>
+          </div>
+
+          <p class="plan-price">
+            <span aria-hidden="true">$</span>
+            <strong>{plan.price}</strong>
+            <span>/ month</span>
+          </p>
+          <p class="billing-unit">per workspace · billed monthly</p>
+
+          <a
+            class:list={[
+              'button button--wide',
+              plan.recommended ? 'button--primary' : 'button--secondary',
+            ]}
+            href={plan.href}
+          >
+            {site.appReady ? plan.cta : 'View availability'}
+            <Icon name="arrow" size={16} />
+          </a>
+
+          <ul>
+            {plan.features
+              .filter((_, index) => [0, 1, 2, 3, 5].includes(index))
+              .map((feature) => (
+                <li>
+                  <Icon name="check" size={15} />
+                  <span>{feature}</span>
+                </li>
+              ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+
+    <details class="plan-comparison">
+      <summary>
+        Compare all limits <Icon name="chevron" size={16} />
+      </summary>
+      <div
+        class="comparison-scroll"
+        role="region"
+        aria-label="Plan capacity comparison"
+        tabindex="0"
+      >
+        <table>
+          <caption>Monthly capacity included with each workspace</caption>
+          <thead>
+            <tr>
+              <th scope="col">Included capacity</th>
+              {plans.map((plan) => (
+                <th scope="col">{plan.name}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {comparison.map((row) => (
+              <tr>
+                <th scope="row">{row.label}</th>
+                {row.values.map((value) => (
+                  <td>{value}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="comparison-note">
+        Activity limits apply to accepted records. Essential case receipts are
+        handled separately from high-volume activity records. A separate Discord
+        server needs its own subscription.
+      </p>
+    </details>
+
+    <div id="launch-checkout">
+      {!site.appReady && (
+        <p class="checkout-notice">
+          Relay is in preview. Online subscriptions aren’t available yet.{' '}
+          <a href={site.links.demo}>
+            See how it works <span aria-hidden="true">→</span>
+          </a>
+        </p>
+      )}
+    </div>
+    <div class="pricing-notes" data-observe-reveal>
+      <p class="mono">HOW BILLING WORKS</p>
+      <ul>
+        {notes.map((note) => (
+          <li>
+            <span aria-hidden="true"></span>
+            {note}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .checkout-notice {
+    margin-top: 24px;
+    padding: 20px 24px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+  }
+  .checkout-notice a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .plan-comparison {
+    margin-top: 28px;
+    border-block: 1px solid var(--border);
+  }
+  .plan-comparison summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px;
+    cursor: pointer;
+    list-style: none;
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+  }
+  .plan-comparison summary::-webkit-details-marker {
+    display: none;
+  }
+  .plan-comparison[open] summary :global(svg) {
+    transform: rotate(90deg);
+  }
+  .comparison-scroll {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    min-width: 580px;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.875rem;
+  }
+  caption {
+    text-align: left;
+    padding: 16px 20px;
+    color: var(--text-dim);
+  }
+  th,
+  td {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+  }
+  thead th {
+    font-weight: 600;
+  }
+  tbody th,
+  td {
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+  .comparison-note {
+    padding: 20px;
+    color: var(--text-dim);
+    font-size: 0.875rem;
+  }
+
+  .pricing-section {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.012),
+      transparent 34%
+    );
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  .pricing-card {
+    position: relative;
+    padding: clamp(22px, 3vw, 30px);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.032), transparent 28%),
+      #0e0f13;
+    transition:
+      border-color 220ms ease,
+      background-color 220ms ease,
+      transform 220ms ease;
+  }
+
+  .pricing-card:hover {
+    border-color: var(--border-strong);
+    background-color: #101116;
+    transform: translateY(-1px);
+  }
+
+  .pricing-card.recommended {
+    border-color: rgba(86, 137, 232, 0.34);
+    background:
+      linear-gradient(180deg, rgba(86, 137, 232, 0.075), transparent 30%),
+      #0e1015;
+  }
+
+  .plan-name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .plan-name-row h3 {
+    font-size: 1.08rem;
+    font-weight: 630;
+    letter-spacing: -0.02em;
+  }
+
+  .recommended-label {
+    display: inline-flex;
+    min-height: 24px;
+    align-items: center;
+    padding: 3px 7px;
+    border: 1px solid rgba(86, 137, 232, 0.24);
+    border-radius: 6px;
+    background: var(--blue-soft);
+    color: #a9c3f3;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .plan-heading > p {
+    min-height: 76px;
+    margin-top: 10px;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .plan-price {
+    display: flex;
+    align-items: baseline;
+    margin-top: 30px;
+    letter-spacing: -0.035em;
+  }
+
+  .plan-price > span:first-child {
+    align-self: flex-start;
+    margin-top: 8px;
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+
+  .plan-price strong {
+    font-size: clamp(3.1rem, 5vw, 4.25rem);
+    font-weight: 540;
+    line-height: 1;
+  }
+
+  .plan-price > span:last-child {
+    margin-left: 8px;
+    color: var(--text-dim);
+    font-size: 0.875rem;
+    letter-spacing: 0;
+  }
+
+  .billing-unit {
+    margin-top: 7px;
+    color: var(--text-dim);
+    font-size: 0.875rem;
+  }
+
+  .pricing-card .button {
+    margin-top: 26px;
+  }
+
+  .pricing-card .button svg {
+    transition: transform 180ms ease;
+  }
+
+  .pricing-card .button:hover svg {
+    transform: translateX(2px);
+  }
+
+  .pricing-card > ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    list-style: none;
+  }
+
+  .pricing-card li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.45;
+  }
+
+  .pricing-card li svg {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    color: var(--green);
+  }
+
+  .pricing-notes {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 24px;
+    margin-top: 22px;
+    padding: 24px;
+    border-top: 1px solid var(--border-strong);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pricing-notes > p {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+  }
+
+  .pricing-notes ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px 24px;
+    list-style: none;
+  }
+
+  .pricing-notes li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.45;
+  }
+
+  .pricing-notes li > span {
+    width: 4px;
+    height: 4px;
+    flex: 0 0 auto;
+    margin-top: 0.65em;
+    border-radius: 50%;
+    background: var(--blue);
+  }
+
+  @media (max-width: 900px) {
+    .pricing-grid {
+      grid-template-columns: 1fr;
+      max-width: 650px;
+      margin-inline: auto;
+    }
+
+    .plan-heading > p {
+      min-height: 0;
+    }
+
+    .pricing-card > ul {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 680px) {
+    .pricing-notes {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .pricing-notes ul {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 460px) {
+    .pricing-card > ul {
+      grid-template-columns: 1fr;
+    }
+
+    .pricing-card:hover {
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pricing-card,
+    .pricing-card:hover,
+    .pricing-card .button:hover svg {
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

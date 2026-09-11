@@ -1,0 +1,433 @@
+---
+import Icon from './Icon.astro';
+
+const controls = [
+  'Permissions checked before each action',
+  'Completed actions stay completed',
+  'Clear limits on retries',
+  'Results checked with each platform',
+  'Each workspace stays separate',
+  'A lasting record of staff actions',
+  'Access limited to what you authorise',
+  'Warnings when a connection needs attention',
+];
+
+const states = [
+  { label: 'Queued', tone: 'neutral' },
+  { label: 'Running', tone: 'blue' },
+  { label: 'Completed', tone: 'green' },
+  { label: 'Partially completed', tone: 'amber' },
+  { label: 'Failed', tone: 'red' },
+  { label: 'Expired', tone: 'neutral' },
+];
+---
+
+<section
+  class="section reliability-section"
+  id="security"
+  aria-labelledby="reliability-title"
+>
+  <div class="container">
+    <div class="section-heading section-heading--center" data-observe-reveal>
+      <p class="eyebrow">Reliability and control</p>
+      <h2 class="display section-title" id="reliability-title">
+        Know what happened. Know what’s next.
+      </h2>
+      <p class="section-copy">
+        If a Roblox promotion succeeds but the Discord role fails, your staff
+        can see exactly where it stopped. Retry the failed step without
+        repeating the promotion.
+      </p>
+    </div>
+
+    <div class="reliability-layout" data-observe-reveal>
+      <div class="job-panel panel">
+        <div class="job-header">
+          <div>
+            <span class="mono">JOB-00882 · PROMOTION</span>
+            <h3>AsterVale → Head Receptionist</h3>
+          </div>
+          <span class="status status--amber">Partially completed</span>
+        </div>
+
+        <div class="job-context">
+          <span>
+            <small>Requested by</small>
+            <strong>LenaShores</strong>
+          </span>
+          <span>
+            <small>Workspace</small>
+            <strong>Northwind Roleplay</strong>
+          </span>
+          <span>
+            <small>Attempt</small>
+            <strong class="mono">02 / 03</strong>
+          </span>
+        </div>
+
+        <ol class="job-events">
+          <li class="completed">
+            <span>
+              <Icon name="check" size={14} />
+            </span>
+            <div>
+              <strong>Permission rechecked</strong>
+              <small>Role and approval threshold still valid</small>
+            </div>
+            <time class="mono">20:14:03</time>
+          </li>
+          <li class="completed">
+            <span>
+              <Icon name="check" size={14} />
+            </span>
+            <div>
+              <strong>Roblox role completed</strong>
+              <small>Provider confirmed Head Receptionist</small>
+            </div>
+            <time class="mono">20:14:04</time>
+          </li>
+          <li class="failed">
+            <span>
+              <Icon name="warning" size={14} />
+            </span>
+            <div>
+              <strong>Discord role failed</strong>
+              <small>Mapped role was not available to the bot</small>
+            </div>
+            <time class="mono">20:14:05</time>
+          </li>
+          <li class="completed">
+            <span>
+              <Icon name="note" size={14} />
+            </span>
+            <div>
+              <strong>Partial outcome recorded</strong>
+              <small>
+                Roblox success and Discord failure added to the timeline
+              </small>
+            </div>
+            <time class="mono">20:14:05</time>
+          </li>
+        </ol>
+
+        <div class="retry-bar">
+          <span>
+            <Icon name="refresh" size={15} />
+            Retry scope: Discord role only
+          </span>
+          <span class="retry-control" aria-hidden="true">
+            Retry missing step
+          </span>
+        </div>
+      </div>
+
+      <aside class="control-panel">
+        <div class="state-legend">
+          <p class="mono">FOLLOW EVERY STEP</p>
+          <div>
+            {states.map((state) => (
+              <span class:list={['status', `status--${state.tone}`]}>
+                {state.label}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <ul class="control-list">
+          {controls.map((control) => (
+            <li>
+              <Icon name="check" size={15} />
+              <span>{control}</span>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reliability-section {
+    overflow: clip;
+  }
+
+  .reliability-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.28fr) minmax(300px, 0.72fr);
+    gap: 18px;
+  }
+
+  .job-panel {
+    overflow: hidden;
+  }
+
+  .job-header {
+    min-height: 78px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .job-header .mono {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  .job-header h3 {
+    margin-top: 5px;
+    font-size: 0.94rem;
+    font-weight: 610;
+    letter-spacing: -0.015em;
+  }
+
+  .job-context {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-bottom: 1px solid var(--border);
+  }
+
+  .job-context > span {
+    min-width: 0;
+    padding: 13px 18px;
+    border-right: 1px solid var(--border);
+  }
+
+  .job-context > span:last-child {
+    border-right: 0;
+  }
+
+  .job-context small,
+  .job-context strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .job-context small {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+  }
+
+  .job-context strong {
+    margin-top: 4px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 560;
+  }
+
+  .job-events {
+    padding: 12px 18px;
+    list-style: none;
+  }
+
+  .job-events li {
+    position: relative;
+    min-height: 65px;
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .job-events li:last-child {
+    border-bottom: 0;
+  }
+
+  .job-events li > span {
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text-dim);
+  }
+
+  .job-events li.completed > span {
+    border-color: rgba(104, 185, 138, 0.23);
+    background: var(--green-soft);
+    color: #82c99e;
+  }
+
+  .job-events li.failed > span {
+    border-color: rgba(209, 116, 116, 0.23);
+    background: var(--red-soft);
+    color: #dd8d8d;
+  }
+
+  .job-events strong,
+  .job-events small {
+    display: block;
+  }
+
+  .job-events strong {
+    font-size: 0.875rem;
+    font-weight: 590;
+  }
+
+  .job-events small {
+    margin-top: 3px;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+  }
+
+  .job-events time {
+    color: var(--text-faint);
+    font-size: 0.75rem;
+  }
+
+  .retry-bar {
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 18px;
+    border-top: 1px solid var(--border);
+    background: rgba(214, 166, 93, 0.045);
+  }
+
+  .retry-bar > span:first-child {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+  }
+
+  .retry-control {
+    display: inline-flex;
+    min-height: 34px;
+    align-items: center;
+    padding-inline: 11px;
+    border: 1px solid var(--border-strong);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text);
+    font-size: 0.75rem;
+    font-weight: 590;
+  }
+
+  .control-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .state-legend,
+  .control-list {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.025),
+      transparent
+    );
+  }
+
+  .state-legend {
+    padding: 18px;
+  }
+
+  .state-legend > p {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+  }
+
+  .state-legend > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .control-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 10px;
+    list-style: none;
+  }
+
+  .control-list li {
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 11px 9px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .control-list svg {
+    flex: 0 0 auto;
+    margin-top: 1px;
+    color: var(--green);
+  }
+
+  @media (max-width: 900px) {
+    .reliability-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .control-panel {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr);
+    }
+  }
+
+  @media (max-width: 620px) {
+    .job-header,
+    .retry-bar {
+      align-items: flex-start;
+      flex-direction: column;
+      padding-block: 15px;
+    }
+
+    .job-context {
+      grid-template-columns: 1fr;
+    }
+
+    .job-context > span {
+      border-right: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .job-context > span:last-child {
+      border-bottom: 0;
+    }
+
+    .job-events li {
+      grid-template-columns: 28px minmax(0, 1fr);
+      padding-block: 10px;
+    }
+
+    .job-events time {
+      grid-column: 2;
+      margin-top: -8px;
+    }
+
+    .control-panel {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .job-events,
+    .retry-bar,
+    .job-header {
+      padding-inline: 13px;
+    }
+
+    .control-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

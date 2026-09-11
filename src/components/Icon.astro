@@ -1,0 +1,79 @@
+---
+interface Props {
+  name: string;
+  size?: number;
+  strokeWidth?: number;
+  class?: string;
+}
+
+const {
+  name,
+  size = 18,
+  strokeWidth = 1.7,
+  class: className = '',
+} = Astro.props;
+
+const icons: Record<string, string> = {
+  overview:
+    '<path d="M4 5.5h6v6H4zM14 5.5h6v3h-6zM14 12.5h6v6h-6zM4 15.5h6v3H4z"/>',
+  inbox:
+    '<path d="M5 5h14l1 8v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-5z"/><path d="M4 13h4l1.5 2h5l1.5-2h4"/>',
+  users:
+    '<circle cx="9" cy="9" r="3"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M16 6.5a2.5 2.5 0 0 1 0 5M16.5 14.5c2.3.2 4 1.8 4 4.5"/>',
+  calendar:
+    '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M7.5 3v4M16.5 3v4M3.5 9h17M7 13h2M12 13h2M17 13h.1M7 17h2M12 17h2"/>',
+  case: '<path d="M7 3.5h7l4 4V20H7z"/><path d="M14 3.5V8h4M10 12h5M10 15.5h5"/>',
+  megaphone:
+    '<path d="M4 13V9l12-4v12zM16 9c2 0 4 1 4 2s-2 2-4 2M7 14l1.5 5H12l-2-6"/>',
+  search: '<circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/>',
+  cube: '<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9zM4.5 7.8 12 12l7.5-4.2M12 12v9"/>',
+  messages:
+    '<path d="M4 5.5h16v11H9l-4.5 3v-3H4z"/><path d="M8 10h.1M12 10h.1M16 10h.1"/>',
+  discord:
+    '<path fill="currentColor" stroke="none" d="M19.54 5.34A17.3 17.3 0 0 0 15.3 4l-.52 1.06a16 16 0 0 0-5.56 0L8.7 4a17.2 17.2 0 0 0-4.24 1.35C1.78 9.3 1.06 13.16 1.42 16.96A17.5 17.5 0 0 0 6.62 19.6l1.27-1.74a11 11 0 0 1-2-1l.49-.38c3.86 1.78 8.04 1.78 11.86 0l.5.38c-.64.39-1.31.73-2.01 1l1.27 1.74a17.4 17.4 0 0 0 5.2-2.64c.43-4.4-.73-8.22-3.66-11.62ZM8.86 14.62c-1.16 0-2.11-1.07-2.11-2.39 0-1.31.93-2.39 2.11-2.39 1.19 0 2.14 1.08 2.12 2.39 0 1.32-.93 2.39-2.12 2.39Zm6.28 0c-1.16 0-2.11-1.07-2.11-2.39 0-1.31.93-2.39 2.11-2.39 1.19 0 2.14 1.08 2.12 2.39 0 1.32-.93 2.39-2.12 2.39Z"/>',
+  ranking:
+    '<path d="M6 19V10M12 19V5M18 19v-6M3.5 19.5h17M9.5 7.5 12 5l2.5 2.5"/>',
+  events:
+    '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M7.5 3v4M16.5 3v4M3.5 9h17M8 14l2.3 2.3L16 11"/>',
+  moderation:
+    '<path d="M12 3 20 6v5c0 4.8-3.3 8-8 10-4.7-2-8-5.2-8-10V6z"/><path d="m8.5 12 2.2 2.2 4.8-5"/>',
+  shield:
+    '<path d="M12 3 20 6v5c0 4.8-3.3 8-8 10-4.7-2-8-5.2-8-10V6z"/><path d="M9 12h6M12 9v6"/>',
+  terminal:
+    '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3M13 15h4"/>',
+  brackets:
+    '<path d="M9 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h3M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M14 8l-4 8"/>',
+  card: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M7 15h3"/>',
+  check: '<path d="m5 12 4 4L19 6"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  warning:
+    '<path d="M10.4 4.2 2.8 18a1.2 1.2 0 0 0 1.1 1.8h16.2a1.2 1.2 0 0 0 1.1-1.8L13.6 4.2a1.8 1.8 0 0 0-3.2 0Z"/><path d="M12 9v4M12 17h.1"/>',
+  arrow: '<path d="M5 12h14M14 7l5 5-5 5"/>',
+  external: '<path d="M8 16 18 6M11 6h7v7M18 15v3H6V6h3"/>',
+  lock: '<rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/>',
+  link: '<path d="m9.5 14.5-1 1a4 4 0 0 1-5.7-5.7l3-3a4 4 0 0 1 5.7 0M14.5 9.5l1-1a4 4 0 0 1 5.7 5.7l-3 3a4 4 0 0 1-5.7 0M8.5 12h7"/>',
+  refresh:
+    '<path d="M20 7v5h-5M4 17v-5h5M18.5 10a7 7 0 0 0-12-3L4 12M5.5 14a7 7 0 0 0 12 3l2.5-5"/>',
+  note: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  bolt: '<path d="m13 2-8 12h7l-1 8 8-12h-7z"/>',
+  filter: '<path d="M4 6h16M7 12h10M10 18h4"/>',
+  dots: '<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+  x: '<path d="m6 6 12 12M18 6 6 18"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+  chevron: '<path d="m9 7 5 5-5 5"/>',
+};
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={strokeWidth}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  set:html={icons[name] ?? icons.overview}
+/>

@@ -1,0 +1,194 @@
+---
+import Icon from './Icon.astro';
+const modules = {
+  ranking: [
+    'Member lookup',
+    'Eligible Roblox role changes',
+    'Approval queues',
+    'Protected roles',
+    'Roblox-to-Discord mappings',
+    'Visible job status and recovery',
+  ],
+  events: [
+    'Training and session templates',
+    'Timezone-aware schedules',
+    'Discord RSVP and reminders',
+    'Host rosters',
+    'Manual check-in',
+    'Attendance from connected experiences',
+    'Confirmed event results',
+  ],
+  cases: [
+    'Support tickets',
+    'Player reports',
+    'Appeals',
+    'Staff assignment',
+    'Evidence',
+    'Private notes',
+    'Discord moderation',
+    'Connected-experience restrictions',
+    'Explicit expiry and platform scope',
+  ],
+  history: [
+    'Verified identities',
+    'Current roles',
+    'Attendance',
+    'Cases',
+    'Findings',
+    'Active actions',
+    'Appeals and reversals',
+    'Original sources retained',
+  ],
+  announcements: [
+    'Draft and preview',
+    'Scheduled Discord delivery',
+    'Role targeting',
+    'Permission-controlled mentions',
+    'Delivery states',
+    'Approved in-game message templates',
+  ],
+  analytics: [
+    'Event attendance',
+    'RSVP conversion',
+    'Ticket response and resolution times',
+    'Report backlog',
+    'Confirmed rank changes',
+    'Moderation outcomes',
+    'Integration reliability',
+  ],
+  discord: [
+    'Slash commands',
+    'Buttons and modals',
+    'Ticket panels',
+    'Staff-only case posts',
+    'Forum history imports',
+    'Logs',
+    'Event reminders',
+    'Owner-only billing links',
+  ],
+};
+
+const labels = {
+  ranking: 'Ranks and roles',
+  events: 'Events and training',
+  cases: 'Cases and moderation',
+  history: 'Member history',
+  announcements: 'Announcements',
+  analytics: 'Community insights',
+  discord: 'Discord tools',
+};
+---
+
+<section
+  class="feature-directory"
+  id="modules"
+  aria-label="All workspace features"
+>
+  <div class="container">
+    <details class="all-features">
+      <summary>
+        <span>
+          <span class="eyebrow">One connected workspace</span>
+          <strong>Seven modules. Every plan.</strong>
+        </span>
+        <span class="expand-label">
+          View all features <Icon name="chevron" size={18} />
+        </span>
+      </summary>
+      <div class="feature-grid">
+        {Object.entries(modules).map(([key, features]) => (
+          <article>
+            <h3>{labels[key as keyof typeof labels]}</h3>
+            <ul>
+              {features.map((feature) => (
+                <li>{feature}</li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </details>
+  </div>
+</section>
+<style>
+  .feature-directory {
+    padding-bottom: clamp(64px, 8vw, 100px);
+  }
+  .all-features {
+    border-block: 1px solid var(--border);
+  }
+  summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 0;
+    list-style: none;
+    cursor: pointer;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary > span:first-child {
+    display: grid;
+    gap: 8px;
+  }
+  summary strong {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+  .expand-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+  .expand-label :global(svg) {
+    transition: transform 180ms ease;
+    flex-shrink: 0;
+  }
+  details[open] .expand-label :global(svg) {
+    transform: rotate(90deg);
+  }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 36px;
+    padding: 28px 0 40px;
+    border-top: 1px solid var(--border);
+  }
+  h3 {
+    margin-bottom: 16px;
+    font-size: 1rem;
+    font-weight: 550;
+  }
+  ul {
+    list-style: none;
+    display: grid;
+    gap: 9px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+  }
+  @media (max-width: 900px) {
+    .feature-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 480px) {
+    summary {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .expand-label :global(svg) {
+      transition: none;
+    }
+  }
+</style>

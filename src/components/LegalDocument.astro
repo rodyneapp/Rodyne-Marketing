@@ -1,0 +1,311 @@
+---
+import type { LegalDocument } from '../data/legal';
+
+interface Props {
+  document: LegalDocument;
+}
+
+const { document } = Astro.props;
+---
+
+<nav class="document-contents" aria-label={`${document.title} contents`}>
+  <p>On this page</p>
+  <ol>
+    {document.sections.map((section) => (
+      <li>
+        <a href={`#${section.id}`}>{section.title}</a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<div class="document-sections">
+  {document.sections.map((section) => (
+    <section id={section.id} aria-labelledby={`${section.id}-title`}>
+      <h2 id={`${section.id}-title`}>{section.title}</h2>
+
+      <div class="legal-blocks">
+        {section.blocks.map((block) => (
+          <>
+            {block.type === 'paragraph' && <p>{block.text}</p>}
+
+            {block.type === 'list' && (
+              <ul>
+                {block.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            )}
+
+            {block.type === 'note' && (
+              <aside class="legal-note">
+                <strong>{block.title}</strong>
+                <p>{block.text}</p>
+              </aside>
+            )}
+
+            {block.type === 'table' && (
+              <div
+                class="legal-table-wrap"
+                role="region"
+                aria-label={`${section.title} table`}
+                tabindex="0"
+              >
+                <table>
+                  <thead>
+                    <tr>
+                      {block.columns.map((column) => (
+                        <th scope="col">{column}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {block.rows.map((row) => (
+                      <tr>
+                        {row.map((cell, index) => (
+                          <td data-label={block.columns[index]}>{cell}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </>
+        ))}
+      </div>
+    </section>
+  ))}
+</div>
+
+<style>
+  .document-contents {
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent), #0d0f13;
+  }
+
+  .document-contents > p {
+    color: var(--text-secondary);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .document-contents ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3px 28px;
+    margin-top: 14px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .document-contents a {
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    color: var(--text-dim);
+    font-size: 0.86rem;
+    line-height: 1.4;
+    transition: color 180ms ease;
+  }
+
+  .document-contents a:hover {
+    color: var(--text);
+  }
+
+  .document-sections {
+    margin-top: 18px;
+  }
+
+  .document-sections > section {
+    padding-block: clamp(38px, 5vw, 56px);
+    border-top: 1px solid var(--border);
+    scroll-margin-top: calc(var(--header-height) + 26px);
+  }
+
+  .document-sections h2 {
+    color: #efeff1;
+    font-size: clamp(1.45rem, 3vw, 1.85rem);
+    font-weight: 590;
+    letter-spacing: -0.028em;
+    line-height: 1.18;
+    text-wrap: balance;
+  }
+
+  .legal-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 22px;
+  }
+
+  .legal-blocks > p,
+  .legal-blocks li {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.78;
+  }
+
+  .legal-blocks ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 21px;
+  }
+
+  .legal-blocks li {
+    padding-left: 5px;
+  }
+
+  .legal-blocks li::marker {
+    color: #739ae4;
+  }
+
+  .legal-note {
+    padding: 18px 19px;
+    border: 1px solid rgba(214, 166, 93, 0.19);
+    border-radius: 9px;
+    background: rgba(214, 166, 93, 0.04);
+  }
+
+  .legal-note strong {
+    color: #e3bd82;
+    font-size: 0.94rem;
+    font-weight: 620;
+  }
+
+  .legal-note p {
+    margin-top: 6px;
+    color: var(--text-secondary);
+    font-size: 0.94rem;
+    line-height: 1.7;
+  }
+
+  .legal-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border-strong);
+    border-radius: 9px;
+    background: #0c0e12;
+  }
+
+  .legal-table-wrap:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  th,
+  td {
+    min-width: 150px;
+    padding: 13px 14px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  th:last-child,
+  td:last-child {
+    border-right: 0;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  th {
+    background: rgba(255, 255, 255, 0.025);
+    color: var(--text-secondary);
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 560;
+    letter-spacing: 0.035em;
+  }
+
+  td {
+    color: var(--text-dim);
+    font-size: 0.88rem;
+    line-height: 1.58;
+  }
+
+  @media (max-width: 620px) {
+    .document-contents {
+      padding: 16px;
+    }
+
+    .document-contents ol {
+      grid-template-columns: 1fr;
+    }
+
+    .document-contents a {
+      min-height: 44px;
+    }
+
+    .legal-blocks > p,
+    .legal-blocks li {
+      font-size: 0.98rem;
+    }
+
+    .legal-table-wrap {
+      overflow: visible;
+      border: 0;
+      background: transparent;
+    }
+
+    table,
+    tbody,
+    tr,
+    td {
+      display: block;
+      width: 100%;
+    }
+
+    thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    tr {
+      margin-bottom: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      border-radius: 9px;
+      background: #0c0e12;
+    }
+
+    th,
+    td {
+      min-width: 0;
+      border-right: 0;
+    }
+
+    td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td::before {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text-faint);
+      content: attr(data-label);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.035em;
+    }
+  }
+</style>
