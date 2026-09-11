@@ -163,7 +163,7 @@ export const integrations = [
     name: 'Roblox Open Cloud',
     description:
       'Connect your community and experiences without sharing Roblox cookies.',
-    icon: 'cube',
+    icon: 'roblox',
   },
   {
     name: 'Discord',
