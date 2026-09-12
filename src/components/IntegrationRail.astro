@@ -4,7 +4,7 @@ const platforms = [
   { label: 'Roblox', icon: 'roblox' },
   { label: 'Discord', icon: 'discord' },
   { label: 'Cmdr', icon: 'cmdr' },
-  { label: 'Adonis', icon: 'brackets' },
+  { label: 'Adonis', icon: 'adonis-wordmark' },
   { label: 'HD Admin', icon: 'hd-admin' },
 ];
 ---
@@ -19,7 +19,11 @@ const platforms = [
       {platforms.map((platform) => (
         <li>
           <Icon name={platform.icon} size={22} />
-          <span class:list={{ 'sr-only': platform.icon === 'cmdr' }}>
+          <span
+            class:list={{
+              'sr-only': ['cmdr', 'adonis-wordmark'].includes(platform.icon),
+            }}
+          >
             {platform.label}
           </span>
         </li>

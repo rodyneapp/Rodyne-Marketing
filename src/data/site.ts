@@ -180,7 +180,7 @@ export const integrations = [
   {
     name: 'Adonis',
     description: 'Connect supported moderation tools and attendance events.',
-    icon: 'brackets',
+    icon: 'adonis',
   },
   {
     name: 'HD Admin',

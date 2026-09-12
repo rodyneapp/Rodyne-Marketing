@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import hdAdminLogo from '../assets/hd-admin.webp';
 import cmdrLogo from '../assets/cmdr.png';
+import adonisLogo from '../assets/adonis.png';
 
 interface Props {
   name: string;
@@ -70,7 +71,24 @@ const icons: Record<string, string> = {
 };
 ---
 
-{name === 'hd-admin' || name === 'cmdr' ? (
+{name === 'adonis-wordmark' ? (
+  <span
+    class:list={['adonis-wordmark', className]}
+    style={`width: ${Math.round(size * 3.8)}px;`}
+    aria-hidden="true"
+  >
+    <Image src={adonisLogo} alt="" width={256} loading="lazy" />
+  </span>
+) : name === 'adonis' ? (
+  <Image
+    src={adonisLogo}
+    alt=""
+    width={Math.round(size * 1.8)}
+    class={className}
+    style="height: auto; flex-shrink: 0;"
+    loading="lazy"
+  />
+) : name === 'hd-admin' || name === 'cmdr' ? (
   <Image
     src={name === 'cmdr' ? cmdrLogo : hdAdminLogo}
     alt=""
@@ -94,3 +112,22 @@ const icons: Record<string, string> = {
     set:html={icons[name] ?? icons.overview}
   />
 )}
+
+<style>
+  .adonis-wordmark {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+    max-width: 100%;
+    aspect-ratio: 1100 / 360;
+    overflow: hidden;
+  }
+  .adonis-wordmark :global(img) {
+    position: absolute;
+    width: 152.273%;
+    max-width: none;
+    height: auto;
+    left: -27.273%;
+    top: -131.944%;
+  }
+</style>
