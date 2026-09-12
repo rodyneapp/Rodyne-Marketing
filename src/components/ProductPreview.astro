@@ -252,8 +252,15 @@ const members = [
                     />
                     <span class="identity-line">
                       <strong>{member.username}</strong>
-                      <small class="mono">
-                        · {member.robloxId} :: {member.discordId}
+                      <small class="mono platform-ids">
+                        <span>
+                          <Icon name="roblox" size={12} />
+                          <span class="id-value">{member.robloxId}</span>
+                        </span>
+                        <span>
+                          <Icon name="discord" size={13} />
+                          <span class="id-value">{member.discordId}</span>
+                        </span>
                       </small>
                     </span>
                   </div>
@@ -1670,5 +1677,30 @@ const members = [
       flex: none;
       min-height: 48px;
     }
+  }
+
+  .identity-line small.platform-ids {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px 10px;
+    white-space: normal;
+    overflow: visible;
+  }
+  .platform-ids > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .platform-ids :global(svg) {
+    flex-shrink: 0;
+    color: var(--text-secondary);
+  }
+  .platform-ids .id-value {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>

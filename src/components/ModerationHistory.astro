@@ -259,7 +259,16 @@ const timeline = [
               />
               <span>
                 <strong>chrxs_dev</strong>
-                <small class="mono">· 851394804 :: 1192847461035827290</small>
+                <small class="mono platform-ids">
+                  <span>
+                    <Icon name="roblox" size={12} />
+                    <span class="sr-only">Roblox ID </span>851394804
+                  </span>
+                  <span>
+                    <Icon name="discord" size={13} />
+                    <span class="sr-only">Discord ID </span>1192847461035827290
+                  </span>
+                </small>
               </span>
             </div>
             <dl>
@@ -1043,5 +1052,20 @@ const timeline = [
     .case-workspace.is-visible .timeline-list li {
       animation: none;
     }
+  }
+
+  .summary-identity small.platform-ids {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 12px;
+  }
+  .platform-ids > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .platform-ids :global(svg) {
+    flex-shrink: 0;
+    color: var(--text-secondary);
   }
 </style>
