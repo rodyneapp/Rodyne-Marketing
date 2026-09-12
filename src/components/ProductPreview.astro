@@ -162,7 +162,6 @@ const members = [
           </span>
         </div>
         <div class="overview-page">
-          <p class="preview-eyebrow">Your workspace</p>
           <h3>Good evening, Mira.</h3>
           <p>Here’s what’s happening in Koyot Digital.</p>
           <div class="overview-stats">
@@ -205,7 +204,6 @@ const members = [
         <div class="member-page">
           <div class="page-heading">
             <div>
-              <p class="preview-eyebrow">Community</p>
               <h3>Members</h3>
               <p>Search verified users and choose their Roblox role.</p>
             </div>
@@ -315,15 +313,12 @@ const members = [
       <div class="toast-copy">
         <strong data-toast-title>Approve role change?</strong>
         <p data-toast-description>chrxs_dev · Host → Senior Host</p>
-        <small data-toast-note>
-          Updates Roblox rank and the mapped Discord role.
-        </small>
       </div>
       <span class="toast-approve" data-demo-approve-target>
-        Approve <Icon name="check" size={14} />
+        Approve <Icon name="check" size={22} strokeWidth={2.3} />
       </span>
       <span class="toast-success">
-        <Icon name="check" size={20} />
+        <Icon name="check" size={32} strokeWidth={2.5} />
       </span>
     </div>
     <span class="demo-cursor" data-demo-cursor>
@@ -668,14 +663,6 @@ const members = [
     align-items: flex-end;
     justify-content: space-between;
     gap: 20px;
-  }
-
-  .preview-eyebrow {
-    color: var(--blue);
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
   }
 
   .page-heading h3 {
@@ -1362,12 +1349,6 @@ const members = [
     color: var(--text-secondary);
     font-size: 0.875rem;
   }
-  .toast-copy small {
-    display: block;
-    margin-top: 5px;
-    color: var(--text-dim);
-    font-size: 0.75rem;
-  }
   .toast-approve {
     display: flex;
     align-items: center;
@@ -1533,5 +1514,161 @@ const members = [
   }
   .animation-footer button[hidden] {
     display: none;
+  }
+
+  /* One fixed stage and shared content geometry for every animation frame. */
+  .product-preview {
+    --stage-height: 760px;
+    --stage-padding: 28px;
+    --row-height: 64px;
+  }
+  .preview-window {
+    height: var(--stage-height);
+    min-height: 0;
+    display: grid;
+    grid-template-rows: 47px minmax(0, 1fr);
+  }
+  .app-shell {
+    height: 100%;
+    min-height: 0;
+  }
+  .preview-main {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .main-toolbar {
+    height: 50px;
+    min-height: 50px;
+  }
+  .overview-page,
+  .member-page {
+    padding: var(--stage-padding);
+  }
+  .overview-page h3,
+  .page-heading h3 {
+    margin-top: 0;
+    font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+    line-height: 1.2;
+    font-weight: 570;
+    letter-spacing: -0.035em;
+  }
+  .overview-page > p:last-of-type,
+  .page-heading > div > p:last-child {
+    margin-top: 8px;
+    min-height: 42px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .page-heading {
+    align-items: flex-start;
+  }
+  .member-directory,
+  .overview-stats {
+    margin-top: 24px;
+  }
+  .member-table {
+    min-height: calc(34px + var(--row-height) * 5);
+  }
+  .member-row {
+    min-height: var(--row-height);
+  }
+  .animation-footer {
+    min-height: 64px;
+  }
+  .animation-footer > p {
+    flex: 1;
+    min-width: 0;
+    min-height: 42px;
+  }
+  [data-animation-caption] {
+    line-height: 1.5;
+  }
+  .approval-toast {
+    min-height: 76px;
+    padding: 12px 16px;
+    gap: 12px;
+    flex-wrap: nowrap;
+  }
+  .toast-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .toast-copy {
+    flex: 1;
+    width: auto;
+  }
+  .toast-copy strong,
+  .toast-copy p {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .toast-copy p {
+    margin-top: 4px;
+  }
+  .toast-approve {
+    min-width: 112px;
+    min-height: 42px;
+    padding: 8px 12px;
+  }
+  .toast-success {
+    width: 112px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+  .toast-success :global(svg) {
+    margin-inline: auto;
+  }
+  [data-demo-toast='success'] .toast-success {
+    display: grid;
+    place-items: center;
+    position: static;
+  }
+  @media (max-width: 820px) {
+    .product-preview {
+      --stage-padding: 22px;
+    }
+    .mobile-preview-nav {
+      height: 54px;
+      box-sizing: border-box;
+    }
+  }
+  @media (max-width: 600px) {
+    .product-preview {
+      --stage-height: 780px;
+      --stage-padding: 18px;
+      --row-height: 60px;
+    }
+    .approval-toast {
+      min-height: 70px;
+      bottom: 20px;
+      padding: 10px 12px;
+      gap: 8px;
+    }
+    .toast-copy strong {
+      font-size: 0.875rem;
+    }
+    .toast-copy p {
+      font-size: 0.75rem;
+    }
+    .toast-approve {
+      min-width: 44px;
+      width: 44px;
+      padding: 8px;
+      font-size: 0;
+      gap: 0;
+    }
+    .toast-success {
+      width: 44px;
+    }
+    .animation-footer {
+      min-height: 108px;
+    }
+    .animation-footer > p {
+      width: 100%;
+      flex: none;
+      min-height: 48px;
+    }
   }
 </style>

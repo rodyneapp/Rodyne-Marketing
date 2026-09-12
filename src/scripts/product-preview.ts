@@ -139,12 +139,6 @@ if (root) {
         ? 'chrxs_dev is now a Senior Host.'
         : 'chrxs_dev · Host → Senior Host',
     );
-    setText(
-      '[data-toast-note]',
-      state.toast === 'success'
-        ? 'Roblox and Discord confirmed. Saved to member history.'
-        : 'Updates Roblox rank and the mapped Discord role.',
-    );
     const step =
       phase === 0 ? 0 : phase <= 2 ? 1 : phase <= 4 ? 2 : phase <= 6 ? 3 : 4;
     setText('[data-animation-step]', `0${step + 1} / 05`);
