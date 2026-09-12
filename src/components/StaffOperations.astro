@@ -1,38 +1,13 @@
 ---
 import Icon from './Icon.astro';
-const stages = [
-  {
-    label: 'Clock in',
-    status: 'Ready when you are',
-    time: '00:00',
-    seconds: '00',
-    note: 'A fresh start.',
-    icon: 'clock',
-  },
-  {
-    label: 'On shift',
-    status: 'On shift',
-    time: '01:42',
-    seconds: '08',
-    note: 'Every minute, accounted for.',
-    icon: 'clock',
-  },
-  {
-    label: 'On break',
-    status: 'Take a moment',
-    time: '01:42',
-    seconds: '08',
-    note: 'Your shift timer is paused.',
-    icon: 'clock',
-  },
-  {
-    label: 'Clock out',
-    status: 'Shift saved',
-    time: '02:15',
-    seconds: '00',
-    note: 'Added to your timesheet.',
-    icon: 'check',
-  },
+const week = [
+  { day: 'Mon', time: '1h 30m', height: 60 },
+  { day: 'Tue', time: '2h', height: 80 },
+  { day: 'Wed', time: '1h 45m', height: 70 },
+  { day: 'Thu', time: '1h 45m', height: 70 },
+  { day: 'Fri', time: '1h 30m 06s', height: 60 },
+  { day: 'Sat', time: '0h', height: 0 },
+  { day: 'Sun', time: '0h', height: 0 },
 ];
 ---
 
@@ -84,7 +59,7 @@ const stages = [
           </button>
         </span>
       </div>
-      <div class="shift-animation">
+      <div class="shift-animation" data-phase="ready">
         <div class="shift-person">
           <span class="avatar">MN</span>
           <div>
@@ -93,63 +68,85 @@ const stages = [
           </div>
         </div>
         <p class="sr-only">
-          Example shift: clock in, track working time, pause for a break, then
-          clock out. Your completed shift is saved to your timesheet.
+          Animated example: a cursor clicks the round clock to start, waits six
+          seconds, clicks it again to stop, then selects End shift to show the
+          weekly timesheet.
         </p>
-        <div class="clock-scene" aria-hidden="true">
-          <svg class="clock-ring" viewBox="0 0 240 240" fill="none">
-            <circle class="ring-track" cx="120" cy="120" r="110" />
-            <circle
-              class="ring-progress"
-              cx="120"
-              cy="120"
-              r="110"
-              pathLength="100"
-            />
-          </svg>
-          <div class="clock-stages">
-            {stages.map((stage, index) => (
-              <div
-                class:list={['clock-stage', { 'default-stage': index === 1 }]}
-                style={`--stage-delay: ${-((4 - index) % 4) * 4}s`}
-              >
-                <span class="stage-status">
-                  <Icon name={stage.icon} size={14} />
-                  {stage.status}
+        <div class="demo-scene" aria-hidden="true">
+          <div class="clock-screen">
+            <div class="clock-scene">
+              <svg class="clock-ring" viewBox="0 0 240 240" fill="none">
+                <circle class="ring-track" cx="120" cy="120" r="110" />
+                <circle
+                  class="ring-progress"
+                  cx="120"
+                  cy="120"
+                  r="110"
+                  pathLength="100"
+                />
+              </svg>
+              <div class="clock-content">
+                <span class="stage-status" data-clock-status>
+                  Ready when you are
                 </span>
                 <span class="timer mono">
-                  {stage.time}
-                  <span>:{stage.seconds}</span>
+                  00:00<span data-clock-seconds>:00</span>
                 </span>
-                <span class="timer-caption">
-                  {index === 3
-                    ? 'Total shift time'
-                    : 'Hours / minutes / seconds'}
+                <span class="round-action" data-clock-action>
+                  Click to start
                 </span>
               </div>
-            ))}
+            </div>
+            <div class="end-shift">
+              <Icon name="check" size={15} /> End shift
+            </div>
+            <p class="shift-hint" data-clock-hint>
+              Your time starts with a click.
+            </p>
+          </div>
+          <div class="weekly-screen">
+            <div class="weekly-heading">
+              <span>This week</span>
+              <span class="saved">
+                <Icon name="check" size={13} /> Shift saved
+              </span>
+            </div>
+            <p class="weekly-total mono">
+              08<span>h</span> 30<span>m</span> <small>06s</small>
+            </p>
+            <p class="weekly-caption">of your 10 hour weekly target</p>
+            <div class="week-chart">
+              {week.map((day) => (
+                <div
+                  class:list={['week-day', { today: day.day === 'Fri' }]}
+                  title={`${day.day}: ${day.time}`}
+                >
+                  <div class="bar-track">
+                    <i style={`--bar-height: ${day.height}%`}></i>
+                  </div>
+                  <span>{day.day}</span>
+                </div>
+              ))}
+            </div>
+            <div class="saved-shift">
+              <span>Latest shift</span>
+              <strong class="mono">00:00:06</strong>
+              <span class="saved">Recorded</span>
+            </div>
+          </div>
+          <div class="demo-cursor">
+            <span class="click-ripple"></span>
+            <svg width="25" height="30" viewBox="0 0 25 30" fill="none">
+              <path
+                d="M3 2L3 23L8.5 18.5L13 28L17 26L12.5 17L20 16L3 2Z"
+                fill="#fafafa"
+                stroke="#101115"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+            </svg>
           </div>
         </div>
-        <div class="shift-notes" aria-hidden="true">
-          {stages.map((stage, index) => (
-            <p
-              class:list={['clock-stage', { 'default-stage': index === 1 }]}
-              style={`--stage-delay: ${-((4 - index) % 4) * 4}s`}
-            >
-              {stage.note}
-            </p>
-          ))}
-        </div>
-        <ol class="shift-steps" aria-label="Shift workflow">
-          {stages.map((stage, index) => (
-            <li style={`--stage-delay: ${-((4 - index) % 4) * 4}s`}>
-              <span class="step-mark" aria-hidden="true">
-                <i></i>
-              </span>
-              {stage.label}
-            </li>
-          ))}
-        </ol>
       </div>
       <div class="demo-footer">
         <Icon name="check" size={14} /> Time tracked. Team in sync.
@@ -263,11 +260,27 @@ const stages = [
     color: var(--text-dim);
     font-size: 0.75rem;
   }
+  .demo-scene {
+    position: relative;
+    height: 350px;
+    margin-top: 18px;
+  }
+  .clock-screen,
+  .weekly-screen {
+    position: absolute;
+    inset: 0;
+    transition:
+      opacity 450ms ease,
+      transform 450ms ease;
+  }
   .clock-scene {
     position: relative;
-    width: min(100%, 258px);
-    aspect-ratio: 1;
-    margin: 26px auto 16px;
+    width: 240px;
+    height: 240px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: #ffffff02;
+    transform: scale(var(--clock-scale, 1));
   }
   .clock-ring {
     width: 100%;
@@ -276,42 +289,30 @@ const stages = [
   }
   .ring-track {
     stroke: #ffffff0b;
-    stroke-width: 1;
+    stroke-width: 5;
   }
   .ring-progress {
     stroke: #adc5ed;
-    stroke-width: 2;
+    stroke-width: 5;
     stroke-linecap: round;
     stroke-dasharray: 100;
-    stroke-dashoffset: 72;
-    animation: shift-ring 16s linear infinite;
+    stroke-dashoffset: var(--ring-offset, 100);
   }
-  .clock-stages {
+  .clock-content {
     position: absolute;
     inset: 0;
-    display: grid;
-    place-items: center;
-  }
-  .clock-stage {
-    grid-area: 1 / 1;
-    opacity: 0;
-    animation: shift-stage 16s var(--stage-delay) linear infinite;
-  }
-  .clock-stages .clock-stage {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
+    justify-content: center;
+    gap: 17px;
   }
   .stage-status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     color: var(--text-secondary);
   }
   .timer {
-    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-size: 2rem;
     font-weight: 400;
     letter-spacing: -0.06em;
     font-variant-numeric: tabular-nums;
@@ -320,59 +321,143 @@ const stages = [
   .timer > span {
     color: var(--text-dim);
   }
-  .timer-caption {
+  .round-action {
+    font-size: 0.75rem;
+    color: #adc5ed;
+  }
+  .end-shift {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 132px;
+    height: 40px;
+    margin: 18px auto 0;
+    border: 1px solid var(--border-strong);
+    border-radius: 7px;
+    background: #ffffff05;
     color: var(--text-dim);
-    font-size: 0.625rem;
-    letter-spacing: 0.025em;
-  }
-  .shift-notes {
-    display: grid;
-    text-align: center;
-    color: var(--text-secondary);
     font-size: 0.8125rem;
-    min-height: 1.6em;
+    transform: scale(var(--end-scale, 1));
   }
-  .shift-steps {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    list-style: none;
-    margin-top: 30px;
+  [data-phase='stopped'] .end-shift {
+    background: #e3e8f0;
+    color: #17191e;
   }
-  .shift-steps li {
-    position: relative;
+  .shift-hint {
     text-align: center;
+    margin-top: 14px;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+  }
+  .demo-cursor {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0;
+    filter: drop-shadow(0 2px 3px #0006);
+  }
+  .click-ripple {
+    position: absolute;
+    left: 3px;
+    top: 2px;
+    width: 30px;
+    height: 30px;
+    margin: -15px;
+    border: 1px solid #dce6f5;
+    border-radius: 50%;
+    opacity: var(--click-opacity, 0);
+    transform: scale(var(--click-scale, 0.2));
+  }
+  .weekly-screen {
+    opacity: 0;
+    transform: translateY(8px);
+    padding: 20px 8px 0;
+  }
+  [data-phase='weekly'] .clock-screen {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  [data-phase='weekly'] .weekly-screen {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .weekly-heading,
+  .saved,
+  .saved-shift {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .weekly-heading {
+    justify-content: space-between;
+    font-size: 0.875rem;
+  }
+  .saved {
+    color: var(--green);
+    font-size: 0.75rem;
+  }
+  .weekly-total {
+    margin-top: 22px;
+    font-size: clamp(1.65rem, 3vw, 2.2rem);
+    letter-spacing: -0.06em;
+    line-height: 1.2;
+  }
+  .weekly-total > span,
+  .weekly-total small {
+    font-size: 0.875rem;
+    color: var(--text-dim);
+    letter-spacing: 0;
+  }
+  .weekly-caption {
+    margin-top: 6px;
     font-size: 0.75rem;
     color: var(--text-dim);
   }
-  .shift-steps li:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 5px;
-    left: calc(50% + 12px);
-    right: calc(-50% + 12px);
-    height: 1px;
-    background: var(--border);
-  }
-  .step-mark {
+  .week-chart {
     display: grid;
-    place-items: center;
-    width: 11px;
-    height: 11px;
-    margin: 0 auto 10px;
-    border: 1px solid var(--border-strong);
-    border-radius: 50%;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    margin-top: 22px;
   }
-  .step-mark i {
-    width: 5px;
-    height: 5px;
+  .week-day {
+    text-align: center;
+    font-size: 0.6875rem;
+    color: var(--text-dim);
+  }
+  .bar-track {
+    height: 85px;
+    display: flex;
+    align-items: end;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .bar-track i {
+    display: block;
+    width: 100%;
+    height: max(3px, var(--bar-height));
+    background: #adc5ed35;
+    border-radius: 3px 3px 0 0;
+  }
+  .today .bar-track i {
     background: #adc5ed;
-    border-radius: 50%;
-    opacity: 0;
-    animation: shift-stage 16s var(--stage-delay) linear infinite;
   }
-  .shift-animation *,
-  .shift-animation *::after {
-    animation-play-state: var(--shift-play-state, var(--motion-state, paused));
+  .today {
+    color: var(--text);
+  }
+  .saved-shift {
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+    padding-top: 15px;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+  }
+  .saved-shift strong {
+    color: var(--text-secondary);
+    font-weight: 400;
   }
   .demo-footer {
     justify-content: center;
@@ -383,43 +468,6 @@ const stages = [
   }
   .demo-footer :global(svg) {
     color: var(--green);
-  }
-  @keyframes shift-stage {
-    0%,
-    22% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    25%,
-    97% {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes shift-ring {
-    0%,
-    20% {
-      stroke-dashoffset: 100;
-      stroke: #adc5ed;
-    }
-    47%,
-    70% {
-      stroke-dashoffset: 38;
-      stroke: #adc5ed;
-    }
-    76%,
-    94% {
-      stroke-dashoffset: 0;
-      stroke: var(--green);
-    }
-    100% {
-      stroke-dashoffset: 100;
-      stroke: #adc5ed;
-    }
   }
   @media (max-width: 900px) {
     .staff-layout {
@@ -443,17 +491,9 @@ const stages = [
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .shift-animation * {
-      animation: none;
-    }
-    .clock-stage {
-      opacity: 0;
-    }
-    .default-stage {
-      opacity: 1;
-    }
-    .shift-steps li:nth-child(2) i {
-      opacity: 1;
+    .clock-screen,
+    .weekly-screen {
+      transition: none;
     }
     .motion-toggle {
       display: none;
@@ -462,21 +502,5 @@ const stages = [
 </style>
 
 <script>
-  document
-    .querySelectorAll<HTMLElement>('[data-shift-demo]')
-    .forEach((demo) => {
-      const button =
-        demo.querySelector<HTMLButtonElement>('[data-shift-pause]');
-      button?.addEventListener('click', () => {
-        const paused = button.getAttribute('aria-pressed') !== 'true';
-        button.setAttribute('aria-pressed', String(paused));
-        button.setAttribute(
-          'aria-label',
-          paused ? 'Play shift animation' : 'Pause shift animation',
-        );
-        button.textContent = paused ? 'Play' : 'Pause';
-        if (paused) demo.style.setProperty('--shift-play-state', 'paused');
-        else demo.style.removeProperty('--shift-play-state');
-      });
-    });
+  import '../scripts/shift-demo';
 </script>
