@@ -4,6 +4,7 @@ import type { CollectionEntry } from 'astro:content';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import BrandMark from '../../components/BrandMark.astro';
 import '../../styles/blog.css';
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -27,7 +28,7 @@ const readingMinutes = Math.max(
 ---
 
 <SiteLayout
-  title={`${post.data.title} — Relay`}
+  title={`${post.data.title} — Rodyne`}
   description={post.data.description}
   pageType="webpage"
 >
@@ -46,7 +47,7 @@ const readingMinutes = Math.max(
         <p class="article-description">{post.data.description}</p>
         <div class="article-byline">
           <span class="author-avatar" aria-hidden="true">
-            R
+            <BrandMark />
           </span>
           <span>{post.data.author}</span>
           <span aria-hidden="true">·</span>
@@ -58,8 +59,8 @@ const readingMinutes = Math.max(
       </div>
     </article>
     <div class="article-end">
-      <a href="/blog/">← More from Relay</a>
-      <a href="/">Explore Relay ↗</a>
+      <a href="/blog/">← More from Rodyne</a>
+      <a href="/">Explore Rodyne ↗</a>
     </div>
   </main>
   <Footer />

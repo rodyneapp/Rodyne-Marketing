@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import BrandMark from './BrandMark.astro';
 ---
 
 <div
@@ -18,9 +19,9 @@ import Icon from './Icon.astro';
     <small>Demo</small>
   </div>
   <p class="sr-only">
-    Animated example: MiraNorth sends /ban chrxs_dev abuse of vehicle 7d. Relay
+    Animated example: MiraNorth sends /ban chrxs_dev abuse of vehicle 7d. Rodyne
     responds “banning chrxs_dev”, then “Banned chrxs_dev” with a View Log link.
-    MiraNorth then sends /modlogs chrxs_dev. Relay responds “processing”, then
+    MiraNorth then sends /modlogs chrxs_dev. Rodyne responds “processing”, then
     posts a moderation log showing the seven-day ban for abuse of vehicle,
     issued by MiraNorth, log #1042.
   </p>
@@ -46,10 +47,12 @@ import Icon from './Icon.astro';
       </div>
     </div>
     <div class="message bot-message">
-      <span class="avatar relay-avatar">R</span>
+      <span class="avatar brand-avatar">
+        <BrandMark />
+      </span>
       <div class="bot-content">
         <div class="message-meta">
-          <strong>Relay</strong>
+          <strong>Rodyne</strong>
           <span class="app-tag">
             <Icon name="check" size={10} />
             APP
@@ -83,10 +86,12 @@ import Icon from './Icon.astro';
       </div>
     </div>
     <div class="message logs-message">
-      <span class="avatar relay-avatar">R</span>
+      <span class="avatar brand-avatar">
+        <BrandMark />
+      </span>
       <div class="bot-content">
         <div class="message-meta">
-          <strong>Relay</strong>
+          <strong>Rodyne</strong>
           <span class="app-tag">
             <Icon name="check" size={10} />
             APP
@@ -390,12 +395,10 @@ import Icon from './Icon.astro';
     color: #c4abd9;
     font-size: 0.6875rem;
   }
-  .relay-avatar {
-    background: #e1e5ee;
-    color: #25272f;
-    font-size: 19px;
-    font-weight: 650;
-    letter-spacing: -0.07em;
+  .brand-avatar {
+    --brand-mark-size: 26px;
+    background: #09090b;
+    border: 1px solid #759bff30;
   }
   .message-meta {
     display: flex;

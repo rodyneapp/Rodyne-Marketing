@@ -5,12 +5,12 @@ const appOrigin = import.meta.env.PUBLIC_APP_URL ?? placeholderOrigin;
 const appReady = appOrigin !== placeholderOrigin;
 
 export const site = {
-  name: 'Relay',
+  name: 'Rodyne',
   appReady,
   eyebrow: 'BUILT FOR ROBLOX COMMUNITIES',
-  title: 'Relay — Your Roblox community, working together',
+  title: 'Rodyne — Your Roblox community, working together',
   description:
-    'Manage ranks, run training sessions, and resolve reports across Roblox and Discord with Relay. One shared workspace for your staff, from $8 per month.',
+    'Manage ranks, run training sessions, and resolve reports across Roblox and Discord with Rodyne. One shared workspace for your staff, from $8 per month.',
   placeholderOrigin,
   links: {
     home: '/',

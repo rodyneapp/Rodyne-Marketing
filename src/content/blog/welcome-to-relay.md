@@ -1,12 +1,12 @@
 ---
-title: Welcome to the Relay blog
-description: A home for product updates, announcements and the details behind Relay.
+title: Welcome to the Rodyne blog
+description: A home for product updates, announcements and the details behind Rodyne.
 date: 2026-09-12
 category: Announcement
-author: Relay team
+author: Rodyne team
 ---
 
-We’re building Relay to bring the everyday work of running a Roblox community into one shared workspace, connected to Discord.
+We’re building Rodyne to bring the everyday work of running a Roblox community into one shared workspace, connected to Discord.
 
 This blog is where we’ll share what’s changing, explain new features and publish announcements as the product develops.
 
@@ -18,7 +18,7 @@ This blog is where we’ll share what’s changing, explain new features and pub
 
 ## A preview of what we’re building
 
-The [Relay website](/) currently shows our product direction through example workflows: Discord moderation commands, connected events, case histories and staff shifts.
+The [Rodyne website](/) currently shows our product direction through example workflows: Discord moderation commands, connected events, case histories and staff shifts.
 
 These previews use sample data. We’ll share availability and launch details here when they’re ready.
 

@@ -1,4 +1,4 @@
-# Relay marketing site
+# Rodyne marketing site
 
 Astro marketing site for a paid workspace connecting Roblox communities,
 Roblox experiences and Discord servers.
@@ -18,7 +18,7 @@ npm run preview
 ## Launch configuration
 
 Product copy, pricing and destinations are centralised in `src/data/site.ts`.
-Relay is the working product name. Replace remaining `.invalid` configuration
+The product is named Rodyne. Replace remaining `.invalid` configuration
 before a public release. Sign-in links stay hidden and pricing actions show
 availability until `PUBLIC_APP_URL` is configured. Set `PUBLIC_SITE_URL` to the production origin and `PUBLIC_APP_URL` to
 the hosted dashboard origin.

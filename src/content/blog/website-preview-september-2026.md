@@ -1,12 +1,12 @@
 ---
 title: Website preview — September 2026
-description: A closer look at the latest Relay website previews, from Discord commands to staff shifts.
+description: A closer look at the latest Rodyne website previews, from Discord commands to staff shifts.
 date: 2026-09-12
 category: Changelog
-author: Relay team
+author: Rodyne team
 ---
 
-We’ve updated the Relay website to show more of the workflows we’re designing for community staff. This changelog covers the **website preview**, rather than a release of the connected app.
+We’ve updated the Rodyne website to show more of the workflows we’re designing for community staff. This changelog covers the **website preview**, rather than a release of the connected app.
 
 ## Discord command preview
 
@@ -17,7 +17,7 @@ The animation now follows a moderator through two commands:
 /modlogs chrxs_dev
 ```
 
-The username, reason and duration are shown as separate fields. Relay confirms the example ban, then displays a moderation log with the responsible moderator, reason and duration.
+The username, reason and duration are shown as separate fields. Rodyne confirms the example ban, then displays a moderation log with the responsible moderator, reason and duration.
 
 ## Sessions across both platforms
 

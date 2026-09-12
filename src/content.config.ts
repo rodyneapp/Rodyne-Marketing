@@ -9,7 +9,7 @@ const blog = defineCollection({
     description: z.string(),
     date: z.coerce.date(),
     category: z.enum(['Announcement', 'Press release', 'Changelog']),
-    author: z.string().default('Relay team'),
+    author: z.string().default('Rodyne team'),
     draft: z.boolean().default(false),
   }),
 });

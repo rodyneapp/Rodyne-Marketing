@@ -98,6 +98,7 @@
   font-size: 0.75rem;
 }
 .author-avatar {
+  --brand-mark-size: 24px;
   display: grid;
   place-items: center;
   width: 28px;
