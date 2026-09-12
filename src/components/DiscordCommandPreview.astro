@@ -172,6 +172,9 @@ import Icon from './Icon.astro';
     const processing = demo.querySelector<HTMLElement>('.log-processing')!;
     const embed = demo.querySelector<HTMLElement>('.log-embed')!;
     const logCommand = demo.querySelector<HTMLElement>('.logs-command')!;
+    let scrollFrom = 0;
+    let scrollTo = 0;
+    let scrollStarted = 0;
     const followMessages = () => {
       const target =
         demo.dataset.logPhase === 'posted'
@@ -181,7 +184,8 @@ import Icon from './Icon.astro';
             : demo.dataset.logPhase === 'sent'
               ? logCommand
               : null;
-      channel.scrollTop = target
+      scrollFrom = channel.scrollTop;
+      scrollTo = target
         ? Math.max(
             0,
             channel.scrollTop +
@@ -191,6 +195,12 @@ import Icon from './Icon.astro';
               channel.clientHeight,
           )
         : 0;
+      scrollTo = Math.min(
+        scrollTo,
+        channel.scrollHeight - channel.clientHeight,
+      );
+      scrollStarted = elapsed;
+      if (reduced.matches) channel.scrollTop = scrollTo;
     };
     let previousLogPhase = '';
     const pause = demo.querySelector<HTMLButtonElement>('[data-demo-pause]')!;
@@ -203,7 +213,7 @@ import Icon from './Icon.astro';
     const render = () => {
       const time = elapsed % 19500;
       const logTyping = !reduced.matches && time >= 8400 && time < 10800;
-      demo.dataset.logPhase =
+      const logPhase =
         reduced.matches || time >= 13000
           ? 'posted'
           : time >= 11300
@@ -211,7 +221,7 @@ import Icon from './Icon.astro';
             : time >= 10800
               ? 'sent'
               : 'hidden';
-      demo.dataset.phase = reduced.matches
+      const phase = reduced.matches
         ? 'done'
         : time < 700
           ? 'idle'
@@ -222,9 +232,10 @@ import Icon from './Icon.astro';
               : time < 6700
                 ? 'pending'
                 : 'done';
-      demo.dataset.typing = String(
-        demo.dataset.phase === 'typing' || logTyping,
-      );
+      if (demo.dataset.logPhase !== logPhase) demo.dataset.logPhase = logPhase;
+      if (demo.dataset.phase !== phase) demo.dataset.phase = phase;
+      const typing = String(phase === 'typing' || logTyping);
+      if (demo.dataset.typing !== typing) demo.dataset.typing = typing;
       let characters = logTyping
         ? Math.floor((time - 8400) / 100)
         : demo.dataset.phase === 'typing'
@@ -234,13 +245,19 @@ import Icon from './Icon.astro';
         const value = logTyping
           ? ['/modlogs', 'chrxs_dev', '', ''][index]
           : token.dataset.commandToken!;
-        token.textContent = value.slice(0, Math.max(0, characters));
+        const text = value.slice(0, Math.max(0, characters));
+        if (token.textContent !== text) token.textContent = text;
         characters -= value.length + 1;
       }
       if (demo.dataset.logPhase !== previousLogPhase) {
         previousLogPhase = demo.dataset.logPhase!;
         followMessages();
       }
+      const scrollProgress = reduced.matches
+        ? 1
+        : Math.min(1, (elapsed - scrollStarted) / 320);
+      const eased = 1 - Math.pow(1 - scrollProgress, 3);
+      channel.scrollTop = scrollFrom + (scrollTo - scrollFrom) * eased;
     };
     const tick = (now: number) => {
       elapsed += last ? Math.min(now - last, 100) : 0;
@@ -262,21 +279,24 @@ import Icon from './Icon.astro';
     pause.addEventListener('click', () => {
       paused = !paused;
       pause.textContent = paused ? 'Play animation' : 'Pause animation';
+      pause.setAttribute('aria-pressed', String(paused));
       pause.setAttribute(
         'aria-label',
         paused ? 'Play Discord animation' : 'Pause Discord animation',
       );
       sync();
     });
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        visible = entry.isIntersecting;
-        sync();
-      },
-      { threshold: 0.25 },
-    );
-    observer.observe(demo);
-    new ResizeObserver(followMessages).observe(channel);
+    if ('IntersectionObserver' in window)
+      new IntersectionObserver(
+        ([entry]) => {
+          visible = entry.isIntersecting;
+          sync();
+        },
+        { threshold: 0.25 },
+      ).observe(demo);
+    else visible = true;
+    if ('ResizeObserver' in window)
+      new ResizeObserver(followMessages).observe(channel);
     document.addEventListener('visibilitychange', sync);
     reduced.addEventListener('change', sync);
     sync();
@@ -356,8 +376,8 @@ import Icon from './Icon.astro';
     gap: 12px;
     margin-top: 23px;
     transition:
-      opacity 220ms ease,
-      transform 220ms ease;
+      opacity 200ms var(--ease-out),
+      transform 240ms var(--ease-out);
   }
   .avatar {
     display: grid;

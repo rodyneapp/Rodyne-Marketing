@@ -1,10 +1,10 @@
 // One timeline keeps the cursor clicks, timer, and screen changes in sync.
-const START = 2400;
+const START = 1700;
 const RUN_TIME = 6000;
 const STOP = START + RUN_TIME;
-const END = STOP + 2600;
-const SUMMARY = END + 500;
-const DURATION = SUMMARY + 10000;
+const END = STOP + 1900;
+const SUMMARY = END + 400;
+const DURATION = SUMMARY + 6200;
 
 document.querySelectorAll<HTMLElement>('[data-shift-demo]').forEach((demo) => {
   const scene = demo.querySelector<HTMLElement>('.shift-animation')!;
@@ -20,6 +20,9 @@ document.querySelectorAll<HTMLElement>('[data-shift-demo]').forEach((demo) => {
   let frame: number | null = null;
   let visible = false;
   let paused = false;
+  const setText = (element: HTMLElement, value: string) => {
+    if (element.textContent !== value) element.textContent = value;
+  };
 
   const render = (time: number) => {
     const phase =
@@ -30,34 +33,43 @@ document.querySelectorAll<HTMLElement>('[data-shift-demo]').forEach((demo) => {
           : time < SUMMARY
             ? 'stopped'
             : 'weekly';
-    scene.dataset.phase = phase;
-    status.textContent =
+    if (scene.dataset.phase !== phase) scene.dataset.phase = phase;
+    setText(
+      status,
       phase === 'ready'
         ? 'Ready when you are'
         : phase === 'running'
           ? 'On shift'
-          : 'Timer stopped';
-    action.textContent =
+          : 'Timer stopped',
+    );
+    setText(
+      action,
       phase === 'ready'
         ? 'Click to start'
         : phase === 'running'
           ? 'Click to stop'
-          : 'Stopped';
-    hint.textContent =
+          : 'Stopped',
+    );
+    setText(
+      hint,
       phase === 'ready'
         ? 'Your time starts with a click.'
         : phase === 'running'
           ? 'Every second, accounted for.'
-          : 'All done? End your shift.';
-    seconds.textContent = `:${String(Math.floor(Math.max(0, Math.min(RUN_TIME, time - START)) / 1000)).padStart(2, '0')}`;
+          : 'All done? End your shift.',
+    );
+    setText(
+      seconds,
+      `:${String(Math.floor(Math.max(0, Math.min(RUN_TIME, time - START)) / 1000)).padStart(2, '0')}`,
+    );
     scene.style.setProperty(
       '--ring-offset',
       String(100 - Math.max(0, Math.min(1, (time - START) / RUN_TIME)) * 100),
     );
 
     // Cursor tip lands inside the round control, then on End shift.
-    const arrival = Math.max(0, Math.min(1, (time - 400) / 1700));
-    const move = Math.max(0, Math.min(1, (time - STOP - 700) / 1500));
+    const arrival = Math.max(0, Math.min(1, (time - 400) / 1000));
+    const move = Math.max(0, Math.min(1, (time - STOP - 600) / 950));
     const ease = (value: number) => value * value * (3 - 2 * value);
     const x = 94 + (28 - 94) * ease(arrival) - 6 * ease(move);
     const y = 306 + (153 - 306) * ease(arrival) + 124 * ease(move);
@@ -92,7 +104,8 @@ document.querySelectorAll<HTMLElement>('[data-shift-demo]').forEach((demo) => {
   };
 
   const tick = (now: number) => {
-    if (previous !== null) elapsed = (elapsed + now - previous) % DURATION;
+    if (previous !== null)
+      elapsed = (elapsed + Math.min(now - previous, 80)) % DURATION;
     previous = now;
     render(elapsed);
     frame = window.requestAnimationFrame(tick);

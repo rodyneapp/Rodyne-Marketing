@@ -281,15 +281,15 @@ const floatingTiles = [
       0 24px 46px -22px #000e,
       inset 0 1px #ffffff0b;
     animation:
-      tile-enter 1s var(--ease-out) var(--delay) both,
-      tile-drift var(--duration) ease-in-out calc(var(--delay) + 1s) infinite;
+      tile-enter 600ms var(--ease-out) var(--delay) both,
+      tile-drift var(--duration) ease-in-out calc(var(--delay) + 600ms) infinite;
     animation-play-state: running, var(--motion-state, paused);
   }
   @keyframes tile-enter {
     from {
       opacity: 0;
-      transform: translateY(18px) rotate(calc(var(--rotation) + 16deg))
-        scale(0.75);
+      transform: translateY(10px) rotate(calc(var(--rotation) + 4deg))
+        scale(0.96);
     }
     to {
       opacity: 1;

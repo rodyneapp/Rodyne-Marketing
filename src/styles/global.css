@@ -398,10 +398,10 @@ ol {
 
 [data-observe-reveal] {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(12px);
   transition:
-    opacity 700ms var(--ease-out),
-    transform 700ms var(--ease-out);
+    opacity 440ms var(--ease-out),
+    transform 440ms var(--ease-out);
 }
 
 [data-observe-reveal].is-visible {
@@ -412,7 +412,7 @@ ol {
 @keyframes rise-in {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -421,7 +421,7 @@ ol {
 }
 
 [data-hero-reveal] {
-  animation: rise-in 700ms var(--ease-out) both;
+  animation: rise-in 520ms var(--ease-out) both;
   animation-delay: var(--reveal-delay, 0ms);
 }
 
@@ -454,6 +454,14 @@ ol {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
   html {
     scroll-behavior: auto;
   }

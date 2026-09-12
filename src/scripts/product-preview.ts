@@ -1,10 +1,22 @@
 export const previewDurations = [
-  1400, 1000, 1700, 1100, 1500, 2300, 900, 2800,
+  1600, 900, 1700, 1100, 1300, 2200, 1000, 3200,
 ] as const;
 export const previewDuration = previewDurations.reduce(
   (sum, duration) => sum + duration,
   0,
 );
+const clickProgress = [0.8, 0.8, null, 0.8, 0.84, null, 0.2, null] as const;
+export const previewClickTimes = previewDurations.flatMap((duration, phase) => {
+  const click = clickProgress[phase];
+  return click === null
+    ? []
+    : [
+        previewDurations
+          .slice(0, phase)
+          .reduce((sum, value) => sum + value, 0) +
+          duration * click,
+      ];
+});
 
 export const getPreviewFrame = (elapsed: number) => {
   let time = ((elapsed % previewDuration) + previewDuration) % previewDuration;
@@ -18,22 +30,30 @@ export const getPreviewFrame = (elapsed: number) => {
     phase,
     progress,
     visualPhase:
-      phase <= 1
+      phase === 0
         ? 0
-        : phase === 2
-          ? 1
-          : phase === 3
-            ? 2
-            : phase === 4
-              ? progress < 0.65
-                ? 3
-                : 4
-              : 5,
-    screen: phase === 0 && progress < 0.88 ? 'overview' : 'members',
+        : phase === 1
+          ? progress < 0.8
+            ? 0
+            : 1
+          : phase === 2
+            ? 1
+            : phase === 3
+              ? progress < 0.8
+                ? 2
+                : 3
+              : phase === 4
+                ? progress < 0.65
+                  ? 3
+                  : progress < 0.84
+                    ? 4
+                    : 5
+                : 5,
+    screen: phase === 0 && progress < 0.8 ? 'overview' : 'members',
     toast:
-      phase < 5
+      phase < 5 && !(phase === 4 && progress >= 0.84)
         ? 'hidden'
-        : phase === 5 || (phase === 6 && progress < 0.35)
+        : phase <= 5 || (phase === 6 && progress < 0.2)
           ? 'pending'
           : phase === 6
             ? 'approving'
@@ -70,10 +90,17 @@ if (root) {
   let visible = false;
   let paused = false;
   let previousPhase = -1;
+  let previousScreen = '';
+  let previousVisualPhase = -1;
+  let previousToast = '';
+  let measureUntil = 0;
   let points: Record<string, Point> = {};
+  const textElements = new Map<string, HTMLElement | null>();
 
   const setText = (selector: string, value: string) => {
-    const element = root.querySelector<HTMLElement>(selector);
+    if (!textElements.has(selector))
+      textElements.set(selector, root.querySelector<HTMLElement>(selector));
+    const element = textElements.get(selector);
     if (element && element.textContent !== value) element.textContent = value;
   };
   const point = (selector: string, previous?: Point): Point => {
@@ -95,7 +122,10 @@ if (root) {
       members: point('[data-demo-members-target]', points.members),
       search: point('[data-demo-search-target]', points.search),
       role: point('[data-demo-role-target]', points.role),
-      option: point('[data-demo-role-option]', points.option),
+      option:
+        points.option && !['3', '4'].includes(root.dataset.demoPhase ?? '')
+          ? points.option
+          : point('[data-demo-role-option]', points.option),
       approve: point('[data-demo-approve-target]', points.approve),
     };
   };
@@ -112,9 +142,12 @@ if (root) {
   const render = () => {
     const state = getPreviewFrame(elapsed);
     const { phase, progress } = state;
-    root.dataset.demoPhase = String(state.visualPhase);
-    root.dataset.demoScreen = state.screen;
-    root.dataset.demoToast = state.toast;
+    if (root.dataset.demoPhase !== String(state.visualPhase))
+      root.dataset.demoPhase = String(state.visualPhase);
+    if (root.dataset.demoScreen !== state.screen)
+      root.dataset.demoScreen = state.screen;
+    if (root.dataset.demoToast !== state.toast)
+      root.dataset.demoToast = state.toast;
     setText(
       '[data-demo-page-title]',
       state.screen === 'overview' ? 'Overview' : 'Members',
@@ -152,12 +185,20 @@ if (root) {
         'Promotion confirmed on Roblox and Discord',
       ][step],
     );
-    if (previousPhase !== phase) {
-      measure();
+    if (
+      previousPhase !== phase ||
+      previousScreen !== state.screen ||
+      previousVisualPhase !== state.visualPhase ||
+      previousToast !== state.toast
+    ) {
+      measureUntil = elapsed + 260;
       previousPhase = phase;
+      previousScreen = state.screen;
+      previousVisualPhase = state.visualPhase;
+      previousToast = state.toast;
     }
-    // Transitions can move the dropdown and toast; measure their settled positions.
-    if (phase === 1 || phase === 4 || phase === 5) measure();
+    // Only sample geometry while a target is actually settling.
+    if (elapsed < measureUntil) measure();
     let position: Point;
     if (phase === 0)
       position = mix(
@@ -181,21 +222,19 @@ if (root) {
         { x: points.approve.x + 36, y: points.approve.y + 22 },
         progress / 0.5,
       );
-    const clickAt =
-      phase === 0 || phase === 1 || phase === 3
-        ? 0.8
-        : phase === 4
-          ? 0.84
-          : phase === 6
-            ? 0.2
-            : -1;
-    const pulse =
-      clickAt < 0 ? 0 : clamp(1 - Math.abs(progress - clickAt) / 0.09);
+    // Let click feedback finish even when the next timeline phase starts.
+    const clickAt = previewClickTimes.findLast((time) => time <= elapsed);
+    const clickAge = clickAt === undefined ? Infinity : elapsed - clickAt;
+    const pulse = clickAge > 200 ? 0 : Math.sin((clickAge / 200) * Math.PI);
+    const ripple = clickAge > 360 ? 0 : 1 - clickAge / 360;
     cursor.style.setProperty('--cursor-x', `${position.x}px`);
     cursor.style.setProperty('--cursor-y', `${position.y}px`);
     cursor.style.setProperty('--cursor-scale', String(1 - pulse * 0.12));
-    cursor.style.setProperty('--cursor-click-opacity', String(pulse * 0.8));
-    cursor.style.setProperty('--cursor-click-scale', String(0.5 + pulse * 1.1));
+    cursor.style.setProperty('--cursor-click-opacity', String(ripple * 0.65));
+    cursor.style.setProperty(
+      '--cursor-click-scale',
+      String(0.5 + (1 - ripple) * 1.1),
+    );
     cursor.style.opacity = String(
       motion.matches
         ? 0
@@ -231,6 +270,7 @@ if (root) {
   const sync = () => {
     const stopped = !canRun();
     root.dataset.paused = String(stopped);
+    root.style.setProperty('--motion-state', stopped ? 'paused' : 'running');
     if (stopped) {
       if (frameId !== null) window.cancelAnimationFrame(frameId);
       frameId = null;

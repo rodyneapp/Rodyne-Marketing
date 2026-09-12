@@ -107,14 +107,8 @@ import { faqs } from '../data/site';
     transform: translate(-50%, -50%) rotate(0deg);
   }
 
-  details > div {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 260ms var(--ease-out);
-  }
-
-  details[open] > div {
-    grid-template-rows: 1fr;
+  summary[aria-expanded='false'] .faq-plus::after {
+    transform: translate(-50%, -50%) rotate(90deg);
   }
 
   details > div > p {
@@ -150,3 +144,7 @@ import { faqs } from '../data/site';
     }
   }
 </style>
+
+<script>
+  import '../scripts/faq-motion';
+</script>

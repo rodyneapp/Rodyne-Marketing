@@ -19,6 +19,37 @@ const menuButton =
   document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
 const mobileMenu = document.querySelector<HTMLElement>('[data-mobile-menu]');
 let lastFocusedElement: HTMLElement | null = null;
+let menuAnimation: Animation | null = null;
+
+const animateMenu = (opening: boolean) => {
+  if (!mobileMenu) return;
+  const opacity = getComputedStyle(mobileMenu).opacity;
+  const transform = getComputedStyle(mobileMenu).transform;
+  menuAnimation?.cancel();
+  if (reducedMotion.matches) {
+    mobileMenu.hidden = !opening;
+    return;
+  }
+  menuAnimation = mobileMenu.animate(
+    [
+      {
+        opacity: opening && mobileMenu.hidden ? 0 : opacity,
+        transform:
+          opening && mobileMenu.hidden ? 'translateY(-6px)' : transform,
+      },
+      {
+        opacity: opening ? 1 : 0,
+        transform: opening ? 'translateY(0)' : 'translateY(-6px)',
+      },
+    ],
+    { duration: opening ? 220 : 160, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)' },
+  );
+  mobileMenu.hidden = false;
+  menuAnimation.onfinish = () => {
+    mobileMenu.hidden = !opening;
+    menuAnimation = null;
+  };
+};
 
 const setHeaderState = () => {
   header?.classList.toggle('is-scrolled', window.scrollY > 12);
@@ -37,7 +68,8 @@ const closeMenu = (restoreFocus = true) => {
   if (!menuButton || !mobileMenu) return;
   menuButton.setAttribute('aria-expanded', 'false');
   menuButton.setAttribute('aria-label', 'Open navigation menu');
-  mobileMenu.hidden = true;
+  mobileMenu.inert = true;
+  animateMenu(false);
   document.body.classList.remove('menu-open');
   if (restoreFocus) (lastFocusedElement ?? menuButton).focus();
 };
@@ -47,7 +79,8 @@ const openMenu = () => {
   lastFocusedElement = document.activeElement as HTMLElement | null;
   menuButton.setAttribute('aria-expanded', 'true');
   menuButton.setAttribute('aria-label', 'Close navigation menu');
-  mobileMenu.hidden = false;
+  mobileMenu.inert = false;
+  animateMenu(true);
   document.body.classList.add('menu-open');
   menuFocusable()[0]?.focus();
 };
@@ -60,12 +93,20 @@ menuButton?.addEventListener('click', () => {
   else openMenu();
 });
 
+reducedMotion.addEventListener('change', () => {
+  if (!reducedMotion.matches || !mobileMenu) return;
+  menuAnimation?.cancel();
+  menuAnimation = null;
+  mobileMenu.hidden = menuButton?.getAttribute('aria-expanded') !== 'true';
+});
+
 mobileMenu?.addEventListener('click', (event) => {
   if ((event.target as HTMLElement).closest('a')) closeMenu(false);
 });
 
 document.addEventListener('keydown', (event) => {
-  if (!mobileMenu || mobileMenu.hidden) return;
+  if (!mobileMenu || menuButton?.getAttribute('aria-expanded') !== 'true')
+    return;
 
   if (event.key === 'Escape') {
     event.preventDefault();
@@ -125,7 +166,7 @@ if ('IntersectionObserver' in window) {
         observer.unobserve(entry.target);
       }
     },
-    { threshold: 0.16, rootMargin: '0px 0px -7%' },
+    { threshold: 0.05, rootMargin: '0px 0px -24px' },
   );
 
   document
@@ -155,11 +196,16 @@ let targetX = 0;
 let targetY = 0;
 let currentX = 0;
 let currentY = 0;
+let parallaxTime: number | null = null;
 
-const renderParallax = () => {
+const renderParallax = (time: number) => {
   parallaxFrame = null;
-  currentX += (targetX - currentX) * 0.1;
-  currentY += (targetY - currentY) * 0.1;
+  const delta =
+    parallaxTime === null ? 1000 / 60 : Math.min(time - parallaxTime, 64);
+  parallaxTime = time;
+  const blend = 1 - Math.exp(-delta / 140);
+  currentX += (targetX - currentX) * blend;
+  currentY += (targetY - currentY) * blend;
   parallaxField?.style.setProperty('--pointer-x', `${currentX.toFixed(2)}px`);
   parallaxField?.style.setProperty('--pointer-y', `${currentY.toFixed(2)}px`);
 
@@ -168,7 +214,7 @@ const renderParallax = () => {
     Math.abs(targetY - currentY) > 0.05
   ) {
     parallaxFrame = window.requestAnimationFrame(renderParallax);
-  }
+  } else parallaxTime = null;
 };
 
 const queueParallax = () => {
@@ -197,11 +243,20 @@ hero?.addEventListener('pointermove', (event) => {
 const resetParallax = () => {
   targetX = 0;
   targetY = 0;
+  if (reducedMotion.matches || document.hidden || !finePointer.matches) {
+    if (parallaxFrame !== null) window.cancelAnimationFrame(parallaxFrame);
+    parallaxFrame = parallaxTime = null;
+    currentX = currentY = 0;
+    parallaxField?.style.setProperty('--pointer-x', '0px');
+    parallaxField?.style.setProperty('--pointer-y', '0px');
+    return;
+  }
   queueParallax();
 };
 
 hero?.addEventListener('pointerleave', resetParallax);
 reducedMotion.addEventListener('change', resetParallax);
+finePointer.addEventListener('change', resetParallax);
 document.addEventListener('visibilitychange', resetParallax);
 
 window.matchMedia('(min-width: 821px)').addEventListener('change', (event) => {
