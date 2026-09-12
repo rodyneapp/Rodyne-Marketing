@@ -44,6 +44,7 @@ html {
 }
 
 body {
+  isolation: isolate;
   min-width: 0;
   min-height: 100vh;
   margin: 0;
@@ -56,6 +57,20 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Keep atmosphere behind all page content and controls. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 14% 12%, #637ccc14, transparent 48%),
+    radial-gradient(ellipse at 94% 58%, #8073b810, transparent 46%),
+    radial-gradient(ellipse at 44% 110%, #50888e0a, transparent 48%),
+    linear-gradient(118deg, transparent 24%, #a8b8e303 35%, transparent 47%);
 }
 
 body::after {

@@ -144,13 +144,31 @@ const floatingTiles = [
   }
   .hero-grid {
     position: absolute;
-    inset: 0 0 30%;
+    inset: 0 0 22%;
     pointer-events: none;
     background-image:
-      linear-gradient(90deg, #ffffff04 1px, transparent 1px),
-      linear-gradient(#ffffff04 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse at 50% 25%, black, transparent 70%);
+      radial-gradient(ellipse at 50% 7%, #7888d019, transparent 58%),
+      linear-gradient(90deg, #adbde00a 1px, transparent 1px),
+      linear-gradient(#adbde00a 1px, transparent 1px);
+    background-size:
+      auto,
+      72px 72px,
+      72px 72px;
+    mask-image: radial-gradient(ellipse at 50% 20%, black 8%, transparent 72%);
+  }
+  .hero-grid::after {
+    content: '';
+    position: absolute;
+    width: min(1280px, 150vw);
+    height: 680px;
+    left: 50%;
+    top: -470px;
+    transform: translateX(-50%) rotate(-12deg);
+    border: 1px solid #b6c5f31a;
+    border-radius: 50%;
+    box-shadow:
+      0 0 90px #8198dd08,
+      0 50px 110px #8198dd05;
   }
   .hero-inner {
     position: relative;
