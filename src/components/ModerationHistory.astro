@@ -62,6 +62,8 @@ const timeline = [
     type: 'Allegation',
     title: 'Report received',
     detail: 'Submitted in-game with server and round references.',
+    moderator: 'NoahField',
+    attribution: 'Received by',
     time: '18:41',
     tone: 'neutral',
   },
@@ -69,6 +71,8 @@ const timeline = [
     type: 'Assignment',
     title: 'Reviewer assigned',
     detail: 'MiraNorth accepted the case from the staff queue.',
+    moderator: 'MiraNorth',
+    attribution: 'Assigned by',
     time: '18:44',
     tone: 'blue',
   },
@@ -76,6 +80,8 @@ const timeline = [
     type: 'Evidence',
     title: 'Evidence attached',
     detail: 'Two screenshots and one connector event were added.',
+    moderator: 'MiraNorth',
+    attribution: 'Added by',
     time: '18:49',
     tone: 'blue',
   },
@@ -83,6 +89,8 @@ const timeline = [
     type: 'Confirmed finding',
     title: 'Finding confirmed',
     detail: 'The reviewer recorded the policy finding and rationale.',
+    moderator: 'MiraNorth',
+    attribution: 'Confirmed by',
     time: '18:57',
     tone: 'amber',
   },
@@ -90,6 +98,8 @@ const timeline = [
     type: 'Requested action',
     title: '24-hour experience restriction requested',
     detail: 'Scope: Northwind City only · explicit expiry recorded.',
+    moderator: 'MiraNorth',
+    attribution: 'Requested by',
     time: '18:59',
     tone: 'amber',
   },
@@ -97,6 +107,8 @@ const timeline = [
     type: 'Executed action',
     title: 'Restriction confirmed',
     detail: 'The supported server adapter confirmed the restriction.',
+    moderator: 'MiraNorth',
+    attribution: 'Authorised by',
     time: '19:00',
     tone: 'green',
   },
@@ -104,6 +116,8 @@ const timeline = [
     type: 'Appeal',
     title: 'Appeal submitted',
     detail: 'The member response was attached to the same case.',
+    moderator: 'LenaShores',
+    attribution: 'Received by',
     time: '20:16',
     tone: 'neutral',
   },
@@ -111,6 +125,8 @@ const timeline = [
     type: 'Appeal decision',
     title: 'Appeal accepted',
     detail: 'A second reviewer recorded the reversal rationale.',
+    moderator: 'LenaShores',
+    attribution: 'Reviewed by',
     time: '20:38',
     tone: 'blue',
   },
@@ -118,6 +134,8 @@ const timeline = [
     type: 'Reversed action',
     title: 'Restriction reversed',
     detail: 'The adapter confirmed that experience access was restored.',
+    moderator: 'LenaShores',
+    attribution: 'Authorised by',
     time: '20:39',
     tone: 'green',
   },
@@ -137,7 +155,7 @@ const timeline = [
       </h2>
       <p class="section-copy">
         Give your staff the full story. Keep reports, evidence and appeals in
-        one case inbox, with every decision attached to the member’s history.
+        one case inbox, with the responsible moderator recorded on every action.
       </p>
     </div>
 
@@ -332,6 +350,11 @@ const timeline = [
                       <span>{event.type}</span>
                     </div>
                     <p>{event.detail}</p>
+                    <p class="moderator-byline">
+                      <Icon name="shield" size={12} />
+                      {event.attribution} <b>{event.moderator}</b>
+                      <em>Moderator</em>
+                    </p>
                   </div>
                   <time class="mono">{event.time}</time>
                 </li>
@@ -891,6 +914,32 @@ const timeline = [
     line-height: 1.35;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .timeline-content .moderator-byline {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 7px;
+    white-space: normal;
+    color: var(--text-secondary);
+  }
+  .moderator-byline b {
+    font-weight: 550;
+    color: #d9d9de;
+  }
+  .moderator-byline em {
+    font-size: 0.625rem;
+    font-style: normal;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1px 4px;
+  }
+  .moderator-byline :global(svg) {
+    color: #9eb9eb;
+    flex-shrink: 0;
   }
 
   .timeline-list time {

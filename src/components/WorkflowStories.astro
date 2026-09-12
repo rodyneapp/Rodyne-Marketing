@@ -106,17 +106,17 @@ import Icon from './Icon.astro';
           to all set.
         </h2>
         <p class="section-copy">
-          Give your staff a shared plan for every session, from the first
-          Discord reminder to the final training result.
+          One session, both communities. Publish to Roblox Events and Discord
+          Events, then bring hosts, attendance and training results together.
         </p>
         <ul class="benefits">
           <li>
             <Icon name="check" size={16} />
-            Schedule sessions with assigned hosts
+            Publish sessions to Roblox Events and Discord Events
           </li>
           <li>
             <Icon name="check" size={16} />
-            Send Discord RSVPs and reminders
+            Let staff claim hosting slots, with RSVPs and reminders
           </li>
           <li>
             <Icon name="check" size={16} />
@@ -168,13 +168,34 @@ import Icon from './Icon.astro';
             <span>Passed training</span>
           </div>
         </div>
-        <div class="session-notice">
-          <Icon name="discord" size={18} />
-          <div>
-            <strong>Your staff know what’s next.</strong>
-            <p>Reminder delivered to #training-sessions</p>
-          </div>
-          <Icon name="check" size={16} />
+        <div
+          class="event-platforms"
+          aria-label="Session published on both platforms"
+        >
+          {[
+            {
+              icon: 'roblox',
+              name: 'Roblox Events',
+              destination: 'Northwind City experience',
+            },
+            {
+              icon: 'discord',
+              name: 'Discord Events',
+              destination: 'Northwind staff server',
+            },
+          ].map((platform) => (
+            <div class="session-notice">
+              <Icon name={platform.icon} size={22} />
+              <div>
+                <strong>{platform.name}</strong>
+                <p>Front Desk Training · 18:00 UTC</p>
+                <small>{platform.destination}</small>
+              </div>
+              <span class="event-published">
+                <Icon name="check" size={14} /> Published
+              </span>
+            </div>
+          ))}
         </div>
         <div class="panel-foot">
           <Icon name="note" size={15} />
@@ -430,9 +451,26 @@ import Icon from './Icon.astro';
     flex-shrink: 0;
     color: #9eb9eb;
   }
-  .session-notice > :global(svg:last-child) {
+  .event-platforms {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .session-notice {
+    margin-bottom: 0;
+    flex-wrap: wrap;
+  }
+  .session-notice small {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+  }
+  .event-published {
     margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     color: var(--green);
+    font-size: 0.75rem;
   }
   @media (max-width: 900px) {
     .workflow,
