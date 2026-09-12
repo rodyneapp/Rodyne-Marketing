@@ -2,7 +2,7 @@
 import '@fontsource-variable/dm-sans';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
-import { site } from '../data/site';
+import { plans, site } from '../data/site';
 
 interface Props {
   title?: string;
@@ -33,9 +33,9 @@ const structuredData =
         offers: {
           '@type': 'AggregateOffer',
           priceCurrency: 'USD',
-          lowPrice: '4',
-          highPrice: '19',
-          offerCount: '3',
+          lowPrice: String(Math.min(...plans.map((plan) => plan.price))),
+          highPrice: String(Math.max(...plans.map((plan) => plan.price))),
+          offerCount: String(plans.length),
         },
       }
     : {

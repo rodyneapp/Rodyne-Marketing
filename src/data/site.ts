@@ -10,7 +10,7 @@ export const site = {
   eyebrow: 'BUILT FOR ROBLOX COMMUNITIES',
   title: 'Relay — Your Roblox community, working together',
   description:
-    'Manage ranks, run training sessions, and resolve reports across Roblox and Discord with Relay. One shared workspace for your staff, from $4 per month.',
+    'Manage ranks, run training sessions, and resolve reports across Roblox and Discord with Relay. One shared workspace for your staff, from $8 per month.',
   placeholderOrigin,
   links: {
     home: '/',
@@ -58,7 +58,7 @@ export const plans = [
   {
     id: 'starter',
     name: 'Starter',
-    price: 4,
+    price: 8,
     description: 'For a small team running one connected experience.',
     recommended: false,
     features: [
@@ -78,7 +78,7 @@ export const plans = [
   {
     id: 'community',
     name: 'Community',
-    price: 9,
+    price: 18,
     description: 'For growing communities with regular sessions and staff.',
     recommended: true,
     features: [
@@ -98,7 +98,7 @@ export const plans = [
   {
     id: 'network',
     name: 'Network',
-    price: 19,
+    price: 38,
     description: 'For one team coordinating several Roblox communities.',
     recommended: false,
     features: [
@@ -121,7 +121,7 @@ export const faqs = [
   {
     question: 'Is there a free plan?',
     answer:
-      'No. The connected hosted service starts at $4 per workspace each month. An animated product preview can be viewed without connecting a production community.',
+      'No. The connected hosted service starts at $8 per workspace each month. An animated product preview can be viewed without connecting a production community.',
   },
   {
     question: 'Do community members need subscriptions?',
