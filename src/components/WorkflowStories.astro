@@ -1,6 +1,5 @@
 ---
-import { Image } from 'astro:assets';
-import avatar from '../assets/chrxs-dev-avatar.webp';
+import DiscordCommandPreview from './DiscordCommandPreview.astro';
 import Icon from './Icon.astro';
 ---
 
@@ -12,89 +11,35 @@ import Icon from './Icon.astro';
   <div class="container">
     <article class="workflow" data-observe-reveal>
       <div class="story-copy">
-        <p class="eyebrow">01 / Ranks and roles</p>
+        <p class="eyebrow">01 / Discord commands</p>
         <h2 class="display section-title">
-          Keep ranks
+          Take action.
           <br />
-          in sync.
+          Stay in Discord.
         </h2>
         <p class="section-copy">
-          A promotion should reach the right places. Bring the request, staff
-          approval and platform results into one clear flow.
+          Run a command where your staff already work. Relay handles the action,
+          confirms the result and keeps the log one click away.
         </p>
         <ul class="benefits">
           <li>
             <Icon name="check" size={16} />
-            Map Roblox ranks to Discord roles
+            Moderate connected experiences from Discord
           </li>
           <li>
             <Icon name="check" size={16} />
-            Keep protected roles behind approval
+            Keep commands limited to authorised staff
           </li>
           <li>
             <Icon name="check" size={16} />
-            See when each change is confirmed
+            See the result and open the action log
           </li>
         </ul>
         <a class="text-link" href="#security">
           Stay in control <Icon name="arrow" size={16} />
         </a>
       </div>
-      <div class="workflow-panel panel">
-        <div class="panel-bar">
-          <span>
-            <Icon name="ranking" size={16} />
-            Promotion request
-          </span>
-          <span class="demo-label">Sample data</span>
-        </div>
-        <div class="promotion-person">
-          <Image src={avatar} width={48} height={48} alt="" loading="lazy" />
-          <div>
-            <strong>chrxs_dev</strong>
-            <p>
-              Host <span>→</span> Senior Host
-            </p>
-          </div>
-          <span class="status status--green">Approved</span>
-        </div>
-        <ol class="promotion-steps">
-          <li>
-            <span class="step-icon">
-              <Icon name="shield" size={18} />
-            </span>
-            <div>
-              <strong>Staff approval recorded</strong>
-              <p>Approved by MiraNorth</p>
-            </div>
-            <Icon name="check" size={17} />
-          </li>
-          <li>
-            <span class="step-icon">
-              <Icon name="roblox" size={18} />
-            </span>
-            <div>
-              <strong>Roblox rank updated</strong>
-              <p>Senior Host · confirmed</p>
-            </div>
-            <Icon name="check" size={17} />
-          </li>
-          <li>
-            <span class="step-icon">
-              <Icon name="discord" size={18} />
-            </span>
-            <div>
-              <strong>Discord role synced</strong>
-              <p>@Senior Host · confirmed</p>
-            </div>
-            <Icon name="check" size={17} />
-          </li>
-        </ol>
-        <div class="panel-foot">
-          <Icon name="note" size={15} />
-          Saved to the member’s history
-        </div>
-      </div>
+      <DiscordCommandPreview />
     </article>
 
     <article class="workflow workflow--reverse" data-observe-reveal>
@@ -275,73 +220,14 @@ import Icon from './Icon.astro';
     align-items: center;
     gap: 10px;
   }
-  .promotion-person {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 14px;
-    padding: 28px 24px;
-  }
-  .promotion-person img {
-    border-radius: 12px;
-    background: var(--surface-raised);
-  }
-  .promotion-person strong {
-    font-size: 1rem;
-    font-weight: 600;
-  }
-  .promotion-person p {
-    margin-top: 3px;
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-  }
-  .promotion-person p span {
-    margin-inline: 6px;
-    color: var(--text-faint);
-  }
-  .promotion-person .status {
-    margin-left: auto;
-  }
-  .promotion-steps {
-    list-style: none;
-    padding: 0 24px 24px;
-  }
-  .promotion-steps li {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 16px 0;
-  }
-  .promotion-steps li + li {
-    border-top: 1px solid var(--border);
-  }
-  .step-icon {
-    display: grid;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    flex-shrink: 0;
-    background: #ffffff04;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    color: var(--text-secondary);
-  }
-  .promotion-steps strong,
   .session-notice strong {
     font-size: 0.9375rem;
     font-weight: 550;
   }
-  .promotion-steps p,
   .session-notice p {
     margin-top: 3px;
     color: var(--text-dim);
     font-size: 0.875rem;
-  }
-  .promotion-steps li > :global(svg:last-child) {
-    margin-left: auto;
-    color: var(--green);
-    flex-shrink: 0;
   }
   .panel-foot {
     display: flex;
@@ -487,12 +373,8 @@ import Icon from './Icon.astro';
   }
   @media (max-width: 480px) {
     .panel-bar,
-    .promotion-person,
     .session-heading {
       padding: 18px 16px;
-    }
-    .promotion-steps {
-      padding-inline: 16px;
     }
     .panel-bar {
       align-items: flex-start;

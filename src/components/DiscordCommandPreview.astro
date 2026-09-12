@@ -1,0 +1,436 @@
+---
+import Icon from './Icon.astro';
+---
+
+<div class="discord-demo panel" data-discord-demo data-phase="done">
+  <div class="channel-bar">
+    <span>
+      <Icon name="discord" size={19} />
+      <i>#</i>
+      <strong>staff-commands</strong>
+    </span>
+    <small>Demo</small>
+  </div>
+  <p class="sr-only">
+    Animated example: MiraNorth sends /ban chrxs_dev. Relay responds “banning
+    chrxs_dev”, then “Banned chrxs_dev” with a View Log link.
+  </p>
+  <div class="channel-body" aria-hidden="true">
+    <div class="channel-intro">
+      <span>#</span>
+      <h3>staff-commands</h3>
+      <p>Your team. Your commands. All in one place.</p>
+    </div>
+    <div class="message user-message">
+      <span class="avatar">MN</span>
+      <div>
+        <div class="message-meta">
+          <strong>MiraNorth</strong>
+          <small>Today at 18:59</small>
+        </div>
+        <p>
+          <span class="slash-command">/ban</span> chrxs_dev
+        </p>
+      </div>
+    </div>
+    <div class="message bot-message">
+      <span class="avatar relay-avatar">R</span>
+      <div class="bot-content">
+        <div class="message-meta">
+          <strong>Relay</strong>
+          <span class="app-tag">
+            <Icon name="check" size={10} />
+            APP
+          </span>
+          <small>Today at 18:59</small>
+        </div>
+        <div class="bot-response">
+          <p class="pending">
+            <span class="spinner"></span>banning chrxs_dev
+          </p>
+          <p class="completed">
+            <Icon name="check" size={18} />
+            <span>Banned chrxs_dev</span>
+            <span class="separator">·</span>
+            <span class="log-label">View Log</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="composer" aria-hidden="true">
+    <span class="add">+</span>
+    <span class="input-text" data-command-text></span>
+    <span class="placeholder">Message #staff-commands</span>
+    <i class="caret"></i>
+    <span class="send">
+      <Icon name="arrow" size={17} />
+    </span>
+  </div>
+  <div class="demo-footer">
+    <span>
+      <Icon name="shield" size={13} />
+      Staff-only commands
+    </span>
+    <button type="button" data-demo-pause aria-label="Pause Discord animation">
+      Pause animation
+    </button>
+  </div>
+</div>
+
+<script>
+  const demo = document.querySelector<HTMLElement>('[data-discord-demo]');
+  if (demo) {
+    const text = demo.querySelector<HTMLElement>('[data-command-text]')!;
+    const pause = demo.querySelector<HTMLButtonElement>('[data-demo-pause]')!;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let elapsed = 0;
+    let last = 0;
+    let frame = 0;
+    let visible = false;
+    let paused = false;
+    const render = () => {
+      const time = elapsed % 9000;
+      demo.dataset.phase = reduced.matches
+        ? 'done'
+        : time < 700
+          ? 'idle'
+          : time < 2600
+            ? 'typing'
+            : time < 3100
+              ? 'sent'
+              : time < 4900
+                ? 'pending'
+                : 'done';
+      text.textContent =
+        demo.dataset.phase === 'typing'
+          ? '/ban chrxs_dev'.slice(
+              0,
+              Math.min(13, Math.floor((time - 700) / 115)),
+            )
+          : '';
+    };
+    const tick = (now: number) => {
+      elapsed += last ? Math.min(now - last, 100) : 0;
+      last = now;
+      render();
+      frame = requestAnimationFrame(tick);
+    };
+    const sync = () => {
+      cancelAnimationFrame(frame);
+      last = 0;
+      render();
+      demo.dataset.running = String(
+        visible && !paused && !document.hidden && !reduced.matches,
+      );
+      pause.hidden = reduced.matches;
+      if (visible && !paused && !document.hidden && !reduced.matches)
+        frame = requestAnimationFrame(tick);
+    };
+    pause.addEventListener('click', () => {
+      paused = !paused;
+      pause.textContent = paused ? 'Play animation' : 'Pause animation';
+      pause.setAttribute(
+        'aria-label',
+        paused ? 'Play Discord animation' : 'Pause Discord animation',
+      );
+      sync();
+    });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        sync();
+      },
+      { threshold: 0.25 },
+    );
+    observer.observe(demo);
+    document.addEventListener('visibilitychange', sync);
+    reduced.addEventListener('change', sync);
+    sync();
+  }
+</script>
+
+<style>
+  .discord-demo {
+    min-width: 0;
+    overflow: hidden;
+    background: linear-gradient(145deg, #5865f20a, transparent 60%), #14151a;
+  }
+  .channel-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 19px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .channel-bar > span {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .channel-bar :global(svg) {
+    color: #a3a9ee;
+  }
+  .channel-bar i {
+    font-style: normal;
+    font-size: 21px;
+    color: var(--text-dim);
+  }
+  .channel-bar strong {
+    font-size: 0.875rem;
+    font-weight: 550;
+  }
+  .channel-bar small {
+    font: 0.6875rem var(--mono);
+    color: var(--text-dim);
+  }
+  .channel-body {
+    height: 323px;
+    padding: 27px 24px 20px;
+  }
+  .channel-intro {
+    margin-bottom: 25px;
+  }
+  .channel-intro > span {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    background: #ffffff07;
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-size: 24px;
+  }
+  .channel-intro h3 {
+    margin-top: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  .channel-intro p {
+    margin-top: 5px;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+  .message {
+    display: flex;
+    gap: 12px;
+    margin-top: 23px;
+    transition:
+      opacity 220ms ease,
+      transform 220ms ease;
+  }
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #ac91d52b;
+    color: #c4abd9;
+    font-size: 0.6875rem;
+  }
+  .relay-avatar {
+    background: #e1e5ee;
+    color: #25272f;
+    font-size: 19px;
+    font-weight: 650;
+    letter-spacing: -0.07em;
+  }
+  .message-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    min-height: 18px;
+  }
+  .message-meta strong {
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .user-message .message-meta strong {
+    color: #baa8d2;
+  }
+  .message-meta small {
+    font-size: 0.625rem;
+    color: var(--text-faint);
+  }
+  .message p {
+    font-size: 0.8125rem;
+    margin-top: 6px;
+    color: var(--text-secondary);
+  }
+  .slash-command {
+    color: #a9b4fb;
+    background: #5865f221;
+    border-radius: 3px;
+    padding: 2px 3px;
+  }
+  .app-tag {
+    display: inline-flex;
+    gap: 2px;
+    align-items: center;
+    padding: 2px 4px;
+    border-radius: 3px;
+    background: #5865f2;
+    color: white;
+    font-size: 0.5rem;
+    font-weight: 600;
+  }
+  .bot-content {
+    min-width: 0;
+    flex: 1;
+  }
+  .bot-response {
+    display: grid;
+  }
+  .bot-response p {
+    grid-area: 1 / 1;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    min-height: 22px;
+  }
+  .completed :global(svg) {
+    color: var(--green);
+    flex-shrink: 0;
+  }
+  .separator {
+    color: var(--text-dim);
+  }
+  .log-label {
+    color: #a8bbf1;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .spinner {
+    width: 12px;
+    height: 12px;
+    border: 1.5px solid #ffffff20;
+    border-top-color: #aab7eb;
+    border-radius: 50%;
+    animation: spin 800ms linear infinite;
+  }
+  .composer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 46px;
+    margin: 0 24px 18px;
+    padding: 0 13px;
+    border: 1px solid #ffffff09;
+    border-radius: 8px;
+    background: #ffffff06;
+    font-size: 0.8125rem;
+  }
+  .add {
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #a5a6b5;
+    color: #23242b;
+    width: 17px;
+    height: 17px;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  .input-text {
+    white-space: pre;
+  }
+  .input-text:empty {
+    display: none;
+  }
+  .placeholder {
+    color: var(--text-faint);
+  }
+  .caret {
+    height: 16px;
+    width: 1px;
+    background: #c9cbda;
+    margin-left: -10px;
+  }
+  .send {
+    margin-left: auto;
+    color: var(--text-faint);
+  }
+  .demo-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 24px;
+    border-top: 1px solid var(--border);
+    font-size: 0.6875rem;
+    color: var(--text-dim);
+  }
+  .demo-footer > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .demo-footer button {
+    padding: 3px 0;
+    background: none;
+    border: 0;
+    color: var(--text-secondary);
+    font: inherit;
+    cursor: pointer;
+  }
+  .demo-footer button[hidden] {
+    display: none;
+  }
+  .demo-footer button:focus-visible {
+    outline: 2px solid #a8bbf1;
+    outline-offset: 4px;
+  }
+  [data-phase='idle'] .message,
+  [data-phase='typing'] .message,
+  [data-phase='sent'] .bot-message {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  [data-phase]:not([data-phase='typing']) .caret,
+  [data-phase='typing'] .placeholder {
+    display: none;
+  }
+  [data-phase]:not([data-phase='done']) .completed,
+  [data-phase='done'] .pending {
+    visibility: hidden;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  [data-running='false'] .spinner {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .message {
+      transition: none;
+    }
+    .spinner {
+      animation: none;
+    }
+  }
+  @media (max-width: 480px) {
+    .channel-bar,
+    .demo-footer {
+      padding-inline: 16px;
+    }
+    .channel-body {
+      padding-inline: 16px;
+      height: 340px;
+    }
+    .composer {
+      margin-inline: 16px;
+      gap: 9px;
+      font-size: 0.75rem;
+    }
+    .message {
+      gap: 9px;
+    }
+  }
+</style>
