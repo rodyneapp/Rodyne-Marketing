@@ -1,0 +1,66 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import '../../styles/blog.css';
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const date = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+}).format(post.data.date);
+const readingMinutes = Math.max(
+  1,
+  Math.ceil((post.body ?? '').split(/\s+/).length / 220),
+);
+---
+
+<SiteLayout
+  title={`${post.data.title} — Relay`}
+  description={post.data.description}
+  pageType="webpage"
+>
+  <Header />
+  <main id="main-content" class="blog-shell blog-article">
+    <a class="back-to-blog" href="/blog/">
+      ← All posts
+    </a>
+    <article>
+      <header class="article-heading">
+        <div class="post-meta">
+          <span class="post-category">{post.data.category}</span>
+          <time datetime={post.data.date.toISOString()}>{date}</time>
+        </div>
+        <h1 class="display">{post.data.title}</h1>
+        <p class="article-description">{post.data.description}</p>
+        <div class="article-byline">
+          <span class="author-avatar" aria-hidden="true">
+            R
+          </span>
+          <span>{post.data.author}</span>
+          <span aria-hidden="true">·</span>
+          <span>{readingMinutes} min read</span>
+        </div>
+      </header>
+      <div class="blog-prose">
+        <Content />
+      </div>
+    </article>
+    <div class="article-end">
+      <a href="/blog/">← More from Relay</a>
+      <a href="/">Explore Relay ↗</a>
+    </div>
+  </main>
+  <Footer />
+</SiteLayout>

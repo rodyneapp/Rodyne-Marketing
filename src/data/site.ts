@@ -30,6 +30,7 @@ export const site = {
     dpa: '/legal/dpa/',
     subprocessors: '/legal/subprocessors/',
     legal: '/legal/',
+    blog: '/blog/',
     discord: `${placeholderOrigin}/discord`,
   },
   checkout: {
@@ -50,6 +51,7 @@ export const navigation = [
   { label: 'Integrations', href: site.links.integrations },
   { label: 'Pricing', href: site.links.pricing },
   { label: 'Security', href: site.links.security },
+  { label: 'Blog', href: site.links.blog },
 ] as const;
 
 export const plans = [
