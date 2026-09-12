@@ -3,6 +3,8 @@ import '@fontsource-variable/dm-sans';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import { plans, site } from '../data/site';
+import { getImage } from 'astro:assets';
+import rodyneMark from '../assets/rodyne-mark.png';
 
 interface Props {
   title?: string;
@@ -20,6 +22,12 @@ const {
 const origin = Astro.site ?? new URL(site.placeholderOrigin);
 const canonical = new URL(Astro.url.pathname, origin);
 const socialImage = new URL('/og.png', origin);
+const favicon = await getImage({
+  src: rodyneMark,
+  width: 64,
+  height: 64,
+  format: 'png',
+});
 const structuredData =
   pageType === 'software'
     ? {
@@ -62,8 +70,8 @@ const structuredData =
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/rodyne-icon.png" type="image/png" sizes="64x64" />
-    <link rel="icon" href="/favicon.ico?v=rodyne" sizes="any" />
+    <link rel="icon" href={favicon.src} type="image/png" sizes="64x64" />
+    <link rel="icon" href="/favicon.ico?v=rodyne-transparent" sizes="any" />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
