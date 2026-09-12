@@ -1,4 +1,8 @@
 ---
+import { Image } from 'astro:assets';
+import hdAdminLogo from '../assets/hd-admin.webp';
+import cmdrLogo from '../assets/cmdr.png';
+
 interface Props {
   name: string;
   size?: number;
@@ -66,16 +70,27 @@ const icons: Record<string, string> = {
 };
 ---
 
-<svg
-  class={className}
-  width={size}
-  height={size}
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  stroke-width={strokeWidth}
-  stroke-linecap="round"
-  stroke-linejoin="round"
-  aria-hidden="true"
-  set:html={icons[name] ?? icons.overview}
-/>
+{name === 'hd-admin' || name === 'cmdr' ? (
+  <Image
+    src={name === 'cmdr' ? cmdrLogo : hdAdminLogo}
+    alt=""
+    width={Math.round(size * (name === 'cmdr' ? 3.3 : 1.6))}
+    class={className}
+    style="border-radius: 4px; flex-shrink: 0; height: auto;"
+    loading="lazy"
+  />
+) : (
+  <svg
+    class={className}
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width={strokeWidth}
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+    set:html={icons[name] ?? icons.overview}
+  />
+)}

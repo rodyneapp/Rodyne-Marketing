@@ -3,9 +3,9 @@ import Icon from './Icon.astro';
 const platforms = [
   { label: 'Roblox', icon: 'roblox' },
   { label: 'Discord', icon: 'discord' },
-  { label: 'Cmdr', icon: 'terminal' },
+  { label: 'Cmdr', icon: 'cmdr' },
   { label: 'Adonis', icon: 'brackets' },
-  { label: 'HD Admin', icon: 'shield' },
+  { label: 'HD Admin', icon: 'hd-admin' },
 ];
 ---
 
@@ -19,7 +19,9 @@ const platforms = [
       {platforms.map((platform) => (
         <li>
           <Icon name={platform.icon} size={22} />
-          <span>{platform.label}</span>
+          <span class:list={{ 'sr-only': platform.icon === 'cmdr' }}>
+            {platform.label}
+          </span>
         </li>
       ))}
     </ul>

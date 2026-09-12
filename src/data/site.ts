@@ -175,7 +175,7 @@ export const integrations = [
     name: 'Cmdr',
     description:
       'Bring supported in-game commands and action history into your workspace.',
-    icon: 'terminal',
+    icon: 'cmdr',
   },
   {
     name: 'Adonis',
@@ -186,7 +186,7 @@ export const integrations = [
     name: 'HD Admin',
     description:
       'Keep supported admin actions attached to your member records.',
-    icon: 'shield',
+    icon: 'hd-admin',
   },
   {
     name: 'Stripe',
