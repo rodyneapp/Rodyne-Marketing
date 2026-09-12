@@ -119,7 +119,7 @@ export const faqs = [
   {
     question: 'Is there a free plan?',
     answer:
-      'No. The connected hosted service starts at $4 per workspace each month. An animated product preview can be viewed without connecting a production community.',
+      'No. The connected hosted service starts at $4 per workspace each month. An interactive sample workspace can be explored without connecting a production community.',
   },
   {
     question: 'Do community members need subscriptions?',
