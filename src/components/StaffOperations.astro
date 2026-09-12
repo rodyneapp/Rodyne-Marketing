@@ -1,29 +1,37 @@
 ---
 import Icon from './Icon.astro';
-const shifts = [
+const stages = [
   {
-    name: 'MiraNorth',
-    initials: 'MN',
-    role: 'Training host',
+    label: 'Clock in',
+    status: 'Ready when you are',
+    time: '00:00',
+    seconds: '00',
+    note: 'A fresh start.',
+    icon: 'clock',
+  },
+  {
+    label: 'On shift',
     status: 'On shift',
     time: '01:42',
-    tone: 'green',
+    seconds: '08',
+    note: 'Every minute, accounted for.',
+    icon: 'clock',
   },
   {
-    name: 'NoahField',
-    initials: 'NF',
-    role: 'Moderator',
-    status: 'On break',
-    time: '00:48',
-    tone: 'amber',
+    label: 'On break',
+    status: 'Take a moment',
+    time: '01:42',
+    seconds: '08',
+    note: 'Your shift timer is paused.',
+    icon: 'clock',
   },
   {
-    name: 'LenaShores',
-    initials: 'LS',
-    role: 'Supervisor',
-    status: 'Clocked out',
+    label: 'Clock out',
+    status: 'Shift saved',
     time: '02:15',
-    tone: 'muted',
+    seconds: '00',
+    note: 'Added to your timesheet.',
+    icon: 'check',
   },
 ];
 ---
@@ -58,105 +66,93 @@ const shifts = [
         Explore every staff tool <Icon name="arrow" size={16} />
       </a>
     </div>
-    <div
-      class="staff-panel panel"
-      aria-label="Sample staff shifts and timesheet"
-    >
-      <div class="panel-bar">
+    <div class="shift-demo panel" data-continuous-motion data-shift-demo>
+      <div class="demo-heading">
         <span>
-          <Icon name="clock" size={16} />
-          Staff activity
+          <Icon name="clock" size={16} /> Your shift
         </span>
-        <small>Sample data</small>
+        <span class="demo-meta">
+          Preview
+          <button
+            type="button"
+            class="motion-toggle"
+            data-shift-pause
+            aria-label="Pause shift animation"
+            aria-pressed="false"
+          >
+            Pause
+          </button>
+        </span>
       </div>
-      <div class="shift-current">
-        <div class="shift-heading">
+      <div class="shift-animation">
+        <div class="shift-person">
           <span class="avatar">MN</span>
           <div>
             <strong>MiraNorth</strong>
-            <p>Training host · Northwind City</p>
-          </div>
-          <span class="live-status">On shift</span>
-        </div>
-        <div class="shift-timer">
-          <div>
-            <span class="timer-label">Current shift</span>
-            <strong class="mono">
-              01:42<span>:08</span>
-            </strong>
-          </div>
-          <div class="shift-actions" aria-label="Example shift controls">
-            <span>Take a break</span>
-            <span class="clock-out">
-              <Icon name="clock" size={14} />
-              Clock out
-            </span>
+            <p>Training host</p>
           </div>
         </div>
-        <div class="shift-start">
-          <Icon name="check" size={13} />
-          Clocked in at 16:18 UTC <span>Time recorded automatically</span>
+        <p class="sr-only">
+          Example shift: clock in, track working time, pause for a break, then
+          clock out. Your completed shift is saved to your timesheet.
+        </p>
+        <div class="clock-scene" aria-hidden="true">
+          <svg class="clock-ring" viewBox="0 0 240 240" fill="none">
+            <circle class="ring-track" cx="120" cy="120" r="110" />
+            <circle
+              class="ring-progress"
+              cx="120"
+              cy="120"
+              r="110"
+              pathLength="100"
+            />
+          </svg>
+          <div class="clock-stages">
+            {stages.map((stage, index) => (
+              <div
+                class:list={['clock-stage', { 'default-stage': index === 1 }]}
+                style={`--stage-delay: ${-((4 - index) % 4) * 4}s`}
+              >
+                <span class="stage-status">
+                  <Icon name={stage.icon} size={14} />
+                  {stage.status}
+                </span>
+                <span class="timer mono">
+                  {stage.time}
+                  <span>:{stage.seconds}</span>
+                </span>
+                <span class="timer-caption">
+                  {index === 3
+                    ? 'Total shift time'
+                    : 'Hours / minutes / seconds'}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
+        <div class="shift-notes" aria-hidden="true">
+          {stages.map((stage, index) => (
+            <p
+              class:list={['clock-stage', { 'default-stage': index === 1 }]}
+              style={`--stage-delay: ${-((4 - index) % 4) * 4}s`}
+            >
+              {stage.note}
+            </p>
+          ))}
+        </div>
+        <ol class="shift-steps" aria-label="Shift workflow">
+          {stages.map((stage, index) => (
+            <li style={`--stage-delay: ${-((4 - index) % 4) * 4}s`}>
+              <span class="step-mark" aria-hidden="true">
+                <i></i>
+              </span>
+              {stage.label}
+            </li>
+          ))}
+        </ol>
       </div>
-      <div class="roster-heading">
-        <h3>Your team today</h3>
-        <span>3 staff</span>
-      </div>
-      <ul class="roster">
-        {shifts.map((shift) => (
-          <li>
-            <span class="avatar avatar--small">{shift.initials}</span>
-            <div class="staff-person">
-              <strong>{shift.name}</strong>
-              <small>{shift.role}</small>
-            </div>
-            <span class:list={['shift-status', shift.tone]}>
-              {shift.status}
-            </span>
-            <time class="mono">{shift.time}</time>
-          </li>
-        ))}
-      </ul>
-      <div class="staff-bottom">
-        <div class="timesheet">
-          <div class="card-label">
-            <Icon name="clock" size={14} />
-            Weekly timesheet
-          </div>
-          <p>
-            <strong>8h 30m</strong>
-            <span>of 10h target</span>
-          </p>
-          <div
-            class="activity-track"
-            role="meter"
-            aria-label="Weekly activity target"
-            aria-valuemin={0}
-            aria-valuemax={10}
-            aria-valuenow={8.5}
-          >
-            <i></i>
-          </div>
-          <small>Shifts and breaks, all accounted for.</small>
-        </div>
-        <div class="time-off">
-          <div class="card-label">
-            <Icon name="calendar" size={14} />
-            Time off
-          </div>
-          <p>
-            <strong>LenaShores</strong>
-            <span>14–16 September</span>
-          </p>
-          <span class="approved">
-            <Icon name="check" size={13} />
-            Approved by MiraNorth
-          </span>
-        </div>
-      </div>
-      <div class="panel-foot">
-        <Icon name="note" size={14} />
-        Shift history stays on each staff profile.
+      <div class="demo-footer">
+        <Icon name="check" size={14} /> Time tracked. Team in sync.
       </div>
     </div>
   </div>
@@ -200,234 +196,230 @@ const shifts = [
   .text-link {
     margin-top: 22px;
   }
-  .staff-panel {
+  .shift-demo {
     min-width: 0;
     overflow: hidden;
-    background: linear-gradient(140deg, #5689e809, transparent 55%), #101115;
-    font-size: 0.8125rem;
+    background: #101115;
+    --motion-state: paused;
   }
-  .panel-bar,
-  .panel-bar > span,
-  .shift-heading,
-  .shift-timer,
-  .shift-start,
-  .roster-heading,
-  .roster li,
-  .card-label,
-  .approved,
-  .panel-foot {
+  .demo-heading,
+  .demo-heading > span,
+  .demo-footer {
     display: flex;
     align-items: center;
+    gap: 9px;
   }
-  .panel-bar {
+  .demo-heading {
     justify-content: space-between;
-    gap: 12px;
     padding: 18px 24px;
     border-bottom: 1px solid var(--border);
+    font-size: 0.8125rem;
   }
-  .panel-bar > span,
-  .card-label,
-  .approved,
-  .panel-foot {
-    gap: 8px;
-  }
-  .panel-bar small,
-  .timer-label,
-  .shift-start,
-  .roster-heading > span,
-  .staff-person small,
-  .staff-bottom small,
-  .panel-foot {
+  .demo-meta {
     color: var(--text-dim);
     font-size: 0.75rem;
   }
-  .shift-current {
-    margin: 24px;
-    padding: 18px;
-    border: 1px solid #9eb9eb24;
-    border-radius: 9px;
-    background: #9eb9eb05;
+  .motion-toggle {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 5px 9px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.75rem;
   }
-  .shift-heading {
+  .motion-toggle:hover {
+    border-color: var(--border-strong);
+    color: var(--text);
+  }
+  .motion-toggle:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+  }
+  .shift-animation {
+    padding: 28px 24px 26px;
+  }
+  .shift-person {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 10px;
-    flex-wrap: wrap;
   }
   .avatar {
     display: grid;
     place-items: center;
     width: 34px;
     height: 34px;
-    flex-shrink: 0;
+    border: 1px solid var(--border);
     border-radius: 50%;
-    background: #93b8f51c;
-    color: #adc5ed;
-    font-size: 0.6875rem;
-  }
-  .shift-heading strong,
-  .staff-person strong {
-    font-weight: 550;
-  }
-  .shift-heading p {
-    color: var(--text-dim);
-    margin-top: 3px;
-    font-size: 0.75rem;
-  }
-  .live-status {
-    margin-left: auto;
-    font-size: 0.6875rem;
-    color: var(--green);
-    border: 1px solid #79c79e30;
-    padding: 4px 7px;
-    border-radius: 5px;
-  }
-  .shift-timer {
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 16px;
-    margin-top: 24px;
-  }
-  .timer-label {
-    display: block;
-    margin-bottom: 7px;
-  }
-  .shift-timer strong {
-    font-size: clamp(1.7rem, 3vw, 2.2rem);
-    font-weight: 450;
-    letter-spacing: -0.05em;
-    font-variant-numeric: tabular-nums;
-  }
-  .shift-timer strong span {
-    color: var(--text-dim);
-  }
-  .shift-actions {
-    display: flex;
-    gap: 7px;
-    font-size: 0.6875rem;
-  }
-  .shift-actions > span {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 10px;
-    border: 1px solid var(--border);
-    border-radius: 5px;
     color: var(--text-secondary);
+    font-size: 0.6875rem;
   }
-  .shift-actions .clock-out {
-    background: #e3e8f0;
-    color: #17191e;
-  }
-  .shift-start {
-    gap: 6px;
-    flex-wrap: wrap;
-    border-top: 1px solid var(--border);
-    padding-top: 14px;
-    margin-top: 19px;
-    font-size: 0.625rem;
-  }
-  .shift-start > span {
-    margin-left: auto;
-  }
-  .shift-start :global(svg) {
-    color: var(--green);
-  }
-  .roster-heading {
-    justify-content: space-between;
-    padding: 0 24px 12px;
-  }
-  .roster-heading h3 {
+  .shift-person strong {
     font-size: 0.8125rem;
-    font-weight: 550;
-  }
-  .roster {
-    padding: 0 24px;
-    list-style: none;
-  }
-  .roster li {
-    gap: 10px;
-    padding: 12px 0;
-    border-top: 1px solid var(--border);
-  }
-  .avatar--small {
-    width: 28px;
-    height: 28px;
-    font-size: 0.625rem;
-  }
-  .staff-person {
-    display: grid;
-    gap: 3px;
-  }
-  .shift-status {
-    margin-left: auto;
-    font-size: 0.6875rem;
-  }
-  .green,
-  .approved {
-    color: var(--green);
-  }
-  .amber {
-    color: var(--amber);
-  }
-  .muted {
-    color: var(--text-dim);
-  }
-  .roster time {
-    min-width: 40px;
-    text-align: right;
-    font-size: 0.6875rem;
-    color: var(--text-secondary);
-  }
-  .staff-bottom {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    padding: 16px 24px 24px;
-  }
-  .staff-bottom > div {
-    min-width: 0;
-    padding: 14px;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-  }
-  .card-label {
-    font-size: 0.6875rem;
-    color: var(--text-secondary);
-  }
-  .staff-bottom p {
-    display: grid;
-    gap: 4px;
-    margin-top: 14px;
-  }
-  .staff-bottom p strong {
-    font-size: 1rem;
     font-weight: 500;
   }
-  .staff-bottom p span,
-  .approved,
-  .staff-bottom small {
-    font-size: 0.625rem;
+  .shift-person p {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+  }
+  .clock-scene {
+    position: relative;
+    width: min(100%, 258px);
+    aspect-ratio: 1;
+    margin: 26px auto 16px;
+  }
+  .clock-ring {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+  .ring-track {
+    stroke: #ffffff0b;
+    stroke-width: 1;
+  }
+  .ring-progress {
+    stroke: #adc5ed;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 72;
+    animation: shift-ring 16s linear infinite;
+  }
+  .clock-stages {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+  .clock-stage {
+    grid-area: 1 / 1;
+    opacity: 0;
+    animation: shift-stage 16s var(--stage-delay) linear infinite;
+  }
+  .clock-stages .clock-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+  .stage-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+  .timer {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 400;
+    letter-spacing: -0.06em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .timer > span {
     color: var(--text-dim);
   }
-  .activity-track {
-    height: 4px;
-    background: #ffffff0b;
-    border-radius: 4px;
-    margin: 12px 0 7px;
-    overflow: hidden;
+  .timer-caption {
+    color: var(--text-dim);
+    font-size: 0.625rem;
+    letter-spacing: 0.025em;
   }
-  .activity-track i {
-    display: block;
-    height: 100%;
-    width: 85%;
-    background: #9eb9eb;
+  .shift-notes {
+    display: grid;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    min-height: 1.6em;
   }
-  .approved {
-    margin-top: 16px;
+  .shift-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    list-style: none;
+    margin-top: 30px;
+  }
+  .shift-steps li {
+    position: relative;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+  .shift-steps li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: calc(50% + 12px);
+    right: calc(-50% + 12px);
+    height: 1px;
+    background: var(--border);
+  }
+  .step-mark {
+    display: grid;
+    place-items: center;
+    width: 11px;
+    height: 11px;
+    margin: 0 auto 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+  }
+  .step-mark i {
+    width: 5px;
+    height: 5px;
+    background: #adc5ed;
+    border-radius: 50%;
+    opacity: 0;
+    animation: shift-stage 16s var(--stage-delay) linear infinite;
+  }
+  .shift-animation *,
+  .shift-animation *::after {
+    animation-play-state: var(--shift-play-state, var(--motion-state, paused));
+  }
+  .demo-footer {
+    justify-content: center;
+    border-top: 1px solid var(--border);
+    padding: 15px 20px;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+  .demo-footer :global(svg) {
     color: var(--green);
   }
-  .panel-foot {
-    border-top: 1px solid var(--border);
-    padding: 14px 24px;
+  @keyframes shift-stage {
+    0%,
+    22% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    25%,
+    97% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes shift-ring {
+    0%,
+    20% {
+      stroke-dashoffset: 100;
+      stroke: #adc5ed;
+    }
+    47%,
+    70% {
+      stroke-dashoffset: 38;
+      stroke: #adc5ed;
+    }
+    76%,
+    94% {
+      stroke-dashoffset: 0;
+      stroke: var(--green);
+    }
+    100% {
+      stroke-dashoffset: 100;
+      stroke: #adc5ed;
+    }
   }
   @media (max-width: 900px) {
     .staff-layout {
@@ -436,29 +428,55 @@ const shifts = [
     .section-copy {
       max-width: 58ch;
     }
+    .shift-demo {
+      width: 100%;
+      max-width: 600px;
+      justify-self: center;
+    }
   }
   @media (max-width: 480px) {
-    .panel-bar,
-    .panel-foot {
+    .demo-heading {
       padding-inline: 16px;
     }
-    .shift-current {
-      margin: 16px;
-      padding: 14px;
-    }
-    .roster,
-    .roster-heading {
+    .shift-animation {
       padding-inline: 16px;
     }
-    .staff-bottom {
-      padding: 12px 16px 16px;
-      grid-template-columns: 1fr;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .shift-animation * {
+      animation: none;
     }
-    .shift-start > span {
-      margin-left: 0;
+    .clock-stage {
+      opacity: 0;
     }
-    .roster li {
-      gap: 7px;
+    .default-stage {
+      opacity: 1;
+    }
+    .shift-steps li:nth-child(2) i {
+      opacity: 1;
+    }
+    .motion-toggle {
+      display: none;
     }
   }
 </style>
+
+<script>
+  document
+    .querySelectorAll<HTMLElement>('[data-shift-demo]')
+    .forEach((demo) => {
+      const button =
+        demo.querySelector<HTMLButtonElement>('[data-shift-pause]');
+      button?.addEventListener('click', () => {
+        const paused = button.getAttribute('aria-pressed') !== 'true';
+        button.setAttribute('aria-pressed', String(paused));
+        button.setAttribute(
+          'aria-label',
+          paused ? 'Play shift animation' : 'Pause shift animation',
+        );
+        button.textContent = paused ? 'Play' : 'Pause';
+        if (paused) demo.style.setProperty('--shift-play-state', 'paused');
+        else demo.style.removeProperty('--shift-play-state');
+      });
+    });
+</script>
