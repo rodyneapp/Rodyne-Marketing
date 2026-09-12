@@ -2,7 +2,13 @@
 import Icon from './Icon.astro';
 ---
 
-<div class="discord-demo panel" data-discord-demo data-phase="done">
+<div
+  class="discord-demo panel"
+  data-discord-demo
+  data-phase="done"
+  data-log-phase="posted"
+  data-typing="false"
+>
   <div class="channel-bar">
     <span>
       <Icon name="discord" size={19} />
@@ -14,6 +20,9 @@ import Icon from './Icon.astro';
   <p class="sr-only">
     Animated example: MiraNorth sends /ban chrxs_dev abuse of vehicle 7d. Relay
     responds “banning chrxs_dev”, then “Banned chrxs_dev” with a View Log link.
+    MiraNorth then sends /modlogs chrxs_dev. Relay posts a moderation log
+    showing the seven-day ban for abuse of vehicle, issued by MiraNorth, log
+    #1042.
   </p>
   <div class="channel-body" aria-hidden="true">
     <div class="channel-intro">
@@ -57,6 +66,63 @@ import Icon from './Icon.astro';
             <span class="separator">·</span>
             <span class="log-label">View Log</span>
           </p>
+        </div>
+      </div>
+    </div>
+    <div class="message logs-command">
+      <span class="avatar">MN</span>
+      <div>
+        <div class="message-meta">
+          <strong>MiraNorth</strong>
+          <small>Today at 19:00</small>
+        </div>
+        <p class="command-tokens">
+          <span class="slash-command">/modlogs</span>
+          <span class="command-field">chrxs_dev</span>
+        </p>
+      </div>
+    </div>
+    <div class="message logs-message">
+      <span class="avatar relay-avatar">R</span>
+      <div class="bot-content">
+        <div class="message-meta">
+          <strong>Relay</strong>
+          <span class="app-tag">
+            <Icon name="check" size={10} />
+            APP
+          </span>
+          <small>Today at 19:00</small>
+        </div>
+        <div class="log-embed">
+          <div class="embed-heading">
+            <Icon name="shield" size={16} />
+            <strong>Moderation logs · chrxs_dev</strong>
+          </div>
+          <p class="embed-summary">1 moderation action on record</p>
+          <div class="log-title">
+            <span>
+              Ban <i>·</i> #1042
+            </span>
+            <span class="active-ban">Active</span>
+          </div>
+          <dl class="log-fields">
+            <div class="log-reason">
+              <dt>Reason</dt>
+              <dd>abuse of vehicle</dd>
+            </div>
+            <div>
+              <dt>Moderator</dt>
+              <dd>MiraNorth</dd>
+            </div>
+            <div>
+              <dt>Duration</dt>
+              <dd>7 days</dd>
+            </div>
+          </dl>
+          <div class="embed-footer">
+            <Icon name="roblox" size={12} />
+            Northwind City · 12 Sep, 18:59 UTC
+          </div>
         </div>
       </div>
     </div>
@@ -109,7 +175,14 @@ import Icon from './Icon.astro';
     let visible = false;
     let paused = false;
     const render = () => {
-      const time = elapsed % 11000;
+      const time = elapsed % 18000;
+      const logTyping = !reduced.matches && time >= 8400 && time < 10800;
+      demo.dataset.logPhase =
+        reduced.matches || time >= 11500
+          ? 'posted'
+          : time >= 10800
+            ? 'sent'
+            : 'hidden';
       demo.dataset.phase = reduced.matches
         ? 'done'
         : time < 700
@@ -121,10 +194,18 @@ import Icon from './Icon.astro';
               : time < 6700
                 ? 'pending'
                 : 'done';
-      let characters =
-        demo.dataset.phase === 'typing' ? Math.floor((time - 700) / 90) : 0;
-      for (const token of tokens) {
-        const value = token.dataset.commandToken!;
+      demo.dataset.typing = String(
+        demo.dataset.phase === 'typing' || logTyping,
+      );
+      let characters = logTyping
+        ? Math.floor((time - 8400) / 100)
+        : demo.dataset.phase === 'typing'
+          ? Math.floor((time - 700) / 90)
+          : 0;
+      for (const [index, token] of tokens.entries()) {
+        const value = logTyping
+          ? ['/modlogs', 'chrxs_dev', '', ''][index]
+          : token.dataset.commandToken!;
         token.textContent = value.slice(0, Math.max(0, characters));
         characters -= value.length + 1;
       }
@@ -205,7 +286,7 @@ import Icon from './Icon.astro';
     color: var(--text-dim);
   }
   .channel-body {
-    height: 350px;
+    height: 625px;
     padding: 27px 24px 20px;
   }
   .channel-intro {
@@ -379,7 +460,7 @@ import Icon from './Icon.astro';
     white-space: nowrap;
   }
   [data-command-token]:empty,
-  [data-phase]:not([data-phase='typing']) .input-text {
+  [data-typing='false'] .input-text {
     display: none;
   }
   .user-message > div {
@@ -436,13 +517,105 @@ import Icon from './Icon.astro';
     opacity: 0;
     transform: translateY(5px);
   }
-  [data-phase]:not([data-phase='typing']) .caret,
-  [data-phase='typing'] .placeholder {
+  [data-typing='false'] .caret,
+  [data-typing='true'] .placeholder {
     display: none;
   }
   [data-phase]:not([data-phase='done']) .completed,
   [data-phase='done'] .pending {
     visibility: hidden;
+  }
+  .logs-command > div {
+    min-width: 0;
+  }
+  .logs-command .message-meta strong {
+    color: #baa8d2;
+  }
+  [data-log-phase='hidden'] .logs-command,
+  [data-log-phase='hidden'] .logs-message,
+  [data-log-phase='sent'] .logs-message {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  .log-embed {
+    margin-top: 9px;
+    padding: 15px 16px;
+    border: 1px solid #ffffff09;
+    border-left: 3px solid #8f9be8;
+    border-radius: 4px;
+    background: #0e0f1480;
+  }
+  .embed-heading {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #c4cef7;
+  }
+  .embed-heading strong {
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .embed-heading :global(svg) {
+    flex-shrink: 0;
+  }
+  .log-embed .embed-summary {
+    font-size: 0.6875rem;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+  .log-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border-top: 1px solid var(--border);
+    margin-top: 12px;
+    padding-top: 12px;
+    font-size: 0.75rem;
+    font-weight: 550;
+  }
+  .log-title i {
+    font-style: normal;
+    color: var(--text-dim);
+    margin-inline: 4px;
+  }
+  .active-ban {
+    color: var(--amber);
+    font-size: 0.625rem;
+    background: #e4b87912;
+    border: 1px solid #e4b87924;
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+  .log-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 12px;
+    font-size: 0.75rem;
+  }
+  .log-reason {
+    grid-column: 1 / -1;
+  }
+  .log-fields dt {
+    color: var(--text-dim);
+    font-size: 0.625rem;
+    margin-bottom: 3px;
+  }
+  .log-fields dd {
+    margin: 0;
+    color: var(--text-secondary);
+  }
+  .embed-footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 15px;
+    font-size: 0.625rem;
+    color: var(--text-dim);
+  }
+  .embed-footer :global(svg) {
+    flex-shrink: 0;
   }
   @keyframes spin {
     to {
@@ -467,7 +640,7 @@ import Icon from './Icon.astro';
     }
     .channel-body {
       padding-inline: 16px;
-      height: 380px;
+      height: 710px;
     }
     .composer {
       margin-inline: 16px;
