@@ -5,6 +5,7 @@ import '../styles/global.css';
 import { plans, site } from '../data/site';
 import { getImage } from 'astro:assets';
 import rodyneMark from '../assets/rodyne-mark.png';
+import { withBase } from '../lib/paths.mjs';
 
 interface Props {
   title?: string;
@@ -21,7 +22,7 @@ const {
 } = Astro.props;
 const origin = Astro.site ?? new URL(site.placeholderOrigin);
 const canonical = new URL(Astro.url.pathname, origin);
-const socialImage = new URL('/og.png', origin);
+const socialImage = new URL(withBase('/og.png'), origin);
 const favicon = await getImage({
   src: rodyneMark,
   width: 64,
@@ -55,7 +56,7 @@ const structuredData =
         isPartOf: {
           '@type': 'WebSite',
           name: site.name,
-          url: origin.toString(),
+          url: new URL(site.links.home, origin).toString(),
         },
       };
 ---
@@ -71,7 +72,11 @@ const structuredData =
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" href={favicon.src} type="image/png" sizes="64x64" />
-    <link rel="icon" href="/favicon.ico?v=rodyne-transparent" sizes="any" />
+    <link
+      rel="icon"
+      href={withBase('/favicon.ico?v=rodyne-transparent')}
+      sizes="any"
+    />
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />

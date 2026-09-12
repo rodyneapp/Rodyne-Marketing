@@ -1,7 +1,10 @@
 // Launch configuration lives here so placeholders never leak across components.
+import { withBase } from '../lib/paths.mjs';
 // Replace these values before public release; `.invalid` is intentionally non-routable.
 const placeholderOrigin = 'https://replace-before-launch.invalid';
-const appOrigin = import.meta.env.PUBLIC_APP_URL ?? placeholderOrigin;
+const appOrigin =
+  import.meta.env.PUBLIC_APP_URL?.trim().replace(/\/+$/, '') ||
+  placeholderOrigin;
 const appReady = appOrigin !== placeholderOrigin;
 
 export const site = {
@@ -13,36 +16,37 @@ export const site = {
     'Manage ranks, run training sessions, and resolve reports across Roblox and Discord with Rodyne. One shared workspace for your staff, from $8 per month.',
   placeholderOrigin,
   links: {
-    home: '/',
-    product: '/#product',
-    integrations: '/#integrations',
-    pricing: '/#pricing',
-    security: '/#security',
-    demo: '/#demo',
+    home: withBase('/'),
+    product: withBase('/#product'),
+    integrations: withBase('/#integrations'),
+    pricing: withBase('/#pricing'),
+    security: withBase('/#security'),
+    demo: withBase('/#demo'),
+    setup: withBase('/#setup'),
     signIn: `${appOrigin}/sign-in`,
     documentation: `${placeholderOrigin}/docs`,
     status: `${placeholderOrigin}/status`,
-    terms: '/legal/terms/',
-    privacy: '/legal/privacy/',
-    childrenPrivacy: '/legal/children/',
-    cookies: '/legal/cookies/',
-    acceptableUse: '/legal/acceptable-use/',
-    dpa: '/legal/dpa/',
-    subprocessors: '/legal/subprocessors/',
-    legal: '/legal/',
-    blog: '/blog/',
+    terms: withBase('/legal/terms/'),
+    privacy: withBase('/legal/privacy/'),
+    childrenPrivacy: withBase('/legal/children/'),
+    cookies: withBase('/legal/cookies/'),
+    acceptableUse: withBase('/legal/acceptable-use/'),
+    dpa: withBase('/legal/dpa/'),
+    subprocessors: withBase('/legal/subprocessors/'),
+    legal: withBase('/legal/'),
+    blog: withBase('/blog/'),
     discord: `${placeholderOrigin}/discord`,
   },
   checkout: {
     starter: appReady
       ? `${appOrigin}/checkout?plan=starter`
-      : '/#launch-checkout',
+      : withBase('/#launch-checkout'),
     community: appReady
       ? `${appOrigin}/checkout?plan=community`
-      : '/#launch-checkout',
+      : withBase('/#launch-checkout'),
     network: appReady
       ? `${appOrigin}/checkout?plan=network`
-      : '/#launch-checkout',
+      : withBase('/#launch-checkout'),
   },
 } as const;
 

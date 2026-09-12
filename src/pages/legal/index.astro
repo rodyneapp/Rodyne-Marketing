@@ -1,6 +1,7 @@
 ---
 import { legalConfig, legalDocuments } from '../../data/legal';
 import LegalLayout from '../../layouts/LegalLayout.astro';
+import { withBase } from '../../lib/paths.mjs';
 ---
 
 <LegalLayout
@@ -23,7 +24,7 @@ import LegalLayout from '../../layouts/LegalLayout.astro';
 
   <div class="legal-cards">
     {legalDocuments.map((document, index) => (
-      <a href={`/legal/${document.slug}/`}>
+      <a href={withBase(`/legal/${document.slug}/`)}>
         <span class="mono">{String(index + 1).padStart(2, '0')}</span>
         <div>
           <h2>{document.title}</h2>

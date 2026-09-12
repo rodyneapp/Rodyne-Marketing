@@ -1,14 +1,17 @@
 import type { APIRoute } from 'astro';
 import { legalConfig } from '../data/legal';
 import { site } from '../data/site';
+import { withBase } from '../lib/paths.mjs';
 
 export const prerender = true;
 
 export const GET: APIRoute = ({ site: astroSite }) => {
   const origin = astroSite ?? new URL(site.placeholderOrigin);
-  const sitemapUrl = new URL('/sitemap-index.xml', origin);
+  const sitemapUrl = new URL(withBase('/sitemap-index.xml'), origin);
 
-  const legalRule = legalConfig.isDraft ? 'Disallow: /legal/\n' : '';
+  const legalRule = legalConfig.isDraft
+    ? `Disallow: ${withBase('/legal/')}\n`
+    : '';
 
   return new Response(
     `User-agent: *\nAllow: /\n${legalRule}Sitemap: ${sitemapUrl}\n`,

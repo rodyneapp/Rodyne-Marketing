@@ -6,6 +6,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import BrandMark from '../../components/BrandMark.astro';
 import '../../styles/blog.css';
+import { site } from '../../data/site';
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
@@ -34,7 +35,7 @@ const readingMinutes = Math.max(
 >
   <Header />
   <main id="main-content" class="blog-shell blog-article">
-    <a class="back-to-blog" href="/blog/">
+    <a class="back-to-blog" href={site.links.blog}>
       ← All posts
     </a>
     <article>
@@ -59,8 +60,8 @@ const readingMinutes = Math.max(
       </div>
     </article>
     <div class="article-end">
-      <a href="/blog/">← More from Rodyne</a>
-      <a href="/">Explore Rodyne ↗</a>
+      <a href={site.links.blog}>← More from Rodyne</a>
+      <a href={site.links.home}>Explore Rodyne ↗</a>
     </div>
   </main>
   <Footer />

@@ -4,6 +4,7 @@ import SiteLayout from '../../layouts/SiteLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import '../../styles/blog.css';
+import { withBase } from '../../lib/paths.mjs';
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) =>
     b.data.date.valueOf() - a.data.date.valueOf() || a.id.localeCompare(b.id),
@@ -31,7 +32,7 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', {
     <div class="post-list">
       {posts.map((post) => (
         <article class="post-row">
-          <a href={`/blog/${post.id}/`}>
+          <a href={withBase(`/blog/${post.id}/`)}>
             <div class="post-meta">
               <span class="post-category">{post.data.category}</span>
               <time datetime={post.data.date.toISOString()}>

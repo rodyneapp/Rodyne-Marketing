@@ -3,6 +3,8 @@
 Astro marketing site for a paid workspace connecting Roblox communities,
 Roblox experiences and Discord servers.
 
+GitHub Pages release setup and custom-domain instructions: [docs/github-pages.md](docs/github-pages.md).
+
 ## Commands
 
 ```sh
@@ -10,6 +12,7 @@ npm install
 npm run dev
 npm run check
 npm run lint
+npm test
 npm run format:check
 npm run build
 npm run preview
@@ -22,6 +25,12 @@ The product is named Rodyne. Replace remaining `.invalid` configuration
 before a public release. Sign-in links stay hidden and pricing actions show
 availability until `PUBLIC_APP_URL` is configured. Set `PUBLIC_SITE_URL` to the production origin and `PUBLIC_APP_URL` to
 the hosted dashboard origin.
+
+For GitHub Pages project URLs, `PUBLIC_BASE_PATH` sets the repository subpath.
+The Pages workflow supplies the origin and base automatically from repository
+settings. Navigation, Markdown content links, favicons, and sitemap URLs use
+the same base. Run `npm run verify:release` after a production build with
+`PUBLIC_SITE_URL` and `PUBLIC_BASE_PATH` set to check the generated output.
 
 Legal operator details and the document set live in `src/data/legal.ts`. The
 legal routes remain visibly marked as drafts, receive `noindex`, and are

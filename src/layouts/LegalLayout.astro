@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import { legalConfig, legalNav } from '../data/legal';
 import { site } from '../data/site';
 import SiteLayout from './SiteLayout.astro';
+import { withBase } from '../lib/paths.mjs';
 
 interface Props {
   title: string;
@@ -83,9 +84,9 @@ const pageTitle = `${title} — ${site.name}`;
           {legalNav.map((item) => (
             <a
               href={item.href}
-              class:list={{ active: item.href === `/legal/${slug}/` }}
+              class:list={{ active: item.href === withBase(`/legal/${slug}/`) }}
               aria-current={
-                item.href === `/legal/${slug}/` ? 'page' : undefined
+                item.href === withBase(`/legal/${slug}/`) ? 'page' : undefined
               }
             >
               {item.label}

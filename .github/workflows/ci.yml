@@ -1,0 +1,32 @@
+name: Validate site
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        base: ['/', '/new-disc-to-rblx-management-app/']
+    env:
+      PUBLIC_SITE_URL: https://christianrelf.github.io
+      PUBLIC_BASE_PATH: ${{ matrix.base }}
+      PUBLIC_LEGAL_READY: 'false'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - run: npm run verify:release

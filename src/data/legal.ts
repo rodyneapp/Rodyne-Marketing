@@ -1,4 +1,5 @@
 import { site } from './site';
+import { withBase } from '../lib/paths.mjs';
 
 export const legalConfig = {
   // Required launch details. Keep `isDraft` true until every bracketed value is
@@ -1089,7 +1090,7 @@ export const legalDocuments: LegalDocument[] = [
 
 export const legalNav = legalDocuments.map((document) => ({
   label: document.shortTitle,
-  href: `/legal/${document.slug}/`,
+  href: withBase(`/legal/${document.slug}/`),
 }));
 
 export function getLegalDocument(slug: string) {

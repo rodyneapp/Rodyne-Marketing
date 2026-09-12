@@ -23,4 +23,4 @@ Opening paragraph.
 
 Categories: `Announcement`, `Press release`, or `Changelog`. The author defaults to Relay team. Use `draft: true` while writing; drafts are excluded from the public index, article routes and sitemap. Set it to `false` (or remove it) when ready, then rebuild and deploy. Dates are publication labels, not automatic scheduling.
 
-The title is rendered as the page heading, so begin body sections with `##`. Markdown supports lists, links, images, quotes, tables and fenced code blocks. Put images in `public/blog/` and reference them with `/blog/your-image.webp`. Posts sort newest first. No browser editor or database is required.
+The title is rendered as the page heading, so begin body sections with `##`. Markdown supports lists, links, images, quotes, tables and fenced code blocks. Put images in `public/blog/` and reference them with `/blog/your-image.webp`. Root-relative Markdown links, images and link-reference definitions are automatically prefixed with the deployment base for GitHub Pages; use normal Markdown syntax rather than raw HTML for those links. Posts sort newest first. No browser editor or database is required.

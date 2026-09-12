@@ -11,11 +11,14 @@
     "preview": "astro preview",
     "check": "astro check",
     "lint": "eslint .",
+    "test": "node --test tests/*.test.mjs",
+    "verify:release": "node scripts/verify-release.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/markdown-satteri": "^0.4.1",
     "@astrojs/sitemap": "^3.7.4",
     "@fontsource-variable/dm-sans": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
