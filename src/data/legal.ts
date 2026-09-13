@@ -233,7 +233,15 @@ export const legalDocuments: LegalDocument[] = [
         blocks: [
           {
             type: 'paragraph',
-            text: 'The service is provided with reasonable care and skill where required by law. Except for rights that cannot legally be excluded, the final warranty disclaimers, liability exclusions and financial cap must be selected for the operator, customer type and governing law before launch.',
+            text: `${product} is provided “as is” and “as available”, without warranties of any kind, whether express, implied or statutory, to the fullest extent permitted by applicable law. This includes any warranties of merchantability, satisfactory quality, fitness for a particular purpose and non-infringement, to the extent those warranties can lawfully be excluded.`,
+          },
+          {
+            type: 'paragraph',
+            text: 'We do not warrant that the service will be uninterrupted, error-free or available at all times, that every defect will be corrected, or that the service will meet your particular requirements. Integrations depend on third-party platforms and may be affected by their changes, restrictions or outages.',
+          },
+          {
+            type: 'paragraph',
+            text: 'Nothing in these Terms excludes or restricts any statutory consumer rights, legally required standards of care or other rights, remedies or liabilities that cannot lawfully be excluded or restricted. Where such protections apply, they take precedence over the disclaimers above.',
           },
           {
             type: 'note',

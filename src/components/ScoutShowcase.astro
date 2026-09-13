@@ -1,0 +1,790 @@
+---
+import { Image } from 'astro:assets';
+import torso from '../assets/scout-wearing-torso.png';
+import rightArm from '../assets/scout-wearing-right-arm.png';
+import leftArm from '../assets/scout-wearing-left-arm.png';
+import leftLeg from '../assets/scout-wearing-left-leg.png';
+import rightLeg from '../assets/scout-wearing-right-leg.png';
+import head from '../assets/scout-wearing-head.png';
+import Icon from './Icon.astro';
+import BrandMark from './BrandMark.astro';
+import ScoutAvatar from './ScoutAvatar.astro';
+import { withBase } from '../lib/paths.mjs';
+---
+
+<section
+  class="scout-showcase"
+  id="scout"
+  aria-labelledby="scout-title"
+  data-observe-reveal
+>
+  <div class="scout-copy">
+    <p class="eyebrow">03 / Rodyne Scout</p>
+    <h2 class="display" id="scout-title">
+      Spot the signals.
+      <br />
+      Review the risks.
+    </h2>
+    <p class="section-copy">
+      Screen your roster for suspected links to condo servers using a large
+      reference dataset and public reports. Scout brings potential matches into
+      one place, ready for your staff to investigate.
+    </p>
+    <ul class="scout-benefits">
+      <li>
+        <Icon name="search" size={17} />
+        Cross-check members against known reports
+      </li>
+      <li>
+        <Icon name="case" size={17} />
+        Review the source behind each potential match
+      </li>
+      <li>
+        <Icon name="users" size={17} />
+        Compile a removal list after staff review
+      </li>
+    </ul>
+    <p class="scout-principle">
+      <Icon name="shield" size={17} />A flag starts a review. Your staff make
+      the decision.
+    </p>
+  </div>
+
+  <div class="scout-demo panel" data-scout-demo>
+    <div class="scout-bar">
+      <span class="scout-brand">
+        <BrandMark />
+        <strong>
+          Rodyne <span>Scout</span>
+        </strong>
+      </span>
+      <span class="example-tag">Fictional profile demo</span>
+    </div>
+    <p class="sr-only">
+      Animated fictional Roblox profile. Scout checks Example account 014, then
+      shows a small red flag beside the profile picture to indicate a watchlist
+      match. A detail panel shows a fictional Discord ID and connections to
+      three Discord condo servers, then adds the account to a staff review
+      queue. No real account is shown or removed.
+    </p>
+    <div class="profile-scene" aria-hidden="true">
+      <div class="profile-cover">
+        <span class="view-3d">3D</span>
+        <ScoutAvatar />
+      </div>
+      <div class="profile-body">
+        <div class="profile-identity">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar">
+              <ScoutAvatar portrait />
+            </div>
+            <span class="profile-flag" title="On Scout watchlist">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M6 21V4m0 1c4-5 8 5 13 0v10c-5 5-9-5-13 0"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M6 5c4-5 8 5 13 0v10c-5 5-9-5-13 0Z"
+                  fill="currentColor"
+                  opacity=".9"
+                />
+              </svg>
+            </span>
+            <svg class="profile-cursor" viewBox="0 0 24 30">
+              <path
+                d="M3 2v22l6-6 5 10 4-2-5-10h9Z"
+                fill="#fafafa"
+                stroke="#202530"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div class="profile-name">
+            <h3>DemoPlayer014</h3>
+            <p>@scout_demo_014</p>
+          </div>
+          <span class="profile-add-friend">Add Friend</span>
+          <span class="profile-more">
+            <Icon name="dots" size={16} />
+          </span>
+        </div>
+        <div class="profile-counts">
+          <span>
+            <b>0</b> Friends
+          </span>
+          <span>
+            <b>0</b> Followers
+          </span>
+          <span>
+            <b>0</b> Following
+          </span>
+        </div>
+        <div class="profile-tabs">
+          <span>About</span>
+          <span>Creations</span>
+        </div>
+        <div class="profile-wearing">
+          <h4>Currently Wearing</h4>
+          <div class="wearing-items">
+            {[
+              { image: torso, label: 'Man Torso' },
+              { image: rightArm, label: 'Man Right Arm' },
+              { image: leftArm, label: 'Man Left Arm' },
+              { image: leftLeg, label: 'Man Left Leg' },
+              { image: rightLeg, label: 'Man Right Leg' },
+              { image: head, label: 'Stevie Standard - Head' },
+            ].map((item) => (
+              <div>
+                <span class="wearing-thumbnail">
+                  <Image
+                    src={item.image}
+                    alt=""
+                    width={150}
+                    height={150}
+                    format="webp"
+                    loading="lazy"
+                  />
+                </span>
+                <span class="wearing-label">{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="scout-profile-notice">
+          <span class="notice-symbol">
+            <svg width="34" height="38" viewBox="0 0 24 26" fill="none">
+              <path
+                d="M5 24V3M5 4c5-5 9 5 15 0v12c-6 5-10-5-15 0"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M5 4c5-5 9 5 15 0v12c-6 5-10-5-15 0Z"
+                fill="currentColor"
+                fill-opacity=".85"
+              />
+            </svg>
+          </span>
+          <div>
+            <strong>On Scout watchlist</strong>
+            <p>Suspected condo-server link</p>
+          </div>
+          <span class="notice-status">Review required</span>
+          <div class="notice-connections">
+            <div class="notice-discord">
+              <Icon name="discord" size={20} />
+              <div>
+                <strong>Discord connection found</strong>
+                <span>
+                  Demo ID: <code>000000000000000014</code>
+                </span>
+              </div>
+            </div>
+            <div class="notice-servers">
+              <span class="notice-server-count">3</span>
+              <span>Discord condo servers connected</span>
+            </div>
+          </div>
+          <div class="notice-source">
+            <Icon name="note" size={14} />
+            Reference dataset + public report
+          </div>
+          <p class="notice-context">
+            A list match is a signal to investigate, not a confirmed finding.
+          </p>
+          <span class="notice-brand" aria-label="Rodyne Scout">
+            <span
+              class="notice-brand-mark"
+              style={`mask-image: url('${withBase('/rodyne-logo.png')}')`}
+            ></span>
+            <span>
+              Rodyne <strong>Scout</strong>
+            </span>
+          </span>
+        </div>
+        <div class="review-queue">
+          <Icon name="case" size={16} />
+          <span>Removal review list</span>
+          <strong>1 account · pending review</strong>
+        </div>
+      </div>
+    </div>
+    <div class="scout-playback">
+      <div class="playback-copy">
+        <span class="playback-dot"></span>
+        <div>
+          <strong data-scout-caption>Watchlist match found</strong>
+          <p data-scout-detail>Red flags put the source one glance away.</p>
+        </div>
+      </div>
+      <div class="scout-controls">
+        <button type="button" data-scout-pause disabled>
+          Pause
+        </button>
+        <button type="button" data-scout-replay disabled>
+          Replay
+        </button>
+      </div>
+    </div>
+    <div class="scout-timeline" aria-hidden="true">
+      <span data-scout-progress></span>
+    </div>
+  </div>
+</section>
+<script>
+  import { initScoutDemo } from '../scripts/scout-demo';
+  initScoutDemo();
+</script>
+<style>
+  @font-face {
+    font-family: 'Scout Builder Sans';
+    src: url('../assets/builder-sans-regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Scout Builder Sans';
+    src: url('../assets/builder-sans-bold.woff2') format('woff2');
+    font-weight: 600 900;
+    font-display: swap;
+  }
+
+  .scout-showcase {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.8fr);
+    align-items: center;
+    gap: clamp(32px, 4vw, 64px);
+    border-top: 1px solid var(--border);
+    padding-block: clamp(72px, 8vw, 110px);
+  }
+  .scout-copy {
+    order: 2;
+  }
+  .scout-copy h2 {
+    font-size: clamp(2.3rem, 4.2vw, 3.6rem);
+    line-height: 1.1;
+  }
+  .section-copy {
+    max-width: 44ch;
+    font-size: 1rem;
+  }
+  .scout-benefits {
+    display: grid;
+    gap: 14px;
+    margin-top: 26px;
+    list-style: none;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+  }
+  .scout-benefits li,
+  .scout-principle {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .scout-benefits :global(svg),
+  .scout-principle :global(svg) {
+    flex-shrink: 0;
+    color: #a7bcec;
+  }
+  .scout-principle {
+    margin-top: 28px;
+    color: var(--text-dim);
+    font-size: 0.875rem;
+    max-width: 38ch;
+  }
+  .scout-demo {
+    min-width: 0;
+    overflow: hidden;
+    background: #101218;
+  }
+  .scout-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+  .scout-brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    --brand-mark-size: 25px;
+  }
+  .scout-brand strong {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+  .scout-brand strong span {
+    color: #a7bcec;
+  }
+  .example-tag {
+    font: 0.75rem var(--mono);
+    color: var(--text-dim);
+  }
+  .profile-scene {
+    --profile-opacity: 1;
+    --flag-opacity: 1;
+    --flag-scale: 1;
+    --notice-opacity: 1;
+    --notice-y: 0px;
+    --queue-opacity: 1;
+    --cursor-opacity: 0;
+    container-type: inline-size;
+    padding: 24px 18px 18px;
+    background: #fff;
+    color: #202227;
+    font-family: 'Scout Builder Sans', Arial, sans-serif;
+    line-height: 1.4;
+  }
+  .profile-cover {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 970 / 301;
+    border-radius: 8px;
+    background: #f7f7f8;
+    opacity: var(--profile-opacity);
+  }
+  .profile-cover > :global(.avatar-render) {
+    width: 31%;
+    height: 100%;
+  }
+  .view-3d {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 32px;
+    background: #dddde3;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .profile-body {
+    position: relative;
+  }
+  .profile-identity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: var(--profile-opacity);
+  }
+  .profile-avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+    width: 13.2%;
+    aspect-ratio: 1;
+    margin-top: -2.15%;
+    z-index: 2;
+  }
+  .profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #eceef1;
+    overflow: hidden;
+  }
+  .profile-flag {
+    position: absolute;
+    right: -6px;
+    bottom: 4px;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border: 3px solid #fafbfc;
+    border-radius: 50%;
+    background: #d13b4d;
+    color: white;
+    opacity: var(--flag-opacity);
+    transform: scale(var(--flag-scale));
+    box-shadow: 0 2px 6px #7b1d3024;
+  }
+  .profile-flag svg {
+    width: 17px;
+    height: 17px;
+  }
+  .profile-cursor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 22px;
+    height: 28px;
+    z-index: 4;
+    opacity: var(--cursor-opacity);
+    transform: translate(var(--cursor-x, 80px), var(--cursor-y, 68px))
+      scale(var(--cursor-scale, 1));
+    transform-origin: 3px 2px;
+    filter: drop-shadow(0 2px 2px #0003);
+  }
+  .profile-name {
+    min-width: 0;
+    flex: 1;
+  }
+  .profile-name h3 {
+    font-size: clamp(1rem, 2.9cqi, 1.75rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+  .profile-name p {
+    margin-top: 2px;
+    font-size: clamp(0.75rem, 1.65cqi, 1rem);
+    color: #202227;
+  }
+  .profile-more {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    background: #e6e6eb;
+    color: #202227;
+  }
+  .profile-add-friend {
+    display: grid;
+    place-items: center;
+    width: 29.2%;
+    min-height: 28px;
+    padding: 6px;
+    border-radius: 6px;
+    background: #335fff;
+    color: white;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .profile-counts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 0.75rem;
+    color: #777980;
+    font-weight: 700;
+  }
+  .profile-counts span {
+    background: #f2f3f3;
+    padding: 5px 8px;
+    border-radius: 20px;
+  }
+  .profile-counts b {
+    font-weight: inherit;
+  }
+  .profile-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid #dedfe4;
+    margin-top: 2px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: center;
+    color: #676b75;
+  }
+  .profile-tabs span {
+    padding: 8px 10px 12px;
+  }
+  .profile-tabs span:first-child {
+    border-bottom: 2px solid #272930;
+    margin-bottom: -1px;
+    color: #202227;
+  }
+  .profile-wearing {
+    margin-top: 16px;
+  }
+  .profile-wearing h4 {
+    margin-bottom: 9px;
+    font-size: clamp(0.875rem, 2.1cqi, 1.25rem);
+    font-weight: 700;
+  }
+  .wearing-items {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .wearing-thumbnail {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #e3e5eb;
+    border-radius: 6px;
+  }
+  .wearing-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .wearing-label {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #202227;
+  }
+  .scout-profile-notice {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 14px;
+    border: 1px solid #e6b9c0;
+    border-radius: 8px;
+    background: #fff5f5;
+    opacity: var(--notice-opacity);
+    transform: translateY(var(--notice-y));
+  }
+  .notice-symbol {
+    color: #b32d43;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 46px;
+  }
+  .scout-profile-notice strong {
+    display: block;
+    color: #96253b;
+    font-size: 0.875rem;
+    font-weight: 650;
+  }
+  .scout-profile-notice > div > p {
+    margin-top: 2px;
+    color: #805863;
+    font-size: 0.75rem;
+  }
+  .notice-status {
+    color: #995267;
+    font-size: 0.75rem;
+  }
+  .notice-source {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-top: 1px solid #edd5da;
+    padding-top: 10px;
+    color: #705563;
+    font-size: 0.75rem;
+  }
+  .notice-connections {
+    grid-column: 1 / -1;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid #edd5da;
+    border-radius: 6px;
+    background: #fffafa;
+    color: #805863;
+    font-size: 0.75rem;
+  }
+  .notice-discord,
+  .notice-servers {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .notice-discord > :global(svg) {
+    flex-shrink: 0;
+    color: #b32d43;
+  }
+  .notice-discord > div {
+    min-width: 0;
+  }
+  .notice-discord strong {
+    margin-bottom: 3px;
+    font-size: 0.8125rem;
+  }
+  .notice-discord code {
+    font-family: var(--mono);
+    overflow-wrap: anywhere;
+  }
+  .notice-servers {
+    margin-top: 10px;
+    border-top: 1px solid #f0dfe3;
+    padding-top: 10px;
+    color: #96253b;
+  }
+  .notice-server-count {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    background: #f8e4e8;
+    font-weight: 700;
+  }
+  .notice-context {
+    grid-column: 1 / -1;
+    color: #896773;
+    font-size: 0.75rem;
+  }
+  .notice-brand {
+    grid-column: 1 / -1;
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #b32d43;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  .notice-brand-mark {
+    display: block;
+    width: 25px;
+    height: 25px;
+    background: currentColor;
+    mask-size: contain;
+    mask-position: center;
+    mask-repeat: no-repeat;
+  }
+  .notice-brand strong {
+    display: inline;
+    color: inherit;
+    font-size: inherit;
+    font-weight: 750;
+  }
+  .review-queue {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 12px;
+    border: 1px solid #dce2ed;
+    border-radius: 6px;
+    padding: 10px;
+    background: #edf1f8;
+    font-size: 0.75rem;
+    color: #56627a;
+    opacity: var(--queue-opacity);
+  }
+  .review-queue strong {
+    margin-left: auto;
+    font-weight: 500;
+  }
+  .scout-playback {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 17px 20px;
+    min-height: 85px;
+  }
+  .playback-copy {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+  .playback-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #a6bbeb;
+    flex-shrink: 0;
+  }
+  .playback-copy strong {
+    font-size: 0.8125rem;
+    font-weight: 500;
+  }
+  .playback-copy p {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 3px;
+  }
+  .scout-controls {
+    display: flex;
+    gap: 14px;
+  }
+  .scout-controls button {
+    padding: 5px 0;
+    background: transparent;
+    color: #b8c7e3;
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+  .scout-controls button:disabled {
+    color: var(--text-dim);
+    cursor: default;
+  }
+  .scout-timeline {
+    height: 2px;
+    background: #ffffff06;
+  }
+  .scout-timeline span {
+    display: block;
+    height: 100%;
+    transform-origin: left;
+    background: #7497d6;
+  }
+  @media (max-width: 900px) {
+    .scout-showcase {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .scout-copy {
+      order: 0;
+    }
+    .section-copy {
+      max-width: 58ch;
+    }
+  }
+  @media (max-width: 480px) {
+    .profile-scene {
+      padding: 10px;
+    }
+    .profile-identity {
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .profile-add-friend {
+      width: 100%;
+      margin-top: 3px;
+    }
+    .profile-avatar-wrap {
+      width: 72px;
+      height: 72px;
+    }
+    .profile-name h3 {
+      font-size: 0.875rem;
+    }
+    .profile-more {
+      display: none;
+    }
+    .notice-status {
+      grid-column: 2;
+    }
+    .scout-profile-notice {
+      grid-template-columns: auto 1fr;
+      gap: 8px;
+      padding: 12px;
+    }
+    .wearing-items {
+      grid-template-columns: repeat(6, minmax(72px, 1fr));
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .profile-cover {
+      min-height: 140px;
+    }
+    .profile-cover > :global(.avatar-render) {
+      width: 140px;
+      height: 140px;
+    }
+  }
+</style>

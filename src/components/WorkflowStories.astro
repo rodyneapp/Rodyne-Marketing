@@ -2,6 +2,7 @@
 import DiscordCommandPreview from './DiscordCommandPreview.astro';
 import Icon from './Icon.astro';
 import CommunityMesh from './CommunityMesh.astro';
+import ScoutShowcase from './ScoutShowcase.astro';
 ---
 
 <section
@@ -45,112 +46,7 @@ import CommunityMesh from './CommunityMesh.astro';
 
     <CommunityMesh />
 
-    <article class="workflow workflow--reverse" data-observe-reveal>
-      <div class="story-copy">
-        <p class="eyebrow">03 / Sessions and training</p>
-        <h2 class="display section-title">
-          From “who’s hosting?”
-          <br />
-          to all set.
-        </h2>
-        <p class="section-copy">
-          One session, both communities. Publish to Roblox Events and Discord
-          Events, then bring hosts, attendance and training results together.
-        </p>
-        <ul class="benefits">
-          <li>
-            <Icon name="check" size={16} />
-            Publish sessions to Roblox Events and Discord Events
-          </li>
-          <li>
-            <Icon name="check" size={16} />
-            Let staff claim hosting slots, with RSVPs and reminders
-          </li>
-          <li>
-            <Icon name="check" size={16} />
-            Record attendance and results separately
-          </li>
-        </ul>
-      </div>
-      <div class="workflow-panel session-panel panel">
-        <div class="panel-bar">
-          <span>
-            <Icon name="calendar" size={16} />
-            Community schedule
-          </span>
-          <span class="demo-label">Sample data</span>
-        </div>
-        <div class="session-heading">
-          <div class="date-tile">
-            <span>SAT</span>
-            <strong>12</strong>
-          </div>
-          <div>
-            <p>September · 18:00 UTC</p>
-            <h3>Front Desk Training</h3>
-            <span>Hosted by MiraNorth</span>
-          </div>
-        </div>
-        <div class="session-progress" aria-label="Session completed">
-          <span>
-            <i></i>Scheduled
-          </span>
-          <span>
-            <i></i>Check-in
-          </span>
-          <span>
-            <i></i>Results saved
-          </span>
-        </div>
-        <div class="session-numbers">
-          <div>
-            <strong>24</strong>
-            <span>RSVPs</span>
-          </div>
-          <div>
-            <strong>21</strong>
-            <span>Attended</span>
-          </div>
-          <div>
-            <strong>18</strong>
-            <span>Passed training</span>
-          </div>
-        </div>
-        <div
-          class="event-platforms"
-          aria-label="Session published on both platforms"
-        >
-          {[
-            {
-              icon: 'roblox',
-              name: 'Roblox Events',
-              destination: 'Northwind City experience',
-            },
-            {
-              icon: 'discord',
-              name: 'Discord Events',
-              destination: 'Northwind staff server',
-            },
-          ].map((platform) => (
-            <div class="session-notice">
-              <Icon name={platform.icon} size={22} />
-              <div>
-                <strong>{platform.name}</strong>
-                <p>Front Desk Training · 18:00 UTC</p>
-                <small>{platform.destination}</small>
-              </div>
-              <span class="event-published">
-                <Icon name="check" size={14} /> Published
-              </span>
-            </div>
-          ))}
-        </div>
-        <div class="panel-foot">
-          <Icon name="note" size={15} />
-          Host-confirmed results, attached to each member
-        </div>
-      </div>
-    </article>
+    <ScoutShowcase />
   </div>
 </section>
 
@@ -164,16 +60,6 @@ import CommunityMesh from './CommunityMesh.astro';
     gap: clamp(36px, 7vw, 100px);
     align-items: center;
     padding-bottom: clamp(80px, 10vw, 132px);
-  }
-  .workflow + .workflow {
-    border-top: 1px solid var(--border);
-    padding-top: clamp(80px, 10vw, 132px);
-  }
-  .workflow--reverse {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  }
-  .workflow--reverse .story-copy {
-    order: 2;
   }
   .section-title {
     font-size: clamp(2.3rem, 4.2vw, 3.6rem);
@@ -203,201 +89,13 @@ import CommunityMesh from './CommunityMesh.astro';
   .text-link {
     margin-top: 20px;
   }
-  .workflow-panel {
-    overflow: hidden;
-    min-width: 0;
-    background: linear-gradient(140deg, #5689e809, transparent 55%), #101115;
-  }
-  .panel-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 18px 24px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-  }
-  .panel-bar > span:first-child {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .session-notice strong {
-    font-size: 0.9375rem;
-    font-weight: 550;
-  }
-  .session-notice p {
-    margin-top: 3px;
-    color: var(--text-dim);
-    font-size: 0.875rem;
-  }
-  .panel-foot {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    padding: 16px 24px;
-    border-top: 1px solid var(--border);
-    color: var(--text-dim);
-    background: #ffffff02;
-    font-size: 0.8125rem;
-  }
-  .panel-foot :global(svg) {
-    flex-shrink: 0;
-  }
-  .session-heading {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    padding: 28px 24px;
-  }
-  .date-tile {
-    flex-shrink: 0;
-    width: 64px;
-    border: 1px solid var(--border-strong);
-    border-radius: 10px;
-    text-align: center;
-    overflow: hidden;
-  }
-  .date-tile span {
-    display: block;
-    padding: 5px;
-    background: #ffffff06;
-    font: 0.75rem var(--mono);
-    color: var(--text-dim);
-  }
-  .date-tile strong {
-    display: block;
-    font-size: 1.7rem;
-    font-weight: 500;
-    padding: 2px 0 4px;
-  }
-  .session-heading p,
-  .session-heading > div > span {
-    color: var(--text-dim);
-    font-size: 0.875rem;
-  }
-  .session-heading h3 {
-    margin: 5px 0;
-    font-size: clamp(1.05rem, 2vw, 1.3rem);
-    font-weight: 550;
-  }
-  .session-progress {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin: 0 24px;
-    padding: 16px 0;
-    border-block: 1px solid var(--border);
-    color: var(--text-secondary);
-    font-size: 0.8125rem;
-  }
-  .session-progress span {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-  }
-  .session-progress i {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--green);
-    flex-shrink: 0;
-  }
-  .session-numbers {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    padding: 28px 24px;
-  }
-  .session-numbers div {
-    display: grid;
-    gap: 4px;
-  }
-  .session-numbers div + div {
-    border-left: 1px solid var(--border);
-    padding-left: 18px;
-  }
-  .session-numbers strong {
-    font-size: 2rem;
-    font-weight: 500;
-    letter-spacing: -0.04em;
-  }
-  .session-numbers span {
-    color: var(--text-dim);
-    font-size: 0.8125rem;
-  }
-  .session-notice {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px;
-    margin: 0 24px 24px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: #5689e808;
-  }
-  .session-notice > :global(svg) {
-    flex-shrink: 0;
-    color: #9eb9eb;
-  }
-  .event-platforms {
-    display: grid;
-    gap: 10px;
-    margin-bottom: 24px;
-  }
-  .session-notice {
-    margin-bottom: 0;
-    flex-wrap: wrap;
-  }
-  .session-notice small {
-    color: var(--text-dim);
-    font-size: 0.75rem;
-  }
-  .event-published {
-    margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    color: var(--green);
-    font-size: 0.75rem;
-  }
   @media (max-width: 900px) {
-    .workflow,
-    .workflow--reverse {
+    .workflow {
       grid-template-columns: 1fr;
       gap: 36px;
     }
-    .workflow--reverse .story-copy {
-      order: 0;
-    }
     .section-copy {
       max-width: 58ch;
-    }
-  }
-  @media (max-width: 480px) {
-    .panel-bar,
-    .session-heading {
-      padding: 18px 16px;
-    }
-    .panel-bar {
-      align-items: flex-start;
-      flex-wrap: wrap;
-    }
-    .session-progress {
-      margin-inline: 16px;
-      flex-wrap: wrap;
-    }
-    .session-numbers {
-      padding: 22px 16px;
-    }
-    .session-numbers div + div {
-      padding-left: 10px;
-    }
-    .session-notice {
-      margin-inline: 16px;
-    }
-    .panel-foot {
-      padding-inline: 16px;
     }
   }
 </style>

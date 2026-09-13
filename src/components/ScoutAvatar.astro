@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import avatar from '../assets/scout-roblox-avatar.png';
+import headshot from '../assets/scout-roblox-headshot.png';
+interface Props {
+  portrait?: boolean;
+}
+const { portrait = false } = Astro.props;
+---
+
+<span class="avatar-render" aria-hidden="true">
+  <Image
+    src={portrait ? headshot : avatar}
+    alt=""
+    format="webp"
+    loading="lazy"
+  />
+</span>
+<style>
+  .avatar-render {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+</style>
