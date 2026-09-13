@@ -3,29 +3,47 @@ import BrandMark from './BrandMark.astro';
 import { withBase } from '../lib/paths.mjs';
 
 interface Props {
-  product: 'Scout' | 'Connect';
+  product: 'Scout' | 'Cnect';
 }
 const { product } = Astro.props;
 ---
 
-{product === 'Connect' ? (
-  <img
-    class="connect-logo"
-    src={withBase('/rodyne-cnect.svg')}
-    alt="Rodyne Cnect"
-    width="1791"
-    height="376"
-  />
-) : (
-  <span class="scout-logo" role="img" aria-label="Rodyne Scout">
-    <BrandMark />
-    <span aria-hidden="true">
-      Rodyne <strong>Scout</strong>
+<span class="product-lockup">
+  {product === 'Cnect' ? (
+    <img
+      class="connect-logo"
+      src={withBase('/rodyne-cnect.svg')}
+      alt="Rodyne Cnect"
+      width="1791"
+      height="376"
+    />
+  ) : (
+    <span class="scout-logo" role="img" aria-label="Rodyne Scout">
+      <BrandMark />
+      <span aria-hidden="true">
+        Rodyne <strong>Scout</strong>
+      </span>
     </span>
-  </span>
-)}
+  )}
+  <sup class="product-trademark" aria-label="trademark">
+    ™
+  </sup>
+</span>
 
 <style>
+  .product-lockup {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 3px;
+    max-width: 100%;
+  }
+  .product-trademark {
+    position: static;
+    margin-top: 0.3em;
+    font-size: max(9px, calc(var(--product-logo-size, 40px) * 0.27));
+    line-height: 1;
+    color: var(--text-secondary);
+  }
   .connect-logo {
     display: block;
     width: calc(var(--product-logo-size, 40px) * 7);

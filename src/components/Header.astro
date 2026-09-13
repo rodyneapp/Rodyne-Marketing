@@ -14,7 +14,12 @@ const { brandLabel = site.name } = Astro.props;
   <div class="header-shell">
     <a class="brand" href={site.links.home} aria-label={`${brandLabel} home`}>
       <BrandMark />
-      <span>{brandLabel}</span>
+      <span>
+        {brandLabel}
+        <sup class="brand-trademark" aria-label="trademark">
+          ™
+        </sup>
+      </span>
     </a>
 
     <nav class="desktop-nav" aria-label="Primary navigation">

@@ -55,7 +55,7 @@ export const site = {
 export const navigation = [
   { label: 'Product', href: site.links.product },
   { label: 'Scout', href: site.links.scout },
-  { label: 'Connect', href: site.links.connect },
+  { label: 'Cnect', href: site.links.connect },
   { label: 'Integrations', href: site.links.integrations },
   { label: 'Pricing', href: site.links.pricing },
   { label: 'Security', href: site.links.security },

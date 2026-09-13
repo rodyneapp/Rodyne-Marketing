@@ -3,7 +3,7 @@ import Icon from './Icon.astro';
 import ProductLogo from './ProductLogo.astro';
 
 interface Props {
-  product: 'Scout' | 'Connect';
+  product: 'Scout' | 'Cnect';
 }
 const { product } = Astro.props;
 const scout = product === 'Scout';
@@ -101,7 +101,7 @@ const transfers = [
   <div
     class="walkthrough-tabs"
     role="group"
-    aria-label={scout ? 'Scout review stages' : 'Connect sharing examples'}
+    aria-label={scout ? 'Scout review stages' : 'Cnect sharing examples'}
   >
     {steps.map((step, index) => (
       <button

@@ -8,7 +8,7 @@ const linkGroups = [
     links: [
       { label: 'Product', href: site.links.product },
       { label: 'Scout', href: site.links.scout },
-      { label: 'Connect', href: site.links.connect },
+      { label: 'Cnect', href: site.links.connect },
       { label: 'Integrations', href: site.links.integrations },
       { label: 'Pricing', href: site.links.pricing },
       { label: 'Security', href: site.links.security },
@@ -52,7 +52,12 @@ const year = new Date().getFullYear();
     <div class="footer-brand">
       <a href={site.links.home} aria-label={`${site.name} home`}>
         <BrandMark />
-        <span>{site.name}</span>
+        <span>
+          {site.name}
+          <sup class="brand-trademark" aria-label="trademark">
+            ™
+          </sup>
+        </span>
       </a>
       <p>Connected operations for growing Roblox communities.</p>
     </div>
@@ -69,16 +74,36 @@ const year = new Date().getFullYear();
   </div>
   <div class="container footer-bottom">
     <p>
-      © {year} {site.name}
+      © {year} {site.name}. All rights reserved.
     </p>
     <p>
       Roblox and Discord are separate platforms; this product is not presented
       as their partner.
     </p>
   </div>
+  <div class="container footer-rights">
+    <p>
+      Rodyne™, Rodyne Scout™ and Rodyne Cnect™, and their logos, are our
+      trademarks. Copyright in our original website content and logo artwork is
+      reserved.
+    </p>
+    <p>
+      Third-party names, logos and other materials belong to their respective
+      owners.
+    </p>
+  </div>
 </footer>
 
 <style>
+  .footer-rights {
+    padding-block: 0 24px;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    line-height: 1.6;
+  }
+  .footer-rights p + p {
+    margin-top: 4px;
+  }
   .site-footer {
     border-top: 1px solid var(--border);
     background: #08080a;

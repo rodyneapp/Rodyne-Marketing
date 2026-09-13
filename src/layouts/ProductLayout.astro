@@ -8,7 +8,7 @@ import { site } from '../data/site';
 import '../styles/product-pages.css';
 
 interface Props {
-  name: 'Scout' | 'Connect';
+  name: 'Scout' | 'Cnect';
   title: string;
   description: string;
   headline: string;
@@ -68,7 +68,7 @@ const { name, title, description, headline, intro } = Astro.props;
             class="text-link"
             href={name === 'Scout' ? site.links.connect : site.links.scout}
           >
-            Explore {name === 'Scout' ? 'Connect' : 'Scout'}{' '}
+            Explore {name === 'Scout' ? 'Cnect' : 'Scout'}{' '}
             <Icon name="arrow" size={16} />
           </a>
         </div>

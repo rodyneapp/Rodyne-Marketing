@@ -225,6 +225,10 @@ export const legalDocuments: LegalDocument[] = [
             type: 'paragraph',
             text: `${entity} and its licensors retain rights in the service, software, documentation and original branding. These Terms grant only a limited, non-exclusive, non-transferable right to use the service during an active subscription. Roblox, Discord, Stripe and other third-party names and marks belong to their respective owners.`,
           },
+          {
+            type: 'paragraph',
+            text: 'Rodyne, Rodyne Scout and Rodyne Cnect, and their associated logos, are used as our trademarks. The ™ symbol indicates a trademark claim and does not state that a mark is registered. Rights in original logo artwork and website content are reserved. Except where permitted by applicable law or an express licence, using the service does not grant permission to reproduce our branding or imply our endorsement.',
+          },
         ],
       },
       {

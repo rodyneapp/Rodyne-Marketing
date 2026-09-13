@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import ProductLogo from './ProductLogo.astro';
 import { withBase } from '../lib/paths.mjs';
 
 interface Props {
@@ -60,7 +61,7 @@ const transfers = [
   <div class="mesh-heading" data-observe-reveal>
     <div>
       <p class="eyebrow">
-        {standalone ? 'The Connect network' : '02 / Linked communities'}
+        {standalone ? 'The Cnect network' : '02 / Linked communities'}
       </p>
       <h2 class="display" id="mesh-title">
         Separate communities.
@@ -76,7 +77,7 @@ const transfers = [
       </p>
       {!standalone && (
         <a class="text-link mesh-learn" href={withBase('/connect/')}>
-          Explore Connect <Icon name="arrow" size={16} />
+          Explore Cnect <Icon name="arrow" size={16} />
         </a>
       )}
     </div>
@@ -85,13 +86,7 @@ const transfers = [
   <div class="mesh-panel panel" data-observe-reveal>
     <div class="mesh-toolbar">
       <span class="network-title">
-        <img
-          src={withBase('/rodyne-cnect.svg')}
-          alt="Rodyne Cnect"
-          width="1791"
-          height="376"
-          loading="lazy"
-        />
+        <ProductLogo product="Cnect" />
       </span>
       <span class="mesh-example">Illustrative demo</span>
     </div>
@@ -242,17 +237,12 @@ const transfers = [
     border-bottom: 1px solid var(--border);
   }
   .network-title {
+    --product-logo-size: 30px;
     display: flex;
     align-items: center;
     gap: 10px;
     font-size: 0.9375rem;
     font-weight: 550;
-  }
-  .network-title img {
-    display: block;
-    width: 210px;
-    max-width: 100%;
-    height: auto;
   }
   .mesh-example {
     color: var(--text-dim);

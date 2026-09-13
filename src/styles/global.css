@@ -202,6 +202,14 @@ ol {
   font-weight: 550;
   line-height: 1.04;
 }
+.brand-trademark {
+  margin-left: 2px;
+  font-size: 0.6em;
+  line-height: 0;
+  vertical-align: super;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
 
 .section-title {
   margin-top: 14px;
