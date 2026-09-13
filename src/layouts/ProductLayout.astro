@@ -3,33 +3,36 @@ import SiteLayout from './SiteLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Icon from '../components/Icon.astro';
+import ProductLogo from '../components/ProductLogo.astro';
 import { site } from '../data/site';
 import '../styles/product-pages.css';
 
 interface Props {
-  name: string;
+  name: 'Scout' | 'Connect';
   title: string;
   description: string;
   headline: string;
   intro: string;
-  icon: string;
 }
-const { name, title, description, headline, intro, icon } = Astro.props;
+const { name, title, description, headline, intro } = Astro.props;
 ---
 
 <SiteLayout title={title} description={description} pageType="webpage">
   <Header />
-  <main id="main-content" class="product-page">
+  <main
+    id="main-content"
+    class="product-page"
+    data-product={name.toLowerCase()}
+  >
     <div class="container">
       <header class="product-hero">
         <a class="product-back" href={site.links.home}>
           <Icon name="arrow" size={15} />
           Back to Rodyne
         </a>
-        <p class="eyebrow product-name">
-          <Icon name={icon} size={22} />
-          Rodyne {name}
-        </p>
+        <div class="product-name">
+          <ProductLogo product={name} />
+        </div>
         <h1 class="display">{headline}</h1>
         <p class="product-intro">{intro}</p>
         <div class="product-actions">
@@ -44,7 +47,7 @@ const { name, title, description, headline, intro, icon } = Astro.props;
       <nav class="product-sections" aria-label={`${name} page sections`}>
         <a href="#preview">Overview</a>
         <a href="#how-it-works">How it works</a>
-        <a href="#in-practice">In practice</a>
+        <a href="#in-practice">More demos</a>
         <a href="#questions">Questions</a>
       </nav>
       <div id="preview" class="product-demo">

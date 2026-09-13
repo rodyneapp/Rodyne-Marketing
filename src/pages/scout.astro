@@ -1,6 +1,7 @@
 ---
 import ProductLayout from '../layouts/ProductLayout.astro';
 import ScoutShowcase from '../components/ScoutShowcase.astro';
+import ProductWalkthrough from '../components/ProductWalkthrough.astro';
 import Icon from '../components/Icon.astro';
 
 const steps = [
@@ -53,7 +54,6 @@ const questions = [
   description="Explore how Rodyne Scout brings potential watchlist matches, sources and linked identities into a staff-led member review workflow."
   headline="A clearer starting point for member review."
   intro="Find potential risks in your roster, understand the source behind each flag, and give your staff the context to make a considered decision."
-  icon="search"
 >
   <ScoutShowcase slot="demo" standalone />
   <section
@@ -78,21 +78,22 @@ const questions = [
     </div>
   </section>
   <section
-    class="product-section product-practice"
+    class="product-section"
     id="in-practice"
     aria-labelledby="scout-practice-title"
   >
     <div class="product-section-heading">
       <p class="eyebrow">The context behind a flag</p>
       <h2 class="display" id="scout-practice-title">
-        Know what you are reviewing.
+        Follow a match from roster to review list.
       </h2>
       <p>
         Keep the identity, source and review status together so staff can
         understand why an account needs a closer look.
       </p>
     </div>
-    <dl class="product-record">
+    <ProductWalkthrough product="Scout" />
+    <dl class="product-record scout-context">
       <div>
         <dt>
           <Icon name="users" size={20} />

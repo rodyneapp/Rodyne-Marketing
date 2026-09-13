@@ -1,6 +1,7 @@
 ---
 import ProductLayout from '../layouts/ProductLayout.astro';
 import CommunityMesh from '../components/CommunityMesh.astro';
+import ProductWalkthrough from '../components/ProductWalkthrough.astro';
 import Icon from '../components/Icon.astro';
 
 const steps = [
@@ -76,7 +77,6 @@ const questions = [
   description="Explore Rodyne Connect, the Cnect network for sharing reports, member records and roles across linked Discord servers and Roblox groups."
   headline="One organisation. Room for every community."
   intro="Link your main community with its branches. Keep reports, records and roles moving between the right teams while each community keeps its own space."
-  icon="link"
 >
   <CommunityMesh slot="demo" standalone />
   <section
@@ -115,7 +115,8 @@ const questions = [
         branches. Here is how each connection helps the wider team.
       </p>
     </div>
-    <div class="product-flows">
+    <ProductWalkthrough product="Connect" />
+    <div class="product-flows connect-context">
       {flows.map((flow) => (
         <article>
           <Icon name={flow.icon} size={28} />

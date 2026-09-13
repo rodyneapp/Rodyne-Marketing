@@ -1,0 +1,806 @@
+---
+import Icon from './Icon.astro';
+import ProductLogo from './ProductLogo.astro';
+
+interface Props {
+  product: 'Scout' | 'Connect';
+}
+const { product } = Astro.props;
+const scout = product === 'Scout';
+const demoId = scout ? 'scout-review' : 'connect-sharing';
+const steps = scout
+  ? [
+      {
+        label: 'Screen roster',
+        icon: 'search',
+        title: 'One potential match to investigate',
+        detail:
+          'Screening brings a possible match into view. The other example accounts have no match in this demo.',
+      },
+      {
+        label: 'Review source',
+        icon: 'note',
+        title: 'See what sits behind the flag',
+        detail:
+          'Check the linked identity and source before deciding what the signal means for your community.',
+      },
+      {
+        label: 'Review list',
+        icon: 'case',
+        title: 'Ready for a staff decision',
+        detail:
+          'The account is on a review list. No removal has been made; your staff decide the next action.',
+      },
+    ]
+  : [
+      {
+        label: 'Reports',
+        icon: 'case',
+        title: 'Send a report to the review team',
+        detail:
+          'A branch report passes through the main community to the team responsible for reviewing it.',
+      },
+      {
+        label: 'Records',
+        icon: 'note',
+        title: 'Pass training context to a branch',
+        detail:
+          'A member record moves from the training community to a linked branch, without sharing its reports.',
+      },
+      {
+        label: 'Roles',
+        icon: 'users',
+        title: 'Keep a role connected across branches',
+        detail:
+          'The main community distributes a shared role to the selected branches in this example.',
+      },
+    ];
+const transfers = [
+  {
+    from: 'Operations branch',
+    to: 'Review team',
+    title: 'Gameplay report',
+    meta: 'Example account 014 · Report #1042',
+    icon: 'case',
+    permission: 'Reports enabled',
+    result: 'Report received',
+    resultDetail: 'Ready for the review team to investigate.',
+  },
+  {
+    from: 'Training command',
+    to: 'Operations branch',
+    title: 'Training completed',
+    meta: 'Example account 014 · Basic training',
+    icon: 'note',
+    permission: 'Records enabled',
+    result: 'Record received',
+    resultDetail: 'Training context is available to the branch.',
+  },
+  {
+    from: 'Main community',
+    to: 'Two linked branches',
+    title: 'Training staff',
+    meta: 'Example shared role · 2 destinations',
+    icon: 'users',
+    permission: 'Roles enabled',
+    result: 'Role shared',
+    resultDetail: 'The selected branches receive the shared role.',
+  },
+];
+---
+
+<div
+  class="walkthrough panel"
+  data-walkthrough={demoId}
+  aria-label={`${product} workflow demonstration`}
+>
+  <header class="walkthrough-bar">
+    <ProductLogo product={product} />
+    <span class="demo-label">Illustrative demo</span>
+  </header>
+  <div
+    class="walkthrough-tabs"
+    role="group"
+    aria-label={scout ? 'Scout review stages' : 'Connect sharing examples'}
+  >
+    {steps.map((step, index) => (
+      <button
+        type="button"
+        data-walkthrough-step={index}
+        aria-pressed={index === 0 ? 'true' : 'false'}
+        aria-controls={`${demoId}-${index}`}
+        disabled
+      >
+        <Icon name={step.icon} size={17} />
+        {step.label}
+      </button>
+    ))}
+  </div>
+  {steps.map((step, index) => (
+    <section
+      id={`${demoId}-${index}`}
+      class="walkthrough-scene"
+      data-walkthrough-scene={index}
+      hidden={index !== 0}
+      aria-labelledby={`${demoId}-title-${index}`}
+    >
+      <div class="scene-heading">
+        <p>{scout ? 'Member screening' : 'Sharing preview'}</p>
+        <h3 id={`${demoId}-title-${index}`}>{step.title}</h3>
+      </div>
+      {scout ? (
+        index === 0 ? (
+          <div class="screen-roster">
+            <div class="screen-summary">
+              <Icon name="users" size={19} />
+              <strong>Example roster</strong>
+              <span>3 members checked</span>
+            </div>
+            {[
+              'Example account 012',
+              'Example account 014',
+              'Example account 019',
+            ].map((name, row) => (
+              <div
+                class:list={['roster-row', { 'roster-row--flag': row === 1 }]}
+                style={`--row-delay: ${row * 500}ms`}
+              >
+                <span class="member-avatar">
+                  <Icon name="roblox" size={20} />
+                </span>
+                <span>
+                  <strong>{name}</strong>
+                  <small>Roblox member</small>
+                </span>
+                <span
+                  class:list={[
+                    'roster-result',
+                    { 'roster-result--flag': row === 1 },
+                  ]}
+                >
+                  <Icon name={row === 1 ? 'warning' : 'check'} size={15} />
+                  {row === 1 ? 'Potential match' : 'No match'}
+                </span>
+              </div>
+            ))}
+            <p class="scene-note">A potential match starts a review.</p>
+          </div>
+        ) : index === 1 ? (
+          <div class="review-source">
+            <div class="review-member">
+              <span class="member-avatar">
+                <Icon name="roblox" size={23} />
+              </span>
+              <div>
+                <strong>Example account 014</strong>
+                <small>Potential watchlist match</small>
+              </div>
+              <span class="review-badge">Review required</span>
+            </div>
+            <dl class="source-facts">
+              <div>
+                <dt>
+                  <Icon name="discord" size={16} />
+                  Demo Discord ID
+                </dt>
+                <dd class="mono">000000000000000014</dd>
+              </div>
+              <div>
+                <dt>
+                  <Icon name="link" size={16} />
+                  Reported connections
+                </dt>
+                <dd>3 suspected server links</dd>
+              </div>
+              <div>
+                <dt>
+                  <Icon name="note" size={16} />
+                  Reference source
+                </dt>
+                <dd>Reference dataset + public report</dd>
+              </div>
+            </dl>
+            <p class="source-context">
+              <Icon name="search" size={18} />
+              Check the source and identity before drawing a conclusion.
+            </p>
+          </div>
+        ) : (
+          <div class="review-list-demo">
+            <div class="screen-summary">
+              <Icon name="case" size={19} />
+              <strong>Removal review list</strong>
+              <span>1 account</span>
+            </div>
+            <div class="review-member">
+              <span class="member-avatar">
+                <Icon name="roblox" size={23} />
+              </span>
+              <div>
+                <strong>Example account 014</strong>
+                <small>Source attached for staff review</small>
+              </div>
+            </div>
+            <div class="review-pending">
+              <Icon name="clock" size={23} />
+              <div>
+                <strong>Pending staff decision</strong>
+                <p>The potential match is ready to investigate.</p>
+              </div>
+            </div>
+            <div class="review-checks">
+              <span>
+                <Icon name="check" size={15} />
+                Identity included
+              </span>
+              <span>
+                <Icon name="check" size={15} />
+                Source included
+              </span>
+            </div>
+            <p class="scene-note">No account removed in this demo.</p>
+          </div>
+        )
+      ) : (
+        <div class="sharing-demo">
+          <div class="transfer-record">
+            <Icon name={transfers[index].icon} size={24} />
+            <div>
+              <strong>{transfers[index].title}</strong>
+              <small>{transfers[index].meta}</small>
+            </div>
+          </div>
+          <div
+            class="transfer-route"
+            aria-label={`From ${transfers[index].from}, through the main community, to ${transfers[index].to}`}
+          >
+            <div>
+              <Icon name={index === 2 ? 'link' : 'discord'} size={22} />
+              <strong>{transfers[index].from}</strong>
+              <small>{index === 2 ? 'Network hub' : 'Sending community'}</small>
+            </div>
+            <span class="transfer-wire" aria-hidden="true">
+              <i></i>
+            </span>
+            <div class="route-policy">
+              <Icon name="filter" size={22} />
+              <strong>Sharing rules</strong>
+              <small>{transfers[index].permission}</small>
+            </div>
+            <span
+              class="transfer-wire transfer-wire--second"
+              aria-hidden="true"
+            >
+              <i></i>
+            </span>
+            <div>
+              <Icon name="users" size={22} />
+              <strong>{transfers[index].to}</strong>
+              <small>Receiving community</small>
+            </div>
+          </div>
+          <div
+            class="sharing-permissions"
+            aria-label="Sharing settings for this example"
+          >
+            {['Reports', 'Records', 'Roles'].map((label, permissionIndex) => (
+              <span
+                class:list={{ 'permission-enabled': permissionIndex === index }}
+              >
+                <Icon
+                  name={permissionIndex === index ? 'check' : 'lock'}
+                  size={14}
+                />
+                {label} {permissionIndex === index ? 'shared' : 'kept local'}
+              </span>
+            ))}
+          </div>
+          <div class="transfer-receipt">
+            <span>
+              <Icon name="check" size={21} />
+            </span>
+            <div>
+              <strong>{transfers[index].result}</strong>
+              <p>{transfers[index].resultDetail}</p>
+            </div>
+          </div>
+        </div>
+      )}
+      <p class="walkthrough-description">{step.detail}</p>
+    </section>
+  ))}
+  <footer class="walkthrough-controls">
+    <span data-walkthrough-position>1 / 3</span>
+    <div>
+      <button type="button" data-walkthrough-pause disabled>
+        Pause demo
+      </button>
+      <button type="button" data-walkthrough-replay disabled>
+        <Icon name="refresh" size={14} />
+        Replay
+      </button>
+    </div>
+  </footer>
+  <div class="walkthrough-progress" aria-hidden="true">
+    <span data-walkthrough-progress></span>
+  </div>
+  <p class="sr-only" data-walkthrough-announcement aria-live="polite"></p>
+</div>
+
+<script>
+  import { initWalkthroughs } from '../scripts/product-walkthrough';
+  initWalkthroughs();
+</script>
+
+<style>
+  .walkthrough {
+    min-width: 0;
+    overflow: hidden;
+    background: #0e1016;
+    --product-logo-size: 20px;
+  }
+  .walkthrough [hidden] {
+    display: none;
+  }
+  .walkthrough-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 26px;
+    border-bottom: 1px solid var(--border);
+  }
+  .walkthrough-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px 26px;
+    border-bottom: 1px solid var(--border);
+  }
+  .walkthrough-tabs button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 1;
+    min-height: 44px;
+    padding: 9px 12px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .walkthrough-tabs button[aria-pressed='true'] {
+    background: #5689e814;
+    border-color: #5689e833;
+    color: #bdd1f7;
+  }
+  .walkthrough-tabs button:hover {
+    color: var(--text);
+  }
+  .walkthrough button:disabled {
+    cursor: default;
+  }
+  .walkthrough-scene {
+    padding: 26px;
+  }
+  .scene-heading > p {
+    color: var(--text-dim);
+    font: 0.75rem var(--mono);
+  }
+  .scene-heading h3 {
+    font-size: 1.125rem;
+    font-weight: 550;
+    margin-top: 7px;
+  }
+  .screen-roster,
+  .review-source,
+  .review-list-demo,
+  .sharing-demo {
+    margin-top: 24px;
+    min-height: 310px;
+  }
+  .screen-summary {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 9px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px 8px 0 0;
+    background: #ffffff03;
+    font-size: 0.875rem;
+  }
+  .screen-summary strong {
+    font-weight: 550;
+  }
+  .screen-summary > span {
+    margin-left: auto;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+  }
+  .roster-row,
+  .review-member {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .roster-row--flag {
+    background: #d6a65d08;
+  }
+  .member-avatar {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    background: #ffffff06;
+    border-radius: 8px;
+    color: #afbcd5;
+  }
+  .roster-row strong,
+  .review-member strong,
+  .transfer-record strong {
+    display: block;
+    font-weight: 550;
+    font-size: 0.875rem;
+  }
+  .roster-row small,
+  .review-member small,
+  .transfer-record small {
+    display: block;
+    margin-top: 3px;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+  }
+  .roster-result {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+    color: #8ccba4;
+    font-size: 0.75rem;
+  }
+  .roster-result--flag {
+    color: #e2ba7d;
+  }
+  .scene-note {
+    margin-top: 15px;
+    color: var(--text-dim);
+    font-size: 0.8125rem;
+  }
+  .review-member {
+    padding-top: 0;
+  }
+  .review-badge {
+    margin-left: auto;
+    color: #e2ba7d;
+    font-size: 0.75rem;
+  }
+  .source-facts > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .source-facts dt {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+  .source-facts dd {
+    font-size: 0.875rem;
+    color: #dce3ef;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .source-context {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+    color: #a9bddd;
+    font-size: 0.875rem;
+  }
+  .source-context svg {
+    flex-shrink: 0;
+  }
+  .review-list-demo .review-member {
+    padding-top: 20px;
+  }
+  .review-pending {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 22px 0;
+    color: #b3c9ee;
+  }
+  .review-pending strong {
+    font-size: 1rem;
+    font-weight: 550;
+  }
+  .review-pending p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+  .review-checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .review-checks span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #8ccba4;
+    font-size: 0.8125rem;
+  }
+  .walkthrough-description {
+    min-height: 3.2em;
+    margin-top: 24px;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+  .walkthrough-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 26px;
+    border-top: 1px solid var(--border);
+  }
+  .walkthrough-controls > span {
+    font: 0.75rem var(--mono);
+    color: var(--text-dim);
+  }
+  .walkthrough-controls > div {
+    display: flex;
+    gap: 20px;
+  }
+  .walkthrough-controls button {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 44px;
+    padding: 6px 0;
+    background: transparent;
+    color: #b4c9ed;
+    font-size: 0.8125rem;
+    cursor: pointer;
+  }
+  .walkthrough-progress {
+    height: 2px;
+    background: #ffffff06;
+  }
+  .walkthrough-progress > span {
+    display: block;
+    height: 100%;
+    background: #7fa2e1;
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .transfer-record {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #ffffff03;
+    color: #b8ccee;
+  }
+  .transfer-record strong {
+    color: var(--text);
+  }
+  .transfer-route {
+    display: grid;
+    grid-template-columns: 1fr 40px 1fr 40px 1fr;
+    align-items: center;
+    margin-block: 32px;
+  }
+  .transfer-route > div {
+    display: grid;
+    justify-items: center;
+    gap: 9px;
+    text-align: center;
+    min-width: 0;
+  }
+  .transfer-route strong {
+    font-size: 0.875rem;
+    font-weight: 550;
+  }
+  .transfer-route small {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+  .transfer-route svg {
+    color: #acc4ef;
+  }
+  .transfer-wire {
+    position: relative;
+    display: block;
+    height: 1px;
+    background: #8eaff544;
+  }
+  .transfer-wire i {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: #aecafa;
+    border-radius: 50%;
+    left: 0;
+    top: -3px;
+    opacity: 0;
+    box-shadow: 0 0 10px #8eaff570;
+  }
+  .sharing-permissions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 20px;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+  .sharing-permissions span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sharing-permissions .permission-enabled {
+    color: #b7cbee;
+  }
+  .transfer-receipt {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 26px;
+    padding: 18px;
+    border: 1px solid #68b98a30;
+    border-radius: 8px;
+    background: #68b98a07;
+  }
+  .transfer-receipt > span {
+    color: #8ccba4;
+  }
+  .transfer-receipt strong {
+    font-size: 0.875rem;
+    font-weight: 550;
+  }
+  .transfer-receipt p {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    margin-top: 3px;
+  }
+  .walkthrough[data-enhanced] .walkthrough-scene:not([hidden]) .roster-result {
+    animation: demo-arrive 450ms ease-out var(--row-delay, 0ms) both;
+    animation-play-state: var(--demo-play-state, paused);
+  }
+  .walkthrough[data-enhanced]
+    .walkthrough-scene:not([hidden])
+    .transfer-wire
+    i {
+    animation: demo-packet 900ms ease-in-out 700ms both;
+    animation-play-state: var(--demo-play-state, paused);
+  }
+  .walkthrough[data-enhanced]
+    .walkthrough-scene:not([hidden])
+    .transfer-wire--second
+    i {
+    animation-delay: 1600ms;
+  }
+  .walkthrough[data-enhanced]
+    .walkthrough-scene:not([hidden])
+    .transfer-receipt {
+    animation: demo-arrive 450ms ease-out 2500ms both;
+    animation-play-state: var(--demo-play-state, paused);
+  }
+  .walkthrough[data-paused='true'] .walkthrough-scene * {
+    animation: none !important;
+  }
+  @keyframes demo-arrive {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes demo-packet {
+    0% {
+      left: 0;
+      opacity: 0;
+    }
+    10%,
+    90% {
+      opacity: 1;
+    }
+    100% {
+      left: calc(100% - 7px);
+      opacity: 0;
+    }
+  }
+  @media (max-width: 600px) {
+    .walkthrough-bar,
+    .walkthrough-scene {
+      padding: 18px;
+    }
+    .walkthrough-tabs {
+      padding: 12px;
+      gap: 3px;
+    }
+    .walkthrough-tabs button {
+      padding-inline: 7px;
+      font-size: 0.8125rem;
+      gap: 6px;
+    }
+    .roster-row {
+      flex-wrap: wrap;
+      padding-inline: 10px;
+    }
+    .roster-result {
+      flex-basis: 100%;
+      margin-left: 50px;
+    }
+    .review-member {
+      flex-wrap: wrap;
+      padding-inline: 0;
+    }
+    .review-badge {
+      margin-left: 50px;
+    }
+    .transfer-route {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .transfer-wire {
+      width: 1px;
+      height: 22px;
+      justify-self: center;
+    }
+    .transfer-wire i {
+      top: 0;
+      left: -3px;
+    }
+    .transfer-route > div {
+      gap: 4px;
+    }
+    .transfer-route > div > svg {
+      margin-bottom: 5px;
+    }
+    @keyframes demo-packet {
+      0% {
+        top: 0;
+        opacity: 0;
+      }
+      10%,
+      90% {
+        opacity: 1;
+      }
+      100% {
+        top: calc(100% - 7px);
+        opacity: 0;
+      }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .walkthrough *,
+    .walkthrough *::before {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>

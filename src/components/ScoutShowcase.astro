@@ -7,7 +7,7 @@ import leftLeg from '../assets/scout-wearing-left-leg.png';
 import rightLeg from '../assets/scout-wearing-right-leg.png';
 import head from '../assets/scout-wearing-head.png';
 import Icon from './Icon.astro';
-import BrandMark from './BrandMark.astro';
+import ProductLogo from './ProductLogo.astro';
 import ScoutAvatar from './ScoutAvatar.astro';
 import { withBase } from '../lib/paths.mjs';
 
@@ -65,10 +65,7 @@ const { standalone = false } = Astro.props;
   <div class="scout-demo panel" data-scout-demo>
     <div class="scout-bar">
       <span class="scout-brand">
-        <BrandMark />
-        <strong>
-          Rodyne <span>Scout</span>
-        </strong>
+        <ProductLogo product="Scout" />
       </span>
       <span class="example-tag">Fictional profile demo</span>
     </div>
@@ -332,14 +329,7 @@ const { standalone = false } = Astro.props;
     display: flex;
     align-items: center;
     gap: 9px;
-    --brand-mark-size: 25px;
-  }
-  .scout-brand strong {
-    font-size: 1.125rem;
-    font-weight: 600;
-  }
-  .scout-brand strong span {
-    color: #a7bcec;
+    --product-logo-size: 1.125rem;
   }
   .example-tag {
     font: 0.75rem var(--mono);

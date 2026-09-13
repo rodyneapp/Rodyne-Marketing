@@ -1,0 +1,51 @@
+---
+import BrandMark from './BrandMark.astro';
+import { withBase } from '../lib/paths.mjs';
+
+interface Props {
+  product: 'Scout' | 'Connect';
+}
+const { product } = Astro.props;
+---
+
+{product === 'Connect' ? (
+  <img
+    class="connect-logo"
+    src={withBase('/rodyne-cnect.svg')}
+    alt="Rodyne Cnect"
+    width="1791"
+    height="376"
+  />
+) : (
+  <span class="scout-logo" role="img" aria-label="Rodyne Scout">
+    <BrandMark />
+    <span aria-hidden="true">
+      Rodyne <strong>Scout</strong>
+    </span>
+  </span>
+)}
+
+<style>
+  .connect-logo {
+    display: block;
+    width: calc(var(--product-logo-size, 40px) * 7);
+    max-width: 100%;
+    height: auto;
+  }
+  .scout-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    color: var(--text);
+    font-size: var(--product-logo-size, 40px);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+    white-space: nowrap;
+    --brand-mark-size: 1.35em;
+  }
+  .scout-logo strong {
+    color: #a7bcec;
+    font-weight: inherit;
+  }
+</style>
