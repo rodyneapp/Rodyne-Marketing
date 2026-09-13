@@ -144,18 +144,21 @@ const timeline = [
 const phases = [
   {
     title: 'Report & evidence',
+    icon: 'case',
     summary: 'Report received, reviewer assigned, evidence attached',
     time: '18:41–18:49',
     events: timeline.slice(0, 3),
   },
   {
     title: 'Decision & action',
+    icon: 'moderation',
     summary: '24-hour restriction confirmed',
     time: '18:57–19:00',
     events: timeline.slice(3, 6),
   },
   {
     title: 'Appeal & resolution',
+    icon: 'check',
     summary: 'Appeal accepted · access restored',
     time: '20:16–20:39',
     events: timeline.slice(6),
@@ -327,10 +330,12 @@ const outcomes = [
                     <span>9 events · 3 stages</span>
                   </div>
                   <div class="history-phases">
-                    {phases.map((phase, phaseIndex) => (
+                    {phases.map((phase) => (
                       <details class="history-phase">
                         <summary>
-                          <span class="phase-number">0{phaseIndex + 1}</span>
+                          <span class="phase-icon" aria-hidden="true">
+                            <Icon name={phase.icon} size={16} />
+                          </span>
                           <span class="phase-copy">
                             <strong>{phase.title}</strong>
                             <small>{phase.summary}</small>
@@ -750,7 +755,7 @@ const outcomes = [
   .history-phase > summary:hover .phase-copy strong {
     color: #aecafa;
   }
-  .phase-number {
+  .phase-icon {
     display: grid;
     place-items: center;
     flex: 0 0 30px;
