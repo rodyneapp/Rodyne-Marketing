@@ -132,6 +132,11 @@ assert.ok(
   'robots.txt has the wrong sitemap URL.',
 );
 assert.ok(files.includes(path.join(output, '.nojekyll')), 'Missing .nojekyll.');
+assert.equal(
+  await readFile(path.join(output, '.well-known', 'discord'), 'utf8'),
+  await readFile('public/.well-known/discord', 'utf8'),
+  'Discord domain verification file is missing or changed in the release.',
+);
 assert.deepEqual(errors, [], 'Release contains broken links or assets.');
 console.log(
   `Release verified: ${files.filter((file) => file.endsWith('.html')).length} pages, ${checked} local URLs, base ${base}`,
