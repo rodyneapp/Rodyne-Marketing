@@ -15,7 +15,7 @@ import { faqs } from '../data/site';
       </p>
     </div>
 
-    <div class="faq-list" data-observe-reveal>
+    <div class="faq-list" data-reveal-group>
       {faqs.map((faq, index) => (
         <details open={index === 0}>
           <summary>
@@ -96,7 +96,7 @@ import { faqs } from '../data/site';
     background: var(--text-secondary);
     content: '';
     transform: translate(-50%, -50%);
-    transition: transform 220ms ease;
+    transition: transform 300ms var(--ease-soft);
   }
 
   .faq-plus::after {

@@ -42,7 +42,7 @@ const animateMenu = (opening: boolean) => {
         transform: opening ? 'translateY(0)' : 'translateY(-6px)',
       },
     ],
-    { duration: opening ? 220 : 160, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)' },
+    { duration: opening ? 320 : 200, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' },
   );
   mobileMenu.hidden = false;
   menuAnimation.onfinish = () => {
@@ -134,6 +134,38 @@ const continuousItems = Array.from(
 );
 const visibleItems = new Set<HTMLElement>();
 
+// Reveal each card independently so tall groups never wait on a whole section.
+document
+  .querySelectorAll<HTMLElement>('[data-reveal-group]')
+  .forEach((group) => {
+    Array.from(group.children).forEach((item) => {
+      item.setAttribute('data-observe-reveal', '');
+    });
+  });
+const revealItems = Array.from(
+  document.querySelectorAll<HTMLElement>(
+    '[data-observe-reveal], [data-case-timeline]',
+  ),
+);
+const revealAnimations = new Map<HTMLElement, Animation>();
+const finishReveal = (item: HTMLElement) => {
+  revealAnimations.get(item)?.cancel();
+  revealAnimations.delete(item);
+  item.classList.remove('reveal-pending');
+  item.classList.add('is-visible');
+};
+
+// Keyboard navigation and preference changes must never wait for a fade.
+document.addEventListener('focusin', (event) => {
+  const target = event.target as HTMLElement;
+  for (const item of revealItems) {
+    if (item.contains(target)) finishReveal(item);
+  }
+});
+reducedMotion.addEventListener('change', () => {
+  if (reducedMotion.matches) revealItems.forEach(finishReveal);
+});
+
 const applyMotionState = () => {
   for (const item of continuousItems) {
     const shouldRun =
@@ -160,27 +192,52 @@ if ('IntersectionObserver' in window) {
 
   const revealObserver = new IntersectionObserver(
     (entries, observer) => {
+      const groupCounts = new Map<Element, number>();
       for (const entry of entries) {
         if (!entry.isIntersecting) continue;
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
+        const item = entry.target as HTMLElement;
+        observer.unobserve(item);
+        const alreadyVisible = item.classList.contains('is-visible');
+        finishReveal(item);
+        if (
+          alreadyVisible ||
+          reducedMotion.matches ||
+          !item.hasAttribute('data-observe-reveal')
+        )
+          continue;
+        const group = item.closest('[data-reveal-group]');
+        const index = group ? (groupCounts.get(group) ?? 0) : 0;
+        if (group) groupCounts.set(group, index + 1);
+        // Longhand translate leaves existing hover transforms undisturbed.
+        const animation = item.animate(
+          [
+            { opacity: 0, translate: '0 18px' },
+            { opacity: 1, translate: '0 0' },
+          ],
+          {
+            duration: 680,
+            delay: Math.min(index * 65, 195),
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            fill: 'backwards',
+          },
+        );
+        revealAnimations.set(item, animation);
+        animation.onfinish = () => revealAnimations.delete(item);
       }
     },
-    { threshold: 0.05, rootMargin: '0px 0px -24px' },
+    { threshold: 0, rootMargin: '0px 0px -32px' },
   );
 
-  document
-    .querySelectorAll<HTMLElement>(
-      '[data-observe-reveal], [data-case-timeline]',
-    )
-    .forEach((item) => revealObserver.observe(item));
+  revealItems.forEach((item) => {
+    if (reducedMotion.matches) finishReveal(item);
+    else {
+      item.classList.add('reveal-pending');
+      revealObserver.observe(item);
+    }
+  });
 } else {
   continuousItems.forEach((item) => visibleItems.add(item));
-  document
-    .querySelectorAll<HTMLElement>(
-      '[data-observe-reveal], [data-case-timeline]',
-    )
-    .forEach((item) => item.classList.add('is-visible'));
+  revealItems.forEach(finishReveal);
 }
 
 document.addEventListener('visibilitychange', applyMotionState);

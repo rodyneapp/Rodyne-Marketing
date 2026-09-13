@@ -29,8 +29,8 @@ const scopes = [
       </p>
     </div>
 
-    <div class="integration-layout" data-observe-reveal>
-      <div class="integration-list">
+    <div class="integration-layout">
+      <div class="integration-list" data-reveal-group>
         {integrations.map((integration, index) => (
           <article>
             <span class="integration-icon">
@@ -45,7 +45,11 @@ const scopes = [
         ))}
       </div>
 
-      <aside class="coverage-panel panel" aria-labelledby="coverage-title">
+      <aside
+        class="coverage-panel panel"
+        aria-labelledby="coverage-title"
+        data-observe-reveal
+      >
         <div class="coverage-header">
           <div>
             <span class="mono">YOUR CONNECTIONS</span>

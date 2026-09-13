@@ -16,6 +16,10 @@ export default defineConfig({
   base,
   output: 'static',
   trailingSlash: 'always',
+  vite: {
+    // Prepare charts on startup instead of discovering them after the page loads.
+    optimizeDeps: { include: ['chart.js'] },
+  },
   markdown: {
     processor: satteri({ mdastPlugins: [markdownBasePath({ base })] }),
   },

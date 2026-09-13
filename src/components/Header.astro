@@ -2,13 +2,19 @@
 import BrandMark from './BrandMark.astro';
 import Icon from './Icon.astro';
 import { navigation, site } from '../data/site';
+
+interface Props {
+  brandLabel?: string;
+}
+
+const { brandLabel = site.name } = Astro.props;
 ---
 
 <header class="site-header" data-header>
   <div class="header-shell">
-    <a class="brand" href={site.links.home} aria-label={`${site.name} home`}>
+    <a class="brand" href={site.links.home} aria-label={`${brandLabel} home`}>
       <BrandMark />
-      <span>{site.name}</span>
+      <span>{brandLabel}</span>
     </a>
 
     <nav class="desktop-nav" aria-label="Primary navigation">
@@ -69,11 +75,16 @@ import { navigation, site } from '../data/site';
     border-bottom: 1px solid transparent;
     background: color-mix(in srgb, var(--bg) 74%, transparent);
     backdrop-filter: blur(18px);
-    transition: border-color 300ms ease;
+    transition:
+      border-color 320ms ease,
+      background-color 320ms ease,
+      box-shadow 320ms ease;
   }
 
   .site-header.is-scrolled {
     border-bottom-color: var(--border);
+    background-color: color-mix(in srgb, var(--bg) 92%, transparent);
+    box-shadow: 0 8px 28px -18px #0009;
   }
 
   .header-shell {
@@ -96,6 +107,7 @@ import { navigation, site } from '../data/site';
     font-size: 0.96rem;
     font-weight: 680;
     letter-spacing: -0.025em;
+    white-space: nowrap;
   }
 
   .desktop-nav {
@@ -115,6 +127,30 @@ import { navigation, site } from '../data/site';
     font-weight: 520;
     letter-spacing: -0.01em;
     transition: color 180ms ease;
+  }
+
+  .desktop-nav a {
+    position: relative;
+  }
+
+  .desktop-nav a::after {
+    content: '';
+    position: absolute;
+    inset: auto 11px 6px;
+    height: 1px;
+    background: #9db9ed;
+    transform: scaleX(0);
+    transform-origin: left;
+    opacity: 0;
+    transition:
+      transform 280ms var(--ease-soft),
+      opacity 220ms ease;
+  }
+
+  .desktop-nav a:hover::after,
+  .desktop-nav a:focus-visible::after {
+    transform: scaleX(1);
+    opacity: 0.65;
   }
 
   .desktop-nav a:hover,
