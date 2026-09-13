@@ -8,5 +8,10 @@ export default function markdownBasePath({ base = '/' } = {}) {
     const url = withBase(node.url, base);
     if (url !== node.url) context.setProperty(node, 'url', url);
   };
-  return { name: 'site-base-path', link: rewrite, image: rewrite, definition: rewrite };
+  return {
+    name: 'site-base-path',
+    link: rewrite,
+    image: rewrite,
+    definition: rewrite,
+  };
 }

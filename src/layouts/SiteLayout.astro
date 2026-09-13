@@ -22,7 +22,7 @@ const {
 } = Astro.props;
 const origin = Astro.site ?? new URL(site.placeholderOrigin);
 const canonical = new URL(Astro.url.pathname, origin);
-const socialImage = new URL(withBase('/og.png'), origin);
+const socialImage = new URL(withBase('/og.png?v=rodyne-cnect'), origin);
 const favicon = await getImage({
   src: rodyneMark,
   width: 64,
@@ -83,11 +83,11 @@ const structuredData =
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:width" content="1730" />
+    <meta property="og:image:height" content="909" />
     <meta
       property="og:image:alt"
-      content={`${site.name} community operations preview`}
+      content="Rodyne — Your communities. Connected. A Cnect network linking Roblox and Discord."
     />
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -96,7 +96,7 @@ const structuredData =
     <meta name="twitter:image" content={socialImage} />
     <meta
       name="twitter:image:alt"
-      content={`${site.name} community operations preview`}
+      content="Rodyne — Your communities. Connected. A Cnect network linking Roblox and Discord."
     />
 
     <script

@@ -1,15 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { withBase } from '../src/lib/paths.mjs';
-import remarkBasePath from '../scripts/remark-base-path.mjs';
+import { markdownToHtml } from 'satteri';
+import markdownBasePath from '../scripts/markdown-base-path.mjs';
 
 test('local links work at both a domain root and a Pages repository path', () => {
-  for (const base of [
-    '/',
-    '',
-    '/new-disc-to-rblx-management-app',
-    '/new-disc-to-rblx-management-app/',
-  ]) {
+  for (const base of ['/', '', '/Rodyne-Marketing', '/Rodyne-Marketing/']) {
     const prefix = base.replace(/\/$/, '');
     assert.equal(withBase('/', base), `${prefix}/`);
     assert.equal(withBase('/#pricing', base), `${prefix}/#pricing`);
@@ -38,29 +34,18 @@ test('external URLs, anchors and already prefixed routes are preserved', () => {
   assert.equal(withBase('/repository/', base), '/repo/repository/');
 });
 
-test('Markdown rewrites links, images and reference definitions without changing external links', () => {
-  const tree = {
-    type: 'root',
-    children: [
-      {
-        type: 'paragraph',
-        children: [
-          { type: 'link', url: '/blog/', children: [] },
-          { type: 'image', url: '/blog/image.png' },
-          { type: 'link', url: 'https://discord.com/', children: [] },
-          { type: 'link', url: '#heading', children: [] },
-        ],
-      },
-      { type: 'definition', url: '/#workflows' },
-    ],
-  };
-  const transform = remarkBasePath({ base: '/repo/' });
-  transform(tree);
-  assert.deepEqual(
-    tree.children[0].children.map((node) => node.url),
-    ['/repo/blog/', '/repo/blog/image.png', 'https://discord.com/', '#heading'],
+test('Markdown renders prefixed links, images and references while preserving external links', () => {
+  const { html } = markdownToHtml(
+    '[Blog](/blog/)\n\n![Logo](/blog/image.png)\n\n[Discord](https://discord.com/)\n\n[Local](#heading)\n\n[Workflow][flow]\n\n[flow]: /#workflows',
+    { mdastPlugins: [markdownBasePath({ base: '/repo/' })] },
   );
-  assert.equal(tree.children[1].url, '/repo/#workflows');
-  transform(tree);
-  assert.equal(tree.children[1].url, '/repo/#workflows');
+  for (const attribute of [
+    'href="/repo/blog/"',
+    'src="/repo/blog/image.png"',
+    'href="https://discord.com/"',
+    'href="#heading"',
+    'href="/repo/#workflows"',
+  ]) {
+    assert.ok(html.includes(attribute), `Missing ${attribute}: ${html}`);
+  }
 });

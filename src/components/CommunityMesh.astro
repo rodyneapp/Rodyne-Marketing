@@ -1,0 +1,568 @@
+---
+import Icon from './Icon.astro';
+import { withBase } from '../lib/paths.mjs';
+
+const communities = [
+  {
+    id: 'main',
+    name: 'German Army',
+    initials: 'GA',
+    label: 'Main community',
+    description: 'Main server + main group',
+  },
+  {
+    id: 'heer',
+    name: 'Heer',
+    initials: 'H',
+    label: 'Army secondary',
+    description: 'Army server + army group',
+  },
+  {
+    id: 'luftwaffe',
+    name: 'Luftwaffe',
+    initials: 'L',
+    label: 'Airforce secondary',
+    description: 'Airforce server + airforce group',
+  },
+  {
+    id: 'feldjager',
+    name: 'Feldjäger',
+    initials: 'FJ',
+    label: 'Military police secondary',
+    description: 'Military police server + group',
+  },
+  {
+    id: 'training',
+    name: 'Army Training Command',
+    initials: 'AT',
+    label: 'Training secondary',
+    description: 'Training command server + group',
+  },
+];
+const transfers = [
+  { id: 'reports', icon: 'case', label: 'Reports' },
+  { id: 'records', icon: 'note', label: 'Records' },
+  { id: 'roles', icon: 'users', label: 'Roles' },
+];
+---
+
+<section
+  class="community-mesh"
+  id="community-network"
+  aria-labelledby="mesh-title"
+  data-community-mesh
+>
+  <div class="mesh-heading" data-observe-reveal>
+    <div>
+      <p class="eyebrow">02 / Linked communities</p>
+      <h2 class="display" id="mesh-title">
+        Separate communities.
+        <br />
+        One connected network.
+      </h2>
+    </div>
+    <p class="section-copy">
+      Link your secondary Discord servers and Roblox groups to a main community.
+      Pass reports, member records and roles between them, with control over
+      what each community shares.
+    </p>
+  </div>
+
+  <div class="mesh-panel panel" data-observe-reveal>
+    <div class="mesh-toolbar">
+      <span class="network-title">
+        <img
+          src={withBase('/rodyne-cnect.svg')}
+          alt="Rodyne Cnect"
+          width="1791"
+          height="376"
+          loading="lazy"
+        />
+      </span>
+      <span class="mesh-example">Illustrative demo</span>
+    </div>
+    <p class="sr-only">
+      German Army is the main Discord server and Roblox group. Heer, Luftwaffe,
+      Feldjäger and Army Training Command each have a secondary server and
+      group. The example sends a Heer report through German Army to Feldjäger,
+      passes training records between secondary communities, and distributes
+      roles from the main community to all four branches.
+    </p>
+
+    <div class="mesh-diagram" data-mesh-diagram>
+      <svg class="mesh-wires" aria-hidden="true">
+        {[
+          'heer',
+          'luftwaffe',
+          'feldjager',
+          'training',
+          'peer-0',
+          'peer-1',
+          'peer-2',
+        ].map((edge) => (
+          <g data-mesh-edge={edge}>
+            <path class="wire-base" />
+            <path class="wire-lit" />
+            <circle class="packet-halo" r="10" opacity="0" />
+            <circle class="packet" r="3.5" opacity="0" />
+          </g>
+        ))}
+      </svg>
+      {communities.map((community) => (
+        <article
+          class:list={['community-node', `node--${community.id}`]}
+          data-mesh-node={community.id}
+        >
+          <div class="node-identity">
+            <span class="community-avatar">{community.initials}</span>
+            <div>
+              <p class="node-label">{community.label}</p>
+              <h3>{community.name}</h3>
+            </div>
+            <span class="node-connected" title="Connected">
+              <Icon name="check" size={14} />
+            </span>
+          </div>
+          <div class="node-platforms" aria-label={community.description}>
+            <span>
+              <Icon name="discord" size={18} />
+              Discord server
+            </span>
+            <span>
+              <Icon name="roblox" size={17} />
+              Roblox group
+            </span>
+          </div>
+          <div class="node-foot">
+            <Icon name={community.id === 'main' ? 'link' : 'check'} size={13} />
+            {community.id === 'main'
+              ? 'Main group · network hub'
+              : 'Linked to German Army'}
+          </div>
+        </article>
+      ))}
+      <div class="mesh-centre" aria-hidden="true">
+        <Icon name="link" size={15} />
+        <span>Shared through Rodyne</span>
+      </div>
+    </div>
+
+    <div class="mesh-playback">
+      <div
+        class="transfer-buttons"
+        role="group"
+        aria-label="Preview a community transfer"
+      >
+        {transfers.map((transfer) => (
+          <button
+            type="button"
+            data-mesh-transfer={transfer.id}
+            aria-pressed="false"
+            disabled
+          >
+            <Icon name={transfer.icon} size={16} />
+            {transfer.label}
+          </button>
+        ))}
+      </div>
+      <button class="mesh-pause" type="button" data-mesh-pause disabled>
+        Pause animation
+      </button>
+    </div>
+    <div class="mesh-caption" aria-hidden="true">
+      <span class="caption-indicator"></span>
+      <div>
+        <strong data-mesh-caption>One connected community network</strong>
+        <p data-mesh-detail>
+          Reports, records and roles travel between linked communities.
+        </p>
+      </div>
+      <span class="mesh-step" data-mesh-step>
+        CONNECTED
+      </span>
+    </div>
+    <p class="sr-only" data-mesh-announcement aria-live="polite"></p>
+  </div>
+</section>
+
+<script>
+  import { initCommunityMesh } from '../scripts/community-mesh';
+  initCommunityMesh();
+</script>
+
+<style>
+  .community-mesh {
+    padding-block: clamp(64px, 8vw, 100px);
+    border-top: 1px solid var(--border);
+  }
+  .mesh-heading {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: end;
+    gap: 48px;
+    margin-bottom: 36px;
+  }
+  .mesh-heading h2 {
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    line-height: 1.12;
+  }
+  .mesh-heading .section-copy {
+    max-width: 49ch;
+    font-size: 1rem;
+    margin: 0;
+  }
+  .mesh-panel {
+    overflow: hidden;
+    background: #0e1015;
+  }
+  .mesh-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .network-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9375rem;
+    font-weight: 550;
+  }
+  .network-title img {
+    display: block;
+    width: 210px;
+    max-width: 100%;
+    height: auto;
+  }
+  .mesh-example {
+    color: var(--text-dim);
+    font: 0.75rem var(--mono);
+  }
+  .mesh-diagram {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 112px 24px;
+    padding: 32px 24px 40px;
+    background:
+      radial-gradient(ellipse at 50% 28%, #5689e810, transparent 65%),
+      radial-gradient(#a9c2f014 0.7px, transparent 0.7px);
+    background-size:
+      auto,
+      20px 20px;
+  }
+  .mesh-wires {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    z-index: -1;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .mesh-wires path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .wire-base {
+    stroke: #344054;
+    stroke-width: 1.4;
+  }
+  .wire-lit {
+    stroke: var(--mesh-color, #86adf3);
+    stroke-width: 1.8;
+    opacity: 0;
+  }
+  .packet {
+    fill: #e8f0ff;
+  }
+  .packet-halo {
+    fill: var(--mesh-color, #86adf3);
+    opacity: 0;
+  }
+  .community-node {
+    min-width: 0;
+    position: relative;
+    padding: 18px;
+    border: 1px solid #ffffff18;
+    border-radius: 12px;
+    background: linear-gradient(125deg, #ffffff04, transparent), #13161d;
+    box-shadow: 0 12px 28px #0003;
+    transition:
+      border-color 300ms ease,
+      box-shadow 300ms ease;
+  }
+  .node--main {
+    grid-column: 2 / 4;
+    grid-row: 1;
+    width: min(100%, 300px);
+    justify-self: center;
+    border-color: #5689e85c;
+    background: linear-gradient(135deg, #5689e812, transparent), #141923;
+  }
+  .node--heer {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .node--luftwaffe {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .node--feldjager {
+    grid-column: 3;
+    grid-row: 2;
+  }
+  .node--training {
+    grid-column: 4;
+    grid-row: 2;
+  }
+  .node--feldjager .community-avatar {
+    background: #302b3d;
+    color: #c6b9de;
+  }
+  .node--training .community-avatar {
+    background: #353026;
+    color: #dbc7a3;
+  }
+  .community-node:not(.node--main) {
+    padding: 16px 14px;
+  }
+  .community-node:not(.node--main) .node-connected {
+    display: none;
+  }
+  .community-node:not(.node--main) .node-identity {
+    align-items: flex-start;
+    min-height: 66px;
+  }
+  .community-node[data-active] {
+    border-color: var(--mesh-color, #86adf3);
+    box-shadow:
+      0 0 0 3px #86adf30a,
+      0 12px 28px #0003;
+  }
+  .node-identity {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+  .node-identity > div {
+    min-width: 0;
+  }
+  .community-avatar {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 39px;
+    height: 39px;
+    border: 1px solid #ffffff15;
+    border-radius: 10px;
+    background: #242c3a;
+    color: #bdd1f5;
+    font: 500 0.875rem var(--mono);
+  }
+  .node--heer .community-avatar {
+    background: #22332d;
+    color: #abcebb;
+  }
+  .node--luftwaffe .community-avatar {
+    background: #253249;
+    color: #b3c9eb;
+  }
+  .node-label {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+  }
+  .node-identity h3 {
+    font-size: 1.0625rem;
+    font-weight: 550;
+    line-height: 1.4;
+  }
+  .node-connected {
+    margin-left: auto;
+    color: var(--green);
+  }
+  .node-platforms {
+    display: grid;
+    gap: 10px;
+    padding-block: 18px;
+    color: #c2c6d0;
+    font-size: 0.875rem;
+  }
+  .node-platforms > span {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .node-platforms :global(svg) {
+    color: #95a9cd;
+    flex-shrink: 0;
+  }
+  .node-foot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.75rem;
+  }
+  .node-foot :global(svg) {
+    flex-shrink: 0;
+  }
+  .mesh-centre {
+    position: absolute;
+    top: calc(50% + 28px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #9cabc4;
+    background: #0f131b;
+    border: 1px solid #ffffff0d;
+    border-radius: 20px;
+    padding: 7px 12px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+  .mesh-playback {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 24px;
+    border-top: 1px solid var(--border);
+  }
+  .transfer-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .transfer-buttons button {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 12px;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition:
+      color 180ms ease,
+      background 180ms ease;
+  }
+  .transfer-buttons button:hover {
+    color: var(--text);
+    background: #ffffff06;
+  }
+  .transfer-buttons button[aria-pressed='true'] {
+    color: var(--mesh-color, #a9c5fa);
+    background: #86adf30d;
+  }
+  .mesh-pause {
+    flex-shrink: 0;
+    padding: 8px 0;
+    background: transparent;
+    color: var(--text-dim);
+    font-size: 0.8125rem;
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: default;
+  }
+  .mesh-pause:hover {
+    color: var(--text);
+  }
+  .mesh-caption {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    min-height: 89px;
+    padding: 18px 24px;
+    border-top: 1px solid var(--border);
+    background: #ffffff02;
+  }
+  .caption-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--mesh-color, var(--green));
+  }
+  .mesh-caption strong {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .mesh-caption p {
+    margin-top: 3px;
+    font-size: 0.8125rem;
+    color: var(--text-dim);
+  }
+  .mesh-step {
+    margin-left: auto;
+    padding-left: 12px;
+    color: var(--text-dim);
+    font: 0.75rem var(--mono);
+    white-space: nowrap;
+  }
+  @media (max-width: 1000px) {
+    .mesh-heading {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .mesh-diagram {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 40px;
+      padding: 28px 24px 28px 68px;
+    }
+    .community-node {
+      grid-column: 1;
+      grid-row: auto;
+    }
+    .node--main {
+      width: 100%;
+    }
+    .community-node:not(.node--main) .node-identity {
+      min-height: 0;
+    }
+    .node-platforms {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+    }
+    .mesh-centre {
+      display: none;
+    }
+    .mesh-playback {
+      flex-wrap: wrap;
+      padding: 14px 16px;
+      gap: 6px 16px;
+    }
+    .mesh-caption {
+      padding: 18px 16px;
+      min-height: 110px;
+    }
+    .mesh-step {
+      display: none;
+    }
+    .mesh-toolbar {
+      padding-inline: 16px;
+    }
+    .transfer-buttons button {
+      padding-inline: 9px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .community-node,
+    .transfer-buttons button {
+      transition: none;
+    }
+  }
+</style>

@@ -11,12 +11,14 @@ const base = withBase('/', process.env.PUBLIC_BASE_PATH ?? '/');
 
 // https://astro.build/config
 export default defineConfig({
-  // Required launch configuration: replace PUBLIC_SITE_URL with the production origin.
-  site: process.env.PUBLIC_SITE_URL ?? 'https://replace-before-launch.invalid',
+  // Pages supplies its configured URL; local builds default to the production domain.
+  site: process.env.PUBLIC_SITE_URL || 'https://rodyne.xyz',
   base,
   output: 'static',
   trailingSlash: 'always',
-  markdown: { processor: satteri({ mdastPlugins: [markdownBasePath({ base })] }) },
+  markdown: {
+    processor: satteri({ mdastPlugins: [markdownBasePath({ base })] }),
+  },
   integrations: [
     sitemap({
       // Draft legal templates are noindexed and excluded until their launch

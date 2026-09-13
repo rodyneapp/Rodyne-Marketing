@@ -13,9 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        base: ['/', '/new-disc-to-rblx-management-app/']
+        include:
+          - origin: https://rodyne.xyz
+            base: /
+          - origin: https://rodyneapp.github.io
+            base: /Rodyne-Marketing/
     env:
-      PUBLIC_SITE_URL: https://christianrelf.github.io
+      PUBLIC_SITE_URL: ${{ matrix.origin }}
       PUBLIC_BASE_PATH: ${{ matrix.base }}
       PUBLIC_LEGAL_READY: 'false'
     steps:

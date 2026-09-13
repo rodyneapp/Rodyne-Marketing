@@ -23,8 +23,9 @@ npm run preview
 Product copy, pricing and destinations are centralised in `src/data/site.ts`.
 The product is named Rodyne. Replace remaining `.invalid` configuration
 before a public release. Sign-in links stay hidden and pricing actions show
-availability until `PUBLIC_APP_URL` is configured. Set `PUBLIC_SITE_URL` to the production origin and `PUBLIC_APP_URL` to
-the hosted dashboard origin.
+availability until `PUBLIC_APP_URL` is configured. The production site defaults to
+`https://rodyne.xyz`; `PUBLIC_SITE_URL` can override it. Set `PUBLIC_APP_URL` to
+the hosted dashboard origin when it is ready.
 
 For GitHub Pages project URLs, `PUBLIC_BASE_PATH` sets the repository subpath.
 The Pages workflow supplies the origin and base automatically from repository

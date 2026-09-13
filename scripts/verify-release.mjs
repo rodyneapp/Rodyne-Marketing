@@ -99,8 +99,14 @@ for (const file of files.filter((file) => file.endsWith('.html'))) {
 for (const file of files.filter((file) => file.endsWith('.css'))) {
   const relative = path.relative(output, file).replaceAll(path.sep, '/');
   const css = await readFile(file, 'utf8');
-  for (const match of css.matchAll(/url\(["']?([^\s)'";]+)["']?\)/g)) {
-    await checkUrl(match[1], new URL(`${base}${relative}`, origin), relative);
+  for (const match of css.matchAll(
+    /url\(\s*(?:"([^"]*)"|'([^']*)'|([^\s)]*))\s*\)/gi,
+  )) {
+    await checkUrl(
+      match[1] ?? match[2] ?? match[3],
+      new URL(`${base}${relative}`, origin),
+      relative,
+    );
   }
 }
 for (const file of files.filter((file) => /sitemap.*\.xml$/.test(file))) {
