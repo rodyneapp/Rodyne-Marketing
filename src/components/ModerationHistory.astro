@@ -305,6 +305,24 @@ const outcomes = [
                   <span>{item.subject}</span>
                   <span class="detail-owner">Reviewer: {item.reviewer}</span>
                 </div>
+                {item.selected && (
+                  <dl class="member-platform-ids">
+                    <div>
+                      <dt>
+                        <Icon name="roblox" size={15} />
+                        Roblox ID
+                      </dt>
+                      <dd class="mono">851394804</dd>
+                    </div>
+                    <div>
+                      <dt>
+                        <Icon name="discord" size={16} />
+                        Discord ID
+                      </dt>
+                      <dd class="mono">1192847461035827290</dd>
+                    </div>
+                  </dl>
+                )}
               </header>
 
               <div
@@ -334,7 +352,7 @@ const outcomes = [
                       <details class="history-phase">
                         <summary>
                           <span class="phase-icon" aria-hidden="true">
-                            <Icon name={phase.icon} size={16} />
+                            <Icon name={phase.icon} size={24} />
                           </span>
                           <span class="phase-copy">
                             <strong>{phase.title}</strong>
@@ -397,18 +415,6 @@ const outcomes = [
                     <dt>Status</dt>
                     <dd>{item.status}</dd>
                   </div>
-                  {item.selected && (
-                    <>
-                      <div>
-                        <dt>Roblox ID</dt>
-                        <dd class="mono">851394804</dd>
-                      </div>
-                      <div>
-                        <dt>Discord ID</dt>
-                        <dd class="mono">1192847461035827290</dd>
-                      </div>
-                    </>
-                  )}
                 </dl>
               </details>
             </section>
@@ -665,6 +671,32 @@ const outcomes = [
     margin-left: auto;
     color: var(--text-dim);
   }
+  .member-platform-ids {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 28px;
+    margin-top: 18px;
+  }
+  .member-platform-ids > div {
+    min-width: 0;
+  }
+  .member-platform-ids dt {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+  }
+  .member-platform-ids dt :global(svg) {
+    flex-shrink: 0;
+  }
+  .member-platform-ids dd {
+    margin: 5px 0 0;
+    color: #dce3ef;
+    font-size: 0.875rem;
+    overflow-wrap: anywhere;
+    user-select: all;
+  }
   .case-outcome {
     display: flex;
     align-items: flex-start;
@@ -760,10 +792,7 @@ const outcomes = [
     place-items: center;
     flex: 0 0 30px;
     height: 30px;
-    border: 1px solid var(--border-strong);
-    border-radius: 50%;
     color: #a6b1c6;
-    font: 0.75rem var(--mono);
   }
   .phase-copy {
     flex: 1;
