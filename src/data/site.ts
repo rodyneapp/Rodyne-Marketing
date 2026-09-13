@@ -18,6 +18,8 @@ export const site = {
   links: {
     home: withBase('/'),
     product: withBase('/#product'),
+    scout: withBase('/scout/'),
+    connect: withBase('/connect/'),
     integrations: withBase('/#integrations'),
     pricing: withBase('/#pricing'),
     security: withBase('/#security'),
@@ -52,6 +54,8 @@ export const site = {
 
 export const navigation = [
   { label: 'Product', href: site.links.product },
+  { label: 'Scout', href: site.links.scout },
+  { label: 'Connect', href: site.links.connect },
   { label: 'Integrations', href: site.links.integrations },
   { label: 'Pricing', href: site.links.pricing },
   { label: 'Security', href: site.links.security },

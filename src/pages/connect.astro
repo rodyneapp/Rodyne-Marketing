@@ -1,0 +1,154 @@
+---
+import ProductLayout from '../layouts/ProductLayout.astro';
+import CommunityMesh from '../components/CommunityMesh.astro';
+import Icon from '../components/Icon.astro';
+
+const steps = [
+  {
+    icon: 'link',
+    title: 'Start with your main community',
+    description:
+      'Use your main Discord server and Roblox group as the centre of the network. Your secondary communities connect back to that shared hub.',
+  },
+  {
+    icon: 'users',
+    title: 'Link your branches',
+    description:
+      'Bring secondary servers and groups into the network. Each branch keeps its own community while taking part in the wider organisation.',
+  },
+  {
+    icon: 'filter',
+    title: 'Choose what travels',
+    description:
+      'Control which reports, member records and roles are shared between communities. Keep the flow relevant to the teams that need it.',
+  },
+];
+const flows = [
+  {
+    icon: 'case',
+    title: 'Reports reach the right team',
+    route: 'Branch → Main community → Review team',
+    description:
+      'A report from an operational branch can pass through the main community to the staff responsible for reviewing it. The network connects the teams involved in handling the report.',
+  },
+  {
+    icon: 'note',
+    title: 'Records follow the member',
+    route: 'Training community → Linked branch',
+    description:
+      'Pass member records between linked communities so a receiving team has the context from another branch, such as a training record.',
+  },
+  {
+    icon: 'users',
+    title: 'Roles connect your organisation',
+    route: 'Main community → Linked communities',
+    description:
+      'Distribute roles from the main community to its branches, according to the sharing choices for your network.',
+  },
+];
+const questions = [
+  {
+    question: 'Is Connect the same feature as Cnect?',
+    answer:
+      'Yes. Cnect is the branding shown in the linked-community network demo. This page explains how that Connect network brings Discord servers and Roblox groups together.',
+  },
+  {
+    question: 'Does every branch need to become one server?',
+    answer:
+      'No. Each secondary community can keep its own Discord server and Roblox group. Connect links those communities through a main community.',
+  },
+  {
+    question: 'What can move between communities?',
+    answer:
+      'The network supports sharing reports, member records and roles. What each community shares is controlled by your network configuration.',
+  },
+  {
+    question: 'How can I explore the example?',
+    answer:
+      'Use Reports, Records or Roles beneath the network diagram to preview each transfer. You can pause the animation to look at the connections at your own pace. The network shown is illustrative.',
+  },
+];
+---
+
+<ProductLayout
+  name="Connect"
+  title="Rodyne Connect — Link your Discord and Roblox communities"
+  description="Explore Rodyne Connect, the Cnect network for sharing reports, member records and roles across linked Discord servers and Roblox groups."
+  headline="One organisation. Room for every community."
+  intro="Link your main community with its branches. Keep reports, records and roles moving between the right teams while each community keeps its own space."
+  icon="link"
+>
+  <CommunityMesh slot="demo" standalone />
+  <section
+    class="product-section"
+    id="how-it-works"
+    aria-labelledby="connect-workflow-title"
+  >
+    <div class="product-section-heading">
+      <p class="eyebrow">Build your network</p>
+      <h2 class="display" id="connect-workflow-title">
+        Connected where it counts.
+      </h2>
+    </div>
+    <div class="product-steps">
+      {steps.map((step) => (
+        <article>
+          <Icon name={step.icon} size={28} />
+          <h3>{step.title}</h3>
+          <p>{step.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section
+    class="product-section"
+    id="in-practice"
+    aria-labelledby="connect-practice-title"
+  >
+    <div class="product-section-heading">
+      <p class="eyebrow">Across your communities</p>
+      <h2 class="display" id="connect-practice-title">
+        Three flows. Less passing things around.
+      </h2>
+      <p>
+        The demo shows a main community with operational, training and review
+        branches. Here is how each connection helps the wider team.
+      </p>
+    </div>
+    <div class="product-flows">
+      {flows.map((flow) => (
+        <article>
+          <Icon name={flow.icon} size={28} />
+          <div>
+            <h3>{flow.title}</h3>
+            <p>{flow.description}</p>
+            <span class="product-route">{flow.route}</span>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section
+    class="product-section product-faq"
+    id="questions"
+    aria-labelledby="connect-questions-title"
+  >
+    <div class="product-section-heading">
+      <p class="eyebrow">A closer look</p>
+      <h2 class="display" id="connect-questions-title">
+        Questions about Connect.
+      </h2>
+    </div>
+    <div>
+      {questions.map((item) => (
+        <details>
+          <summary>
+            {item.question}
+            <Icon name="chevron" size={18} />
+          </summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+</ProductLayout>

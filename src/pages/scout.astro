@@ -1,0 +1,161 @@
+---
+import ProductLayout from '../layouts/ProductLayout.astro';
+import ScoutShowcase from '../components/ScoutShowcase.astro';
+import Icon from '../components/Icon.astro';
+
+const steps = [
+  {
+    icon: 'search',
+    title: 'Spot a potential match',
+    description:
+      'Cross-check roster members against the reference dataset and public reports for suspected condo-server connections. Potential matches give staff a place to begin.',
+  },
+  {
+    icon: 'note',
+    title: 'Review the source',
+    description:
+      'Look at the linked identity, reported connections and source behind the flag. Compare that information with the member and the context of your community.',
+  },
+  {
+    icon: 'moderation',
+    title: 'Make a staff decision',
+    description:
+      'Compile a removal review list after investigation. Your staff decide what action is appropriate; appearing on a list is not a confirmed finding.',
+  },
+];
+const questions = [
+  {
+    question: 'What does a Scout flag mean?',
+    answer:
+      'It indicates a potential match against the reference dataset or public reports. It is a reason for staff to investigate a suspected connection, not proof that a member broke your rules.',
+  },
+  {
+    question: 'Does a flag automatically remove someone?',
+    answer:
+      'The Scout workflow brings potential matches into a staff review queue. Staff review the source and decide whether to include an account in a removal list.',
+  },
+  {
+    question: 'What can staff see in the demo?',
+    answer:
+      'The fictional profile shows a watchlist flag, a sample Discord ID, three reported server connections and a reference source. The final stage adds the account to a pending review list. No real account is shown or removed.',
+  },
+  {
+    question: 'Is Scout a replacement for moderation reports?',
+    answer:
+      'Scout helps staff find signals to review. Member reports, supporting evidence and the context of your own community still matter when making a moderation decision.',
+  },
+];
+---
+
+<ProductLayout
+  name="Scout"
+  title="Rodyne Scout — Member screening with staff review"
+  description="Explore how Rodyne Scout brings potential watchlist matches, sources and linked identities into a staff-led member review workflow."
+  headline="A clearer starting point for member review."
+  intro="Find potential risks in your roster, understand the source behind each flag, and give your staff the context to make a considered decision."
+  icon="search"
+>
+  <ScoutShowcase slot="demo" standalone />
+  <section
+    class="product-section"
+    id="how-it-works"
+    aria-labelledby="scout-workflow-title"
+  >
+    <div class="product-section-heading">
+      <p class="eyebrow">From signal to review</p>
+      <h2 class="display" id="scout-workflow-title">
+        Three steps. Human judgement throughout.
+      </h2>
+    </div>
+    <div class="product-steps">
+      {steps.map((step) => (
+        <article>
+          <Icon name={step.icon} size={28} />
+          <h3>{step.title}</h3>
+          <p>{step.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section
+    class="product-section product-practice"
+    id="in-practice"
+    aria-labelledby="scout-practice-title"
+  >
+    <div class="product-section-heading">
+      <p class="eyebrow">The context behind a flag</p>
+      <h2 class="display" id="scout-practice-title">
+        Know what you are reviewing.
+      </h2>
+      <p>
+        Keep the identity, source and review status together so staff can
+        understand why an account needs a closer look.
+      </p>
+    </div>
+    <dl class="product-record">
+      <div>
+        <dt>
+          <Icon name="users" size={20} />
+          Linked identity
+        </dt>
+        <dd>
+          Use the profile and available Discord connection to understand which
+          account the report refers to.
+        </dd>
+      </div>
+      <div>
+        <dt>
+          <Icon name="link" size={20} />
+          Reported connections
+        </dt>
+        <dd>
+          See the suspected server connections associated with a match, then
+          investigate their relevance.
+        </dd>
+      </div>
+      <div>
+        <dt>
+          <Icon name="note" size={20} />
+          Reference source
+        </dt>
+        <dd>
+          Review the dataset or public report behind the signal before drawing a
+          conclusion.
+        </dd>
+      </div>
+      <div>
+        <dt>
+          <Icon name="case" size={20} />
+          Review status
+        </dt>
+        <dd>
+          Keep potential removals in a staff review list until your team has
+          made its decision.
+        </dd>
+      </div>
+    </dl>
+  </section>
+  <section
+    class="product-section product-faq"
+    id="questions"
+    aria-labelledby="scout-questions-title"
+  >
+    <div class="product-section-heading">
+      <p class="eyebrow">A closer look</p>
+      <h2 class="display" id="scout-questions-title">
+        Questions about Scout.
+      </h2>
+    </div>
+    <div>
+      {questions.map((item) => (
+        <details>
+          <summary>
+            {item.question}
+            <Icon name="chevron" size={18} />
+          </summary>
+          <p>{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+</ProductLayout>

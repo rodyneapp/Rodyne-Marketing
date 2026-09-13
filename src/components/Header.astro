@@ -19,7 +19,12 @@ const { brandLabel = site.name } = Astro.props;
 
     <nav class="desktop-nav" aria-label="Primary navigation">
       {navigation.map((item) => (
-        <a href={item.href}>{item.label}</a>
+        <a
+          href={item.href}
+          aria-current={Astro.url.pathname === item.href ? 'page' : undefined}
+        >
+          {item.label}
+        </a>
       ))}
     </nav>
 
@@ -49,7 +54,10 @@ const { brandLabel = site.name } = Astro.props;
   <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
     <nav aria-label="Mobile navigation">
       {navigation.map((item) => (
-        <a href={item.href}>
+        <a
+          href={item.href}
+          aria-current={Astro.url.pathname === item.href ? 'page' : undefined}
+        >
           <span>{item.label}</span>
           <Icon name="arrow" size={17} />
         </a>
@@ -154,6 +162,8 @@ const { brandLabel = site.name } = Astro.props;
   }
 
   .desktop-nav a:hover,
+  .desktop-nav a[aria-current='page'],
+  .mobile-menu a[aria-current='page'],
   .sign-in:hover {
     color: var(--text);
   }
@@ -244,13 +254,16 @@ const { brandLabel = site.name } = Astro.props;
     margin-top: 16px;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1080px) {
     .header-shell {
       grid-template-columns: 1fr auto;
     }
 
     .desktop-nav {
       display: none;
+    }
+    .menu-toggle {
+      display: grid;
     }
   }
 

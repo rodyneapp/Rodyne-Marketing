@@ -10,6 +10,11 @@ import Icon from './Icon.astro';
 import BrandMark from './BrandMark.astro';
 import ScoutAvatar from './ScoutAvatar.astro';
 import { withBase } from '../lib/paths.mjs';
+
+interface Props {
+  standalone?: boolean;
+}
+const { standalone = false } = Astro.props;
 ---
 
 <section
@@ -19,7 +24,9 @@ import { withBase } from '../lib/paths.mjs';
   data-observe-reveal
 >
   <div class="scout-copy">
-    <p class="eyebrow">03 / Rodyne Scout</p>
+    <p class="eyebrow">
+      {standalone ? 'The Scout workflow' : '03 / Rodyne Scout'}
+    </p>
     <h2 class="display" id="scout-title">
       Spot the signals.
       <br />
@@ -48,6 +55,11 @@ import { withBase } from '../lib/paths.mjs';
       <Icon name="shield" size={17} />A flag starts a review. Your staff make
       the decision.
     </p>
+    {!standalone && (
+      <a class="text-link scout-learn" href={withBase('/scout/')}>
+        Explore Scout <Icon name="arrow" size={16} />
+      </a>
+    )}
   </div>
 
   <div class="scout-demo panel" data-scout-demo>
@@ -266,6 +278,9 @@ import { withBase } from '../lib/paths.mjs';
   }
   .scout-copy {
     order: 2;
+  }
+  .scout-learn {
+    margin-top: 24px;
   }
   .scout-copy h2 {
     font-size: clamp(2.3rem, 4.2vw, 3.6rem);

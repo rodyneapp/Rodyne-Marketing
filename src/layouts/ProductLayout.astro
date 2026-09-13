@@ -1,0 +1,76 @@
+---
+import SiteLayout from './SiteLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+import '../styles/product-pages.css';
+
+interface Props {
+  name: string;
+  title: string;
+  description: string;
+  headline: string;
+  intro: string;
+  icon: string;
+}
+const { name, title, description, headline, intro, icon } = Astro.props;
+---
+
+<SiteLayout title={title} description={description} pageType="webpage">
+  <Header />
+  <main id="main-content" class="product-page">
+    <div class="container">
+      <header class="product-hero">
+        <a class="product-back" href={site.links.home}>
+          <Icon name="arrow" size={15} />
+          Back to Rodyne
+        </a>
+        <p class="eyebrow product-name">
+          <Icon name={icon} size={22} />
+          Rodyne {name}
+        </p>
+        <h1 class="display">{headline}</h1>
+        <p class="product-intro">{intro}</p>
+        <div class="product-actions">
+          <a class="button button--primary" href="#preview">
+            See {name} in action <Icon name="arrow" size={16} />
+          </a>
+          <a class="text-link" href="#how-it-works">
+            How it works
+          </a>
+        </div>
+      </header>
+      <nav class="product-sections" aria-label={`${name} page sections`}>
+        <a href="#preview">Overview</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#in-practice">In practice</a>
+        <a href="#questions">Questions</a>
+      </nav>
+      <div id="preview" class="product-demo">
+        <slot name="demo" />
+      </div>
+      <slot />
+      <aside class="product-next">
+        <div>
+          <p class="eyebrow">Part of your Rodyne workspace</p>
+          <h2>Bring your community together.</h2>
+          <p>Explore the wider workspace and find a plan for your team.</p>
+        </div>
+        <div class="product-actions">
+          <a class="button button--primary" href={site.links.pricing}>
+            View workspace plans
+          </a>
+          <a
+            class="text-link"
+            href={name === 'Scout' ? site.links.connect : site.links.scout}
+          >
+            Explore {name === 'Scout' ? 'Connect' : 'Scout'}{' '}
+            <Icon name="arrow" size={16} />
+          </a>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <Footer />
+</SiteLayout>

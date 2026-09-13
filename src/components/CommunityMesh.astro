@@ -2,6 +2,11 @@
 import Icon from './Icon.astro';
 import { withBase } from '../lib/paths.mjs';
 
+interface Props {
+  standalone?: boolean;
+}
+const { standalone = false } = Astro.props;
+
 const communities = [
   {
     id: 'main',
@@ -54,18 +59,27 @@ const transfers = [
 >
   <div class="mesh-heading" data-observe-reveal>
     <div>
-      <p class="eyebrow">02 / Linked communities</p>
+      <p class="eyebrow">
+        {standalone ? 'The Connect network' : '02 / Linked communities'}
+      </p>
       <h2 class="display" id="mesh-title">
         Separate communities.
         <br />
         One connected network.
       </h2>
     </div>
-    <p class="section-copy">
-      Link your secondary Discord servers and Roblox groups to a main community.
-      Pass reports, member records and roles between them, with control over
-      what each community shares.
-    </p>
+    <div>
+      <p class="section-copy">
+        Link your secondary Discord servers and Roblox groups to a main
+        community. Pass reports, member records and roles between them, with
+        control over what each community shares.
+      </p>
+      {!standalone && (
+        <a class="text-link mesh-learn" href={withBase('/connect/')}>
+          Explore Connect <Icon name="arrow" size={16} />
+        </a>
+      )}
+    </div>
   </div>
 
   <div class="mesh-panel panel" data-observe-reveal>
@@ -191,6 +205,9 @@ const transfers = [
 </script>
 
 <style>
+  .mesh-learn {
+    margin-top: 20px;
+  }
   .community-mesh {
     padding-block: clamp(64px, 8vw, 100px);
     border-top: 1px solid var(--border);
