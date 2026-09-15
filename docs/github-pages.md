@@ -62,7 +62,7 @@ This custom Actions workflow reads the domain from Pages settings; a repository 
 
 Optional repository Actions variables:
 
-- `PUBLIC_APP_URL`: the HTTPS dashboard origin. Leave unset while the product is a marketing preview; empty values keep checkout and sign-in unavailable.
+- `PUBLIC_APP_URL`: optional HTTPS app origin override. Defaults to `https://app.rodyne.xyz`; sign-in, Get started and plan buttons use its `/login` route.
 - `PUBLIC_LEGAL_READY`: leave unset or `false` until the draft legal documents have been completed and reviewed. Only the exact value `true` enables indexing of those pages.
 
 These are public build-time values, not secrets. GitHub Pages serves static files; the connected bot, dashboard and billing backend must be hosted separately.

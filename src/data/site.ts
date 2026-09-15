@@ -4,8 +4,9 @@ import { withBase } from '../lib/paths.mjs';
 const placeholderOrigin = 'https://replace-before-launch.invalid';
 const appOrigin =
   import.meta.env.PUBLIC_APP_URL?.trim().replace(/\/+$/, '') ||
-  placeholderOrigin;
+  'https://app.rodyne.xyz';
 const appReady = appOrigin !== placeholderOrigin;
+const appLoginUrl = `${appOrigin}/login`;
 
 export const site = {
   name: 'Rodyne',
@@ -25,7 +26,7 @@ export const site = {
     security: withBase('/#security'),
     demo: withBase('/#demo'),
     setup: withBase('/#setup'),
-    signIn: `${appOrigin}/sign-in`,
+    signIn: appLoginUrl,
     documentation: `${placeholderOrigin}/docs`,
     status: `${placeholderOrigin}/status`,
     terms: withBase('/legal/terms/'),
@@ -40,15 +41,9 @@ export const site = {
     discord: `${placeholderOrigin}/discord`,
   },
   checkout: {
-    starter: appReady
-      ? `${appOrigin}/checkout?plan=starter`
-      : withBase('/#launch-checkout'),
-    community: appReady
-      ? `${appOrigin}/checkout?plan=community`
-      : withBase('/#launch-checkout'),
-    network: appReady
-      ? `${appOrigin}/checkout?plan=network`
-      : withBase('/#launch-checkout'),
+    starter: appReady ? appLoginUrl : withBase('/#launch-checkout'),
+    community: appReady ? appLoginUrl : withBase('/#launch-checkout'),
+    network: appReady ? appLoginUrl : withBase('/#launch-checkout'),
   },
 } as const;
 
